@@ -46,7 +46,7 @@ services:
       - './filebrowser/config.yaml:/home/filebrowser/config.yaml'
     ports:
       - 80:80
-    image: gtstef/filebrowser:stable
+    image: ghcr.io/gtsteffaniak/filebrowser:stable
     environment:
       FILEBROWSER_ONLYOFFICE_SECRET: ${ONLYOFFICE_SECRET:?ONLYOFFICE environment variable is required in your .env file}
     restart: unless-stopped

@@ -48,7 +48,7 @@ Update the compose.yml,
 ```yaml title="compose.yml" linenums="1"
 services:
   filebrowser:
-    image: gtstef/filebrowser:beta
+    image: ghcr.io/gtsteffaniak/filebrowser:beta
     container_name: quantum-prod
     ports:
       - 8900:80
@@ -100,7 +100,7 @@ The easist way to update the user is through docker compose. For example to crea
 ```yaml title="compose.yml" linenums="1"
 services:
   filebrowser:
-    image: gtstef/filebrowser:beta
+    image: ghcr.io/gtsteffaniak/filebrowser:beta
     container_name: quantum-prod
     user: "1001:1001"
     ports:

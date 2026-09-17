@@ -402,7 +402,7 @@ Install FileBrowser Quantum using Docker containers.
 ## Quick Start
 
 ```bash
-docker run -p 8080:8080 gtstef/filebrowser:stable
+docker run -p 8080:8080 ghcr.io/gtsteffaniak/filebrowser:stable
 ```
 ```
 
@@ -421,7 +421,7 @@ Installieren Sie FileBrowser Quantum mit Docker-Containern.
 ## Schnellstart
 
 ```bash
-docker run -p 8080:8080 gtstef/filebrowser:stable
+docker run -p 8080:8080 ghcr.io/gtsteffaniak/filebrowser:stable
 ```
 ```
 
@@ -440,7 +440,7 @@ Installez FileBrowser Quantum en utilisant des conteneurs Docker.
 ## Démarrage rapide
 
 ```bash
-docker run -p 8080:8080 gtstef/filebrowser:stable
+docker run -p 8080:8080 ghcr.io/gtsteffaniak/filebrowser:stable
 ```
 ```
 

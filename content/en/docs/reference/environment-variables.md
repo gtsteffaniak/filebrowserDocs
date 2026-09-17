@@ -43,7 +43,7 @@ When upgrading, rename **`FILEBROWSER_DATABASE`** → **`FILEBROWSER_DATABASE_PA
 ```yaml
 services:
   filebrowser:
-    image: gtstef/filebrowser:stable
+    image: ghcr.io/gtsteffaniak/filebrowser:stable
     environment:
       - FILEBROWSER_ADMIN_PASSWORD=secure-password
       - FILEBROWSER_ONLYOFFICE_SECRET=office-secret

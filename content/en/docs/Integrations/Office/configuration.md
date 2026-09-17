@@ -57,7 +57,7 @@ Use the same secret value for `FILEBROWSER_ONLYOFFICE_SECRET` and OnlyOffice `JW
 ```yaml
 services:
   filebrowser:
-    image: gtstef/filebrowser:stable
+    image: ghcr.io/gtsteffaniak/filebrowser:stable
     ports:
       - "80:80"
     volumes:
