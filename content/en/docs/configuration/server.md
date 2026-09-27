@@ -218,7 +218,7 @@ FileBrowser limits the maximum size of archive and unarchive operations (folder 
 
 This cap exists because archiving uses temporary files under `cacheDir` and an unlimited value could exhaust disk or memory on the server.
 
-Ensure you have enough free space in `cacheDir` if you raise this value.
+Ensure you have enough free space in `cacheDir` if you raise this value. That space must be on **disk-backed** storage (see `cacheDir` below). Lowering `maxArchiveSize` only blocks oversized archives; it does not fix out-of-memory failures when `cacheDir` is on tmpfs.
 
 ```yaml
 server:
@@ -236,20 +236,21 @@ The `cacheDir` is a critical configuration that defines where FileBrowser stores
 #### Important Considerations
 
 {{% alert context="warning" %}}
-**Permissions**: The user running the FileBrowser process must have read/write permissions on the cache directory. This is especially critical in Docker environments.
+**Permissions**: The user running the FileBrowser process must have read/write permissions on the cache directory. This is especially critical in Docker environments. If you're using unRAID, you must mount a volume for the cache directory. The default container user (if not uid 1000) needs write access to this directory.
 
 **Disk Space**: The cache directory can grow significantly during large file operations. Monitor disk usage and ensure adequate space. If you are using docker -- consider mounting a sufficient volume for temp directory if you need more space.
 
-**Reliable**: Must be available and not tampered with during operation. Make sure its not in a location that could be moved or modified by accident. Do not use network locations!
+**Reliable**: Must be available and not tampered with during runtime. Make sure its not in a location that could be moved or modified by accident. Do not use network locations!
 
-**unRAID Users**: If you're using unRAID, you must mount a volume for the cache directory. The default container user (if not uid 1000) needs write access to this directory.
+**Not tmpfs**: Mounting the cache path with `--tmpfs`, `type: tmpfs` will cause increased memory and likely to cause OOM errors.
 
 {{% /alert %}}
 
 The cacheDir is used by:
 
 - **Image preview generation**: Thumbnails and processed images are cached
-- **Archive operations**: ZIP extraction and compression temporary files
+- **Archive operations**: ZIP extraction and compression temporary files (folder downloads; chunked downloads spool full archives here)
+- **Search indexing**: Index database files under `cacheDir/sql`
 - **Document processing**: Temporary files during PDF/image conversion
 - **Video processing**: Some media files during video operations
 
@@ -270,7 +271,7 @@ server:
 # docker-compose.yaml
 services:
   filebrowser:
-    image: gtstef/filebrowser:stable
+    image: ghcr.io/gtsteffaniak/filebrowser:stable
     volumes:
       - '/path/to/your/data:/srv'
       - '/var/cache/filebrowser:/tmp/filebrowser'  # Mount cache directory
@@ -292,6 +293,10 @@ Alternatively, in Docker, we can mount a single directory called `data` that con
 </div>
 
 #### Troubleshooting
+
+**Folder ZIP download fails (502, broken pipe, container restarts):**
+
+Confirm `cacheDir` is on disk-backed storage, not tmpfs. Check container memory limits and free space at the mounted cache path. See `maxArchiveSize` for the archive size cap.
 
 **Permission Issues:**
 

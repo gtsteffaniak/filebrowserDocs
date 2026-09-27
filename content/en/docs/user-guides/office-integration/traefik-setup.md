@@ -117,7 +117,7 @@ To assign static IPs to a container, you will need to specify the IP on the dock
 ```yaml
 services:
   filebrowser:
-    image: gtstef/filebrowser:stable
+    image: ghcr.io/gtsteffaniak/filebrowser:stable
     networks:
       proxy_network:                # Name of the docker network
         ipv4_address: 192.168.2.5   # IP adress that you want to use with the service, the IP will be static, don't will change.
@@ -551,7 +551,7 @@ Create `filebrowser/docker-compose.yaml`:
 services:
   filebrowser:
     container_name: filebrowser
-    image: gtstef/filebrowser:stable
+    image: ghcr.io/gtsteffaniak/filebrowser:stable
     env_file: .env
     environment:
       FILEBROWSER_CONFIG: "data/config.yaml"

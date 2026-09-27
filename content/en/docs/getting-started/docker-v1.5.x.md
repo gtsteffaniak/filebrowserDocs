@@ -46,7 +46,7 @@ Test without persistence (changes not saved). In this example we run it mounting
 docker run -d \
   -v $(pwd):/srv \
   -p 80:80 \
-  gtstef/filebrowser:stable
+  ghcr.io/gtsteffaniak/filebrowser:stable
 ```
 
 Access at `http://localhost` with `admin` / `admin`
@@ -104,7 +104,7 @@ Then type in the below docker configuration.
 ```yaml
 services:
   filebrowser:
-    image: gtstef/filebrowser:stable
+    image: ghcr.io/gtsteffaniak/filebrowser:stable
     volumes:
       - /path/to/your/folder:/folder # Do not use a root "/" directory or include the "/var" folder
       - ./data:/home/filebrowser/data
@@ -137,7 +137,7 @@ If you configure FileBrowser to use a different port in your `config.yaml`, you 
 ```yaml
 services:
   filebrowser:
-    image: gtstef/filebrowser:stable
+    image: ghcr.io/gtsteffaniak/filebrowser:stable
     volumes:
       - /path/to/your/folder:/folder
       - ./data:/home/filebrowser/data
@@ -169,7 +169,7 @@ To persist your database, mount a volume to `/home/filebrowser/data`:
 ```yaml
 services:
   filebrowser:
-    image: gtstef/filebrowser:stable
+    image: ghcr.io/gtsteffaniak/filebrowser:stable
     volumes:
       - /path/to/files:/folder
       - ./data:/home/filebrowser/data  # Database and config stored here
@@ -191,7 +191,7 @@ Add to docker-compose.yaml:
 ```yaml
 services:
   filebrowser:
-    image: gtstef/filebrowser:stable
+    image: ghcr.io/gtsteffaniak/filebrowser:stable
     user: filebrowser
     volumes:
       - /path/to/files:/folder

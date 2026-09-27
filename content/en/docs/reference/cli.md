@@ -179,7 +179,7 @@ docker run -it \
   -v $(pwd)/database.db:/home/filebrowser/database.db \
   -v $(pwd)/config.yaml:/home/filebrowser/config.yaml \
   --entrypoint="" \
-  gtstef/filebrowser:stable sh
+  ghcr.io/gtsteffaniak/filebrowser:stable sh
 ```
 
 Inside container:
@@ -196,7 +196,7 @@ docker run -it --rm \
   -v $(pwd)/database.db:/home/filebrowser/database.db \
   -v $(pwd)/config.yaml:/home/filebrowser/config.yaml \
   --entrypoint="" \
-  gtstef/filebrowser:stable \
+  ghcr.io/gtsteffaniak/filebrowser:stable \
   ./filebrowser user set admin --password newpassword -c config.yaml
 ```
 
@@ -206,7 +206,7 @@ docker run -it --rm \
   -v $(pwd)/database.db:/home/filebrowser/database.db \
   -v $(pwd)/config.yaml:/home/filebrowser/config.yaml \
   --entrypoint="" \
-  gtstef/filebrowser:stable \
+  ghcr.io/gtsteffaniak/filebrowser:stable \
   ./filebrowser user set newuser --password password -c config.yaml
 ```
 

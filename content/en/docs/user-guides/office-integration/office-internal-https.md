@@ -454,7 +454,7 @@ If for some reason the filebrowser container doesn't trust the certificates (eve
 services:
   filebrowser:
     container_name: filebrowser
-    image: gtstef/filebrowser:stable
+    image: ghcr.io/gtsteffaniak/filebrowser:stable
     env_file: .env
     environment:
     # ... Existent enviroment variables

@@ -71,7 +71,7 @@ docker run -d \
   -v /path/to/your/config.yaml:/home/filebrowser/data/config.yaml \
   -v /path/to/your/folder:/folder \
   -p 80:80 \
-  gtstef/filebrowser:stable
+  ghcr.io/gtsteffaniak/filebrowser:stable
 ```
 
 ### Using Docker Compose
@@ -90,7 +90,7 @@ services:
       - './data:/home/filebrowser/data'
     ports:
       - '80:80'
-    image: gtstef/filebrowser:stable
+    image: ghcr.io/gtsteffaniak/filebrowser:stable
     restart: unless-stopped
 ```
 

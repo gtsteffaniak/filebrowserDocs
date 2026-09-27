@@ -50,7 +50,7 @@ Create a `docker-compose.yaml` file:
 ```yaml
 services:
   filebrowser:
-    image: gtstef/filebrowser:stable
+    image: ghcr.io/gtsteffaniak/filebrowser:stable
     ports:
       - "8080:80"
     environment:
