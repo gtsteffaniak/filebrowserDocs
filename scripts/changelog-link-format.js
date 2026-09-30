@@ -24,6 +24,7 @@ const PATTERN = /(?<!\])\(#(\d+)\)/g;
 const MENTIONS = /(?<![\w[/])@([a-zA-Z0-9](?:[a-zA-Z0-9-]{0,38})?)/g;
 // to compare diff urls in the 'full changelog' part
 const COMPARE_URL_PATTERN = new RegExp(`(?<!\\]\\()https://github\\.com/${REPO_OWNER}/${REPO_NAME}/compare/([^\\s]+)`,'g');
+const ISSUE_URL_PATTERN = new RegExp(`(?<!\\]\\(|[<"'=])https://github\\.com/${REPO_OWNER}/${REPO_NAME}/(pull|issues|discussions)/(\\d+)(?![\\w/#?])`, 'g');
 
 // to skip hugo shortcodes sorrounded by `{{ }}` (just in case)
 // and code blocks and content with backticks
@@ -32,6 +33,14 @@ function isSkippable(content) {
 }
 function isShortcode(index) {
   return index % 2 === 1;
+}
+function labelFor(kind) {
+  return kind === 'pull' ? 'pr' : kind === 'discussions' ? 'discussion' : 'issue';
+}
+function convertDirectLinks(content) {
+  return content.replace(ISSUE_URL_PATTERN, (url, kind, num) => {
+    return `[${labelFor(kind)} #${num}](${url})`;
+  });
 }
 
 // Compare tht refs/tags never end in punctuation and trim anything trailing
@@ -67,6 +76,7 @@ function needsChanges(content) {
     if (isShortcode(i)) return false;
     return (
       extractNumbers(part).length > 0 ||
+      convertDirectLinks(part) !== part ||
       convertCompareLinks(part) !== part ||
       convertReleaseTags(part) !== part ||
       convertMentions(part) !== part
@@ -121,13 +131,13 @@ async function convert(content) {
     .map((part, i) => {
       if (isShortcode(i)) return part;
       let converted = convertCompareLinks(part);
+      converted = convertDirectLinks(converted);
       converted = convertReleaseTags(converted);
       converted = convertMentions(converted);
       return converted.replace(PATTERN, (fullMatch, num) => {
         const type = types[num];
         if (!type) return fullMatch; // don't do anything if couldn't resolve
-        const label = type === 'pull' ? 'pr' : type === 'discussions' ? 'discussion' : 'issue';
-        return `([${label} #${num}](https://github.com/${REPO_OWNER}/${REPO_NAME}/${type}/${num}))`;
+        return `([${labelFor(type)} #${num}](https://github.com/${REPO_OWNER}/${REPO_NAME}/${type}/${num}))`;
       });
     }).join('');
 }
