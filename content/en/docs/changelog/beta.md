@@ -16,6 +16,101 @@ You can also check the releases on [GitHub!](https://github.com/gtsteffaniak/fil
 
 ---
 
+## [v2.0.9-beta](https://github.com/gtsteffaniak/filebrowser/releases/tag/v2.0.9-beta)
+
+**Security**:
+ - Fresh install with default `admin`/`admin` startup generates a random initial password and logs it once ([issue #2977](https://github.com/gtsteffaniak/filebrowser/issues/2977)). Updated documentation to follow.
+ - OIDC login binds OAuth `state` to an HttpOnly cookie (crypto-random) and rejects tampered callbacks; post-login redirects must be same-app relative paths.
+ - Login, logout, and session-expiry redirects reject open-redirect targets (`//`, `/\\`, off-site URLs); signup sends credentials in a JSON body instead of query parameters.
+
+**Notes**:
+ - Webdav always shows hidden files, ignores user preference. ([issue #3004](https://github.com/gtsteffaniak/filebrowser/issues/3004))
+ - SQLite shared cache (`cache=shared`) removed from the application database connection: its table-lock conflicts bypass `busy_timeout` and fail immediately. WAL mode already allows concurrent readers.
+
+**Bugfixes**:
+ - Fixed intermittent blank page / blocked inline SPA script after CSP hardening ([issue #2995](https://github.com/gtsteffaniak/filebrowser/issues/2995))
+ - ffmpeg unresponsive lock issue ([issue #2996](https://github.com/gtsteffaniak/filebrowser/issues/2996))
+ - fixed token migration lockout regression from [v2.0.8-beta](https://github.com/gtsteffaniak/filebrowser/releases/tag/v2.0.8-beta) ([issue #2999](https://github.com/gtsteffaniak/filebrowser/issues/2999))
+ - Public shares with OnlyOffice disabled (`enableOnlyOffice=false`) now reject `/office/config` and `/office/callback` requests server-side instead of only hiding the editor in the UI
+ - Session/API token registrations now record the JWT expiry; expired mappings are pruned at startup, and tokens expired beyond the same 2-minute grace window used for session rotation no longer resolve a user identity on public share routes
+ - Startup now fails when the configured/env auth signing key differs from the key persisted in the application database, instead of warning and minting tokens with divergent keys
+ - OnlyOffice document downloads now re-validate redirect targets against the configured document-server host, closing an SSRF gap where a redirect could send the fetch to an internal address
+ - OnlyOffice "closed with changes" callbacks now keep the document key until the save succeeds, so a failed save can be retried by the document server instead of being rejected as an unknown session
+ - External JWT (JwtAuth) requests now reuse an existing valid session cookie instead of minting and registering a new session token on every request
+ - SQLite index and application databases configure `busy_timeout` on every pooled connection, and busy/locked detection now uses driver result codes; index batch writes and maintenance no longer report success when the DB stays busy, and index cache reads return busy errors instead of empty results so listing can fall back to the filesystem.
+
+**Full Changelog**: [v2.0.8-beta...v2.0.9-beta](https://github.com/gtsteffaniak/filebrowser/compare/v2.0.8-beta...v2.0.9-beta)
+
+---
+
+## [v2.0.8-beta](https://github.com/gtsteffaniak/filebrowser/releases/tag/v2.0.8-beta)
+
+**Security**:
+ - [Critical] A forged JWT could authenticate as any known `belongsTo`. Auth signing keys are now persisted in the application database and JWT validation fails closed when no key is configured. (GHSA-8f9r-wg7w-pfw) ([pr #2987](https://github.com/gtsteffaniak/filebrowser/pull/2987)) Thanks [@d3do-23](https://github.com/d3do-23) and [@whoamis3c](https://github.com/whoamis3c).
+ - [Medium] Public upload shares with replacements disabled (`allowReplacements=false`) now reject overwrites when clients send `override=true`. (GHSA-3846-gh75-gp3m) Thanks [@d3do-23](https://github.com/d3do-23)
+ - [Medium] OnlyOffice document-server callbacks now verify the shared `integrations.office.secret` JWT (HS256), reject unsigned callback bodies when a secret is configured, and require the callback document key to match the cached editor session for the target path (fail closed on cache miss or path lookup failure).
+
+**New Features**:
+ - add "Upload only what's missing" to the upload conflict prompt ([pr #2985](https://github.com/gtsteffaniak/filebrowser/pull/2985)) ([issue #2553](https://github.com/gtsteffaniak/filebrowser/issues/2553))
+
+**Notes**:
+ - Improved UI responsiveness for larger directories and firefox, marginal improvement to memory ([issue #1773](https://github.com/gtsteffaniak/filebrowser/issues/1773)) ([issue #2879](https://github.com/gtsteffaniak/filebrowser/issues/2879))
+ - `/api/resources/download` and `/public/api/resources/download` now return HTTP 404 when the requested file or directory does not exist, instead of 500 ([issue #2981](https://github.com/gtsteffaniak/filebrowser/issues/2981))
+ - `GET /api/resources` returns 400 when the `path` query parameter is missing or empty instead of 500 ([issue #2801](https://github.com/gtsteffaniak/filebrowser/issues/2801))
+
+**Bugfixes**:
+ - Public share folder and multi-file ZIP downloads were empty for anonymous visitors when the source used deny-by-default or path access rules ([issue #2631](https://github.com/gtsteffaniak/filebrowser/issues/2631)) ([issue #2365](https://github.com/gtsteffaniak/filebrowser/issues/2365))
+ - 401 on pdf download button action ([pr #2978](https://github.com/gtsteffaniak/filebrowser/pull/2978))
+ - OnlyOffice saves could no-op with HTTP 200 when JWT was enabled: callback POST bodies wrapped in `token` were ignored and JWT parsing omitted fields such as `url` required to download the updated document from the Document Server.
+
+**All Changes**:
+* Fix dev build by [@gtsteffaniak](https://github.com/gtsteffaniak) in [pr #2971](https://github.com/gtsteffaniak/filebrowser/pull/2971)
+* cleanup pdf issues and small styling by [@gtsteffaniak](https://github.com/gtsteffaniak) in [pr #2978](https://github.com/gtsteffaniak/filebrowser/pull/2978)
+* updated getters for ismobile by [@gtsteffaniak](https://github.com/gtsteffaniak) in [pr #2979](https://github.com/gtsteffaniak/filebrowser/pull/2979)
+* Ismobile changes by [@gtsteffaniak](https://github.com/gtsteffaniak) in [pr #2980](https://github.com/gtsteffaniak/filebrowser/pull/2980)
+* add performance tuning report by [@gtsteffaniak](https://github.com/gtsteffaniak) in [pr #2982](https://github.com/gtsteffaniak/filebrowser/pull/2982)
+* Auth signing key and token migration by [@gtsteffaniak](https://github.com/gtsteffaniak) in [pr #2987](https://github.com/gtsteffaniak/filebrowser/pull/2987)
+* Improve scrolling performance by [@gtsteffaniak](https://github.com/gtsteffaniak) in [pr #2986](https://github.com/gtsteffaniak/filebrowser/pull/2986)
+* feat(upload): add "Upload only what's missing" to the upload conflict prompt by [@FandacqkaCorp](https://github.com/FandacqkaCorp) in [pr #2985](https://github.com/gtsteffaniak/filebrowser/pull/2985)
+* fixed public replacement by [@gtsteffaniak](https://github.com/gtsteffaniak) in [pr #2988](https://github.com/gtsteffaniak/filebrowser/pull/2988)
+* fix onlyoffice callback verification by [@gtsteffaniak](https://github.com/gtsteffaniak) in [pr #2989](https://github.com/gtsteffaniak/filebrowser/pull/2989)
+* add resources 404 and 400 response by [@gtsteffaniak](https://github.com/gtsteffaniak) in [pr #2990](https://github.com/gtsteffaniak/filebrowser/pull/2990)
+
+**Full Changelog**: [v2.0.2-beta...v2.0.8-beta](https://github.com/gtsteffaniak/filebrowser/compare/v2.0.2-beta...v2.0.8-beta)
+
+---
+
+## [v2.0.7-beta](https://github.com/gtsteffaniak/filebrowser/releases/tag/v2.0.7-beta)
+
+**New Features**:
+ - Add cli init CLI command ([pr #2957](https://github.com/gtsteffaniak/filebrowser/pull/2957))
+
+**Notes**:
+ - Pop-up preview has 200ms debounce delay so it doesn't flash from moving the cursor across files quickly. 
+ - Added risc-v to official releases
+
+**Bugfixes**:
+ - Hide the Replace option on upload/create conflict prompts when the user lacks modify permission (or when a public share disallows replacements), so create-only users are not offered an action that the server rejects ([issue #2837](https://github.com/gtsteffaniak/filebrowser/issues/2837))
+ - Preserve Ctrl-click file selection when keyboard state is stale ([pr #2958](https://github.com/gtsteffaniak/filebrowser/pull/2958)) ([issue #2923](https://github.com/gtsteffaniak/filebrowser/issues/2923))
+ - Avoid false stalls during parallel transfers ([pr #2950](https://github.com/gtsteffaniak/filebrowser/pull/2950)) ([issue #2948](https://github.com/gtsteffaniak/filebrowser/issues/2948)) thanks [@gudcks0305](https://github.com/gudcks0305)
+ - Cap source usage-bar percentage at 100% when indexed size exceeds partition total ([issue #2761](https://github.com/gtsteffaniak/filebrowser/issues/2761)) ([issue #2238](https://github.com/gtsteffaniak/filebrowser/issues/2238))
+ - On Linux, source partition totals sum distinct filesystems mounted under the source root (nested mounts) so usage bars match indexed content ([issue #2761](https://github.com/gtsteffaniak/filebrowser/issues/2761))
+
+**All Changes**:
+* fix(upload): avoid false stalls during parallel transfers by [@gudcks0305](https://github.com/gudcks0305) in [pr #2950](https://github.com/gtsteffaniak/filebrowser/pull/2950)
+* fix: preserve Ctrl-click file selection when keyboard state is stale by [@mvanhorn](https://github.com/mvanhorn) in [pr #2958](https://github.com/gtsteffaniak/filebrowser/pull/2958)
+* detect more platform types by [@gtsteffaniak](https://github.com/gtsteffaniak) in [pr #2952](https://github.com/gtsteffaniak/filebrowser/pull/2952)
+* Popup debounce by [@gtsteffaniak](https://github.com/gtsteffaniak) in [pr #2961](https://github.com/gtsteffaniak/filebrowser/pull/2961)
+* Add cli init command by [@zumbiepig](https://github.com/zumbiepig) in [pr #2957](https://github.com/gtsteffaniak/filebrowser/pull/2957)
+* fix a few usage reporting bugs by [@gtsteffaniak](https://github.com/gtsteffaniak) in [pr #2963](https://github.com/gtsteffaniak/filebrowser/pull/2963)
+* Backport risc v release by [@gtsteffaniak](https://github.com/gtsteffaniak) in [pr #2964](https://github.com/gtsteffaniak/filebrowser/pull/2964)
+* Update deps v2.0.7 by [@gtsteffaniak](https://github.com/gtsteffaniak) in [pr #2965](https://github.com/gtsteffaniak/filebrowser/pull/2965)
+* hide replace option for users without modify permission by [@gtsteffaniak](https://github.com/gtsteffaniak) in [pr #2966](https://github.com/gtsteffaniak/filebrowser/pull/2966)
+
+**Full Changelog**: [v2.0.6-beta...v2.0.7-beta](https://github.com/gtsteffaniak/filebrowser/compare/v2.0.6-beta...v2.0.7-beta)
+
+---
+
 ## [v2.0.6-beta](https://github.com/gtsteffaniak/filebrowser/releases/tag/v2.0.6-beta)
 
 **Security**:
@@ -1914,7 +2009,7 @@ Native preview (image preview) support is also available for `linux-arm64` and `
  - Logging uses localtime, optional UTC config added ([issue #665](https://github.com/gtsteffaniak/filebrowser/issues/665))
  - Generated config example now includes defaults ([issue #590](https://github.com/gtsteffaniak/filebrowser/issues/590))
  - `server.debugMedia` config option added to help debug ffmpeg issues in the future (don't enable unless debugging an issue)
- - More translations additions from english settings https://github.com/gtsteffaniak/filebrowser/issues/653
+ - More translations additions from english settings [issue #653](https://github.com/gtsteffaniak/filebrowser/issues/653)
  - Visual tweaks ([issue #652](https://github.com/gtsteffaniak/filebrowser/issues/652))
  - Enhanced markdown viewer with code view spec.
 
