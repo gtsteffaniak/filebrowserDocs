@@ -40,7 +40,7 @@ also reference your `config.json`
 
 Create a new `config.yaml` file with your settings.
 
-**v2.0.0-beta and later** (including v2.1.0-beta). Listen settings are under `http`. The database is a SQLite file under `server.database.path` (standalone default `filebrowser.sqlite`). Password auth is `auth.methods.password`. Global share permission is `userDefaults.account.permissions.share`. File modify/create/delete/download/view defaults are `server.sources[].config.defaultPermissions`.
+**v2.0.0-beta and later** Listen settings are under `http`. The database is a SQLite file under `server.database.path` (standalone default `filebrowser.sqlite`). Password auth is `auth.methods.password`. Global share permission is `userDefaults.account.permissions.share`. File modify/create/delete/download/view defaults are `server.sources[].config.defaultPermissions`.
 
 ```yaml
 http:
