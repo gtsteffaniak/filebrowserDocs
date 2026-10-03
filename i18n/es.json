@@ -61,7 +61,8 @@
     "feature-development": "Desarrollo de Características",
     "hugo-documentation": "Documentación de Hugo",
     "i18n-setup": "Configuración i18n",
-    "indexing": "Indexación"
+    "indexing": "Indexación",
+    "new-feature": "Nueva Característica"
   },
   "ui": {
     "search-placeholder": "Buscar documentación...",

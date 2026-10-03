@@ -13,7 +13,10 @@
     "doclinks:validate-paths": "node ./scripts/check-doclink-paths.js",
     "doclinks:revert": "node ./scripts/doclinks.js --mode=revert",
     "changelog:link-format": "node ./scripts/changelog-link-format.js",
-    "changelog:link-format:check": "node ./scripts/changelog-link-format.js --check"
+    "changelog:link-format:check": "node ./scripts/changelog-link-format.js --check",
+    "frontmatter:check": "node ./scripts/check-frontmatter.js",
+    "check:quick": "npm run frontmatter:check && npm run doclinks:check && npm run changelog:link-format:check",
+    "check:all": "npm run check:quick && npm run translate:check && npm run doclinks:validate-paths"
   },
   "dependencies": {
     "deepl-node": "^1.12.0",
