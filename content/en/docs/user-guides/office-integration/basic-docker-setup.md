@@ -3,7 +3,7 @@ title: "Basic Docker Setup"
 description: "Simple OnlyOffice setup with Docker for local development"
 icon: "deployed_Code"
 date: "2025-10-09T00:23:04Z"
-lastmod: "2026-08-05T23:41:25Z"
+lastmod: "2026-10-03T16:40:00Z"
 ---
 
 Complete setup for running FileBrowser Quantum with OnlyOffice using Docker Compose on your local network.
@@ -83,10 +83,11 @@ mkdir data && touch data/config.yaml
 Then populate the config, see {{< doclink path="getting-started/config/" text="Getting started" />}}.
 
 ```yaml
-server:
+http:
   port: 80 # Should be 80, this is the internal port.
   externalUrl: "http://localhost:8080" # External filebrowser URL
   internalUrl: "http://filebrowser:80" # The filebrowser container name with the internal port.
+server:
   sources:
     - name: "files" # You can change this name
       path: "/srv" # The docker volume for your files.

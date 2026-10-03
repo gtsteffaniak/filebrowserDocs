@@ -3,7 +3,7 @@ title: "Traefik Setup"
 description: "Complete production setup with Traefik using Docker and Let's Encrypt"
 icon: "dns"
 date: "2025-10-29T22:21:43Z"
-lastmod: "2026-08-05T23:41:25Z"
+lastmod: "2026-10-03T16:40:00Z"
 order: 3
 ---
 
@@ -603,9 +603,13 @@ See {{< doclink path="configuration/configuration-overview/" text="configuration
 Create `filebrowser/data/config.yaml`:
 
 ```yaml
-server:
+http:
   port: 80
   baseURL: "/"
+  externalUrl: "https://files.yourdomain.com"
+  internalUrl: "http://filebrowser:80"
+
+server:
   sources:
   # Sources for filebrowser, the path should match your volume mount (of the right)
     - path: "/files"
@@ -618,10 +622,6 @@ server:
       config:
         defaultEnabled: false
         createUserDir: false
-
-  # Critical for OnlyOffice integration
-  externalUrl: "https://files.yourdomain.com"
-  internalUrl: "http://filebrowser:80"
 
 auth:
   tokenExpirationHours: 6
