@@ -3,7 +3,7 @@ title: "Init Script Setup"
 description: "Automate FileBrowser initialization with scripts"
 icon: "play_circle"
 date: "2025-10-08T14:59:30Z"
-lastmod: "2026-08-05T23:41:25Z"
+lastmod: "2026-10-03T16:20:00Z"
 ---
 
 Automated initialization scripts for FileBrowser using the API. Works across Docker, Docker Compose, Kubernetes, and bare metal deployments.
@@ -907,15 +907,27 @@ Settings are read-only via the API. You must update the `config.yaml` file and r
 Since settings cannot be updated via the API, you must configure FileBrowser through the `config.yaml` file. Here's an example:
 
 ```yaml
-server:
+http:
   port: 8080
   baseURL: /
+
+server:
   database:
     path: /database/filebrowser.sqlite
-  log: stdout
+  logging:
+    - output: stdout
+      levels: "info|warning|error"
   sources:
     - name: files
       path: /data
+      config:
+        defaultEnabled: true
+        defaultPermissions:
+          view: true
+          download: true
+          modify: true
+          create: true
+          delete: true
 
 auth:
   adminUsername: admin
@@ -923,29 +935,24 @@ auth:
   key: random-secret-key
   tokenExpirationHours: 168
   methods:
-    passwordAuth:
+    password:
       enabled: true
       signup: false
       enforcedOtp: false
 
 userDefaults:
-  permissions:
-    admin: false
-    api: false
-    share: true
-    realtime: false
-    # v2.0.0+: seeds default per-source permissions for new scopes
-    modify: true
-    create: true
-    delete: true
-    download: true
-  scopes: []
+  account:
+    permissions:
+      admin: false
+      api: false
+      share: true
+      realtime: false
 
 frontend:
   name: "FileBrowser"
-  disableExternal: false
-  files: []
 ```
+
+`http.port` and `http.baseURL` are the listen settings on v2.0.0 and later. `auth.methods.password` is the password method on v1.5.6-stable and on v2. Top-level `auth.adminUsername` and `auth.adminPassword` are what v2.0.x reads. On v2.1.0-beta, `auth.methods.password.adminUsername` and `auth.methods.password.adminPassword` take priority when set. File-operation defaults belong under `server.sources[].config.defaultPermissions`, and global permissions belong under `userDefaults.account.permissions`.
 
 ## Next Steps
 
