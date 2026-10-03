@@ -3,7 +3,7 @@ title: "Multiple Config Files"
 description: "Use YAML anchoring for modular configuration"
 icon: "inventory_2"
 date: "2025-10-08T14:59:30Z"
-lastmod: "2025-11-17T16:32:34Z"
+lastmod: "2026-10-03T16:30:00Z"
 ---
 
 Use YAML anchoring with multi-file configuration for modular, reusable configurations.
@@ -106,34 +106,39 @@ server:
 
 **File: `users-config.yaml`**
 ```yaml
-# Admin user - full permissions
+# Admin user - global account permissions
 user_admin: &user_admin
-  showHidden: true
-  permissions:
-    admin: true
-    modify: true
-    share: true
-    api: true
+  listing:
+    showHidden: true
+  account:
+    permissions:
+      admin: true
+      share: true
+      api: true
 
-# Regular user - standard permissions
+# Regular user - standard account permissions
 user_regular: &user_regular
-  showHidden: false
-  permissions:
-    admin: false
-    modify: true
-    share: true
-    api: false
+  listing:
+    showHidden: false
+  account:
+    permissions:
+      admin: false
+      share: true
+      api: false
 
-# Read-only user - view only
+# Read-only user - no share or API
 user_readonly: &user_readonly
-  showHidden: false
-  permissions:
-    admin: false
-    modify: false
-    share: false
-    api: false
-  lockPassword: true
+  listing:
+    showHidden: false
+  account:
+    lockPassword: true
+    permissions:
+      admin: false
+      share: false
+      api: false
 ```
+
+File **view**, **download**, **modify**, **create**, and **delete** are not `userDefaults` keys on v2.0.0. Set those with `server.sources[].config.defaultPermissions`.
 
 **File: `config.yaml`**
 ```yaml

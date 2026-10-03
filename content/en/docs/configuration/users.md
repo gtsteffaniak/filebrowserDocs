@@ -3,7 +3,7 @@ title: "User Management"
 description: "Manage users and permissions"
 icon: "group"
 date: "2025-10-08T14:59:30Z"
-lastmod: "2026-08-07T19:31:41Z"
+lastmod: "2026-10-03T16:30:00Z"
 order: 5
 ---
 
@@ -12,7 +12,7 @@ Configure users, permissions, and default user settings.
 {{% alert context="warning" %}}
 **v2.0.0 behavior change**
 
-Starting in **v2.0.0**, file permissions are **per source**, not global. Each user scope (source assignment) has its own **view**, **download**, **modify**, **create**, and **delete** flags. **`view` is new in v2.0.0** — in v1.x, browsing and listing a source was always allowed once the user had that scope; v2.0.0 makes **view** an explicit grant (migration sets it to **true** on existing scopes unless you configure otherwise). Global user permissions are limited to **admin**, **api**, **share**, and **realtime**. Values under `userDefaults.permissions` in config (modify, create, delete, download) now seed **default per-source permissions** for new users — they are no longer stored as global caps on the user record. CLI user commands also changed: use `user set` and `user promote` instead of `set -u` (see {{< doclink path="reference/cli/" text="CLI reference" />}}). See {{< doclink path="features/webdav/" text="WebDAV" />}} for how each capability maps to client operations.
+Starting in **v2.0.0**, file permissions are **per source**, not global. Each user scope (source assignment) has its own **view**, **download**, **modify**, **create**, and **delete** flags. **`view` is new in v2.0.0** — in v1.x, browsing and listing a source was always allowed once the user had that scope; v2.0.0 makes **view** an explicit grant (migration sets it to **true** on existing scopes unless you configure otherwise). Global user permissions are limited to **admin**, **api**, **share**, and **realtime** under `userDefaults.account.permissions`. File-operation defaults are `server.sources[].config.defaultPermissions` (**view**, **download**, **modify**, **create**, **delete**). v2.0.0 rejects the removed `userDefaults.permissions` key. CLI user commands also changed: use `user set` and `user promote` instead of `set -u` (see {{< doclink path="reference/cli/" text="CLI reference" />}}). See {{< doclink path="features/webdav/" text="WebDAV" />}} for how each capability maps to client operations.
 {{% /alert %}}
 
 ## User Management
@@ -61,73 +61,76 @@ Legacy flat keys (for example `hideFilesInTree`, `permissions.modify`) are no lo
 **Note**: Config `userDefaults` do not overwrite existing users after creation. They seed universal defaults for **new** users and the admin **User defaults** template in SQLite.
 {{% /alert %}}
 
-These values match the shape of the generated config reference (`frontend/public/config.generated.yaml` in the main repo). Only a subset is shown; omit keys you want to leave at defaults.
+This shape is valid on **v2.0.0-beta** through **v2.1.0-beta**. Omit keys you want to leave at defaults. v2.1.0-beta also adds `listing.promptRightCloseButton`, `listing.newFileTemplate`, and `account.showAdvancedProfile`.
 
 ```yaml
 userDefaults:
-  editorQuickSave: false
-  hideSidebarFileActions: false
-  disableQuickToggles: false
-  disableSearchOptions: false
-  stickySidebar: true
-  hideFilesInTree: false
-  darkMode: true
-  locale: "en"
-  viewMode: "normal"
-  singleClick: false
-  showHidden: false
-  dateFormat: false
-  gallerySize: 3
-  themeColor: "var(--blue)"
-  quickDownload: false
-  disablePreviewExt: ""
-  disableViewingExt: ""
-  lockPassword: false
-  disableSettings: false
+  sidebar:
+    disableQuickToggles: false
+    hideFileActions: false
+    disableHideOnPreview: false
+    sticky: true
+    hideFiles: false
+    showTools: true
+  listing:
+    deleteWithoutConfirming: false
+    dateFormat: false
+    showHidden: false
+    quickDownload: false
+    showSelectMultiple: false
+    singleClick: false
+    hideFileExt: ""
+    showCopyPath: false
+    deleteAfterArchive: true
+    viewMode: "normal"
+    gallerySize: 3
   preview:
-    disableHideSidebar: false
     image: true
     video: true
     audio: true
     motionVideoPreview: true
     office: true
     popup: true
-    autoplayMedia: true
-    defaultMediaPlayer: false
+    disablePreviewExt: ""
+    highQuality: true
     folder: true
     models: true
-  permissions:
-    api: false
-    admin: false
-    share: false
-    realtime: false
-    # v2.0.0+: the keys below seed DEFAULT per-source permissions for new scopes
-    # (not global user permissions after the user is created)
-    modify: false
-    delete: false
-    create: false
-    download: true
-  loginMethod: "password"
-  disableUpdateNotifications: false
-  deleteWithoutConfirming: false
-  deleteAfterArchive: true
+  fileViewer:
+    editorQuickSave: false
+    autoplayMedia: true
+    disableViewingExt: ""
+    disableOnlyOfficeExt: ".md .txt .pdf .html .xml"
+    preferEditorForMarkdown: false
+    debugOffice: false
+  search:
+    disableOptions: false
+  ui:
+    darkMode: true
+    themeColor: "var(--blue)"
+    customTheme: ""
+    locale: "en"
   fileLoading:
     maxConcurrentUpload: 10
     uploadChunkSizeMb: 10
     clearAll: false
     downloadChunkSizeMb: 0
-  disableOnlyOfficeExt: ".md .txt .pdf .html .xml"
-  customTheme: ""
-  showSelectMultiple: false
-  debugOffice: false
-  preferEditorForMarkdown: false
+  account:
+    permissions:
+      api: false
+      admin: false
+      share: false
+      realtime: false
+    lockPassword: false
+    disableSettings: false
+    loginMethod: "password"
+    disableUpdateNotifications: false
 ```
 
 </div>
 
 For what each `fileLoading` field does (matching **Settings → Uploads & Downloads**), see {{< doclink path="user-preferences/uploads-downloads/" text="Uploads & Downloads (user preferences)" />}}.
 
-`permissions` under `userDefaults` are not editable by non-admin users in the profile UI. Global flags (**admin**, **api**, **share**, **realtime**) live on the user; file-operation defaults apply when a **new scope** is added unless you set explicit per-source permissions in User Management.
+`userDefaults.account.permissions` are not editable by non-admin users in the profile UI. Those global flags (**admin**, **api**, **share**, **realtime**) live on the user. File-operation defaults for a new scope come from `server.sources[].config.defaultPermissions` unless you set explicit per-source permissions in User Management.
 
 ## Creating Users
 
