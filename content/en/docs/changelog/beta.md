@@ -220,21 +220,6 @@ You can also check the releases on [GitHub!](https://github.com/gtsteffaniak/fil
  - Fixed tooltip not showing up for some circumstances on mobile, improved consistency.
  - A few styling fixes for inconsistencies ([pr #2908](https://github.com/gtsteffaniak/filebrowser/pull/2908))
 
-**All Changes**:
-* Beta/v2.0.3 by [@gtsteffaniak](https://github.com/gtsteffaniak) in [pr #2870](https://github.com/gtsteffaniak/filebrowser/pull/2870)
-* fix(contributing): typo from improtant to important by [@ingStudiosOfficial](https://github.com/ingStudiosOfficial) in [pr #2873](https://github.com/gtsteffaniak/filebrowser/pull/2873)
-* fix onlyoffice csp security regression ([pr #2876](https://github.com/gtsteffaniak/filebrowser/pull/2876)) by [@gtsteffaniak](https://github.com/gtsteffaniak) in [pr #2900](https://github.com/gtsteffaniak/filebrowser/pull/2900)
-* Fix styling bugs by [@gtsteffaniak](https://github.com/gtsteffaniak) in [pr #2901](https://github.com/gtsteffaniak/filebrowser/pull/2901)
-* Fix more styles by [@Kurami32](https://github.com/Kurami32) in [pr #2908](https://github.com/gtsteffaniak/filebrowser/pull/2908)
-* Small bugfixes v2.0.5 by [@gtsteffaniak](https://github.com/gtsteffaniak) in [pr #2912](https://github.com/gtsteffaniak/filebrowser/pull/2912)
-* Fix loading spinner v2.0.5 by [@gtsteffaniak](https://github.com/gtsteffaniak) in [pr #2914](https://github.com/gtsteffaniak/filebrowser/pull/2914)
-* updated with all user default changes for admins by [@gtsteffaniak](https://github.com/gtsteffaniak) in [pr #2915](https://github.com/gtsteffaniak/filebrowser/pull/2915)
-
-**New Contributors**:
-* [@ingStudiosOfficial](https://github.com/ingStudiosOfficial) made their first contribution in [pr #2873](https://github.com/gtsteffaniak/filebrowser/pull/2873)
-
-**Full Changelog**: [v2.0.2-beta...v2.0.5-beta](https://github.com/gtsteffaniak/filebrowser/compare/v2.0.2-beta...v2.0.5-beta)
-
 ---
 
 ## [v2.0.4-beta](https://github.com/gtsteffaniak/filebrowser/releases/tag/v2.0.4-beta)
