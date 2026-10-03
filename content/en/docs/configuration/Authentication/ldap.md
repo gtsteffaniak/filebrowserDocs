@@ -197,6 +197,8 @@ FileBrowser matches both:
 - Full DN: `cn=Admins,ou=groups,dc=example,dc=com`
 - CN value: `Admins`
 
+Matching is **case-insensitive**. When both values are full DNs, the complete DN must match (same CN under a different OU does not count). CN-only matching applies only when one side is a CN without a DN.
+
 ### Restrict to Specific Groups
 
 Only allow users in specific LDAP groups:
@@ -213,6 +215,8 @@ auth:
 ```
 
 Users not in these groups will be denied access even with valid LDAP credentials.
+
+Matching uses the same rules as `adminGroup`: full DN or CN-only, **case-insensitive**. For example, config `IT Department` matches LDAP `cn=IT Department,ou=groups,dc=example,dc=com`.
 
 ### Access-control groups and sources
 
