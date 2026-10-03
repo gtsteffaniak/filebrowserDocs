@@ -70,7 +70,7 @@ Generates `config.yaml` with defaults.
 
 ### Initialize database
 
-`filebrowser init` was added in **v2.0.7-beta** ([pr #2957](https://github.com/gtsteffaniak/filebrowser/pull/2957)) and is unchanged in **v2.1.0-beta**. v1.5.x stable does not have this command.
+`filebrowser init` was added in **v2.0.x**
 
 The command is hidden from the default help list. Its help text is "Initialize the database or migrate from a legacy database".
 
