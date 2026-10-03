@@ -3,7 +3,7 @@ title: "Configuration Files (v2.0.0)"
 description: "Understanding and using configuration files in FileBrowser v2.0.0 (beta)"
 icon: "settings"
 date: "2025-10-23T00:50:09Z"
-lastmod: "2026-08-14T19:16:36Z"
+lastmod: "2026-10-03T14:30:00Z"
 order: 6
 ---
 
@@ -113,9 +113,13 @@ server:
         defaultEnabled: true  # Grant to all users on create; v2.0.1+ also merges for existing users on startup
 
 auth:
-  adminUsername: admin
-  adminPassword: admin
+  methods:
+    password:
+      enabled: true
+      # adminPassword: "choose-a-password" # v2.1.0+: omit this to get a random password logged once
 ```
+
+On **v2.1.0-beta and later**, leaving the password unset (or setting it to `admin`) generates a random initial password and logs it once. **v1.5.x (stable)** still defaults to `admin` / `admin`. Legacy top-level `auth.adminUsername` and `auth.adminPassword` still load, and are copied into `auth.methods.password`.
 
 ## Configuration Options
 
