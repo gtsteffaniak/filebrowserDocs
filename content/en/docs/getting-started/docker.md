@@ -3,7 +3,7 @@ title: "Docker (v2.0.0)"
 description: "Get started with FileBrowser v2.0.0 (beta) using Docker"
 icon: "deployed_code"
 date: "2025-10-08T14:59:30Z"
-lastmod: "2026-08-10T15:05:25Z"
+lastmod: "2026-10-03T15:30:00Z"
 order: 1
 ---
 
@@ -35,7 +35,7 @@ Images from Docker Hub (`gtstef/filebrowser`) and GitHub Container Registry (`gh
 Learn more about the versions and tags {{< doclink path="getting-started/version#docker-version-tags" text="here." />}}
 
 {{% alert context="info" %}}
-To pin a specific v2 release instead of tracking the latest beta, use a version tag such as `2.0-beta` or `2.0.0-beta`.
+To pin a specific v2 release instead of tracking the latest beta, use a version tag such as `2.1-beta` or `2.1.0-beta`. `beta` and `2-beta` follow the latest v2 beta (currently [v2.1.0-beta](https://github.com/gtsteffaniak/filebrowser/releases/tag/v2.1.0-beta)). `2.0-beta` stays on the 2.0 line and does not include 2.1.
 {{% /alert %}}
 
 ## Quick Try

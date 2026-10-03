@@ -3,14 +3,14 @@ title: "Which version should I use?"
 description: "Understanding stable vs beta releases and v1.5.x vs v2.0.0"
 icon: "numbers"
 date: "2025-10-28T22:14:01Z"
-lastmod: "2026-08-10T15:05:25Z"
+lastmod: "2026-10-03T15:30:00Z"
 order: 5
 ---
 
-FileBrowser Quantum comes with two release channels (**stable** and **beta**) and is currently transitioning from **v1.5.x** to **v2.0.0**. Choosing the right version is an important first step.
+FileBrowser Quantum comes with two release channels (**stable** and **beta**) and is currently transitioning from **v1.5.x** to **v2**. Choosing the right version is an important first step. v2 is not a stable release yet.
 
 {{% alert context="info" %}}
-**Current state:** **v1.5.x** is on the `stable` channel. **v2.0.0** is available on the `beta` channel only and requires a one-time migration from v1.x. See {{< doclink path="getting-started/v2/migration/" text="v2 migration guide" />}} before upgrading.
+**Current state:** **v1.5.x** is on the `stable` channel. Latest stable release: [v1.5.6-stable](https://github.com/gtsteffaniak/filebrowser/releases/tag/v1.5.6-stable). **v2** is on the `beta` channel only. Latest beta release: [v2.1.0-beta](https://github.com/gtsteffaniak/filebrowser/releases/tag/v2.1.0-beta). v2 still requires a one-time migration from v1.x. See {{< doclink path="getting-started/v2/migration/" text="v2 migration guide" />}} before upgrading.
 {{% /alert %}}
 
 {{% alert context="success" %}}
@@ -21,16 +21,16 @@ FileBrowser Quantum comes with two release channels (**stable** and **beta**) an
 
 ### Stable Release (v1.5.x)
 
-The `stable` release build is the most reliable version as the name implies. It currently tracks **v1.5.x**. It gets updated less frequently, but is ideal for:
+The `stable` release build is the most reliable version as the name implies. It currently tracks **v1.5.x** (latest [v1.5.6-stable](https://github.com/gtsteffaniak/filebrowser/releases/tag/v1.5.6-stable)). It gets updated less frequently, but is ideal for:
 
 - Those getting started with FileBrowser Quantum
 - Users with a userbase that doesn't want to see occasional bugs
 - Production environments requiring stability
 - Anyone who prefers proven, tested features
 
-### Beta Release (v2.0.0)
+### Beta Release (v2.x)
 
-The `beta` release build currently tracks **v2.0.0** and is ideal for those who:
+The `beta` release build currently tracks **v2** (latest [v2.1.0-beta](https://github.com/gtsteffaniak/filebrowser/releases/tag/v2.1.0-beta)) and is ideal for those who:
 
 - Don't have a large userbase
 - Want the latest features immediately
@@ -63,11 +63,11 @@ One major difference is the release cadence between the two versions:
   </div>
 </div>
 
-## Major version: v1.5.x vs v2.0.0
+## Major version: v1.5.x vs v2
 
-| | v1.5.x (`stable`) | v2.0.0 (`beta`) |
+| | v1.5.x (`stable`) | v2 (`beta`) |
 |---|---|---|
-| Release channel | `stable`, `1.5-stable` | `beta`, `2.0-beta` |
+| Release channel | `stable`, `1.5-stable`, `1.5.6-stable` | `beta`, `2-beta`, `2.1-beta` |
 | Database | Legacy (`database.db`) | New (`filebrowser.sqlite`) |
 | Getting started docs | {{< doclink path="getting-started/docker-v1.5.x" text="v1.5.x guides" />}} | {{< doclink path="getting-started/docker" text="v2.0.0 guides" />}} |
 | Upgrade path | Stay on stable for production | Follow {{< doclink path="getting-started/v2/migration/" text="v2 migration guide" />}} from v1.x |
@@ -77,7 +77,7 @@ One major difference is the release cadence between the two versions:
 Eventually, stable release gets all the same features as beta releases, but they lag behind the release schedule. Because of this, features may not come to stable for a month or two.
 
 
-Other than that, the releases are identical in functionality between major versions.
+Within one major version, stable and beta builds of the same release are meant to match. v1.5.x stable and v2 beta do not: v2 is still beta-only and has its own database, config, and features.
 
 ## Version Number Meaning
 
