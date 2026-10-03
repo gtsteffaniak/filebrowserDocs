@@ -3,7 +3,7 @@ title: "Traefik Setup"
 description: "Complete production setup with Traefik using Docker and Let's Encrypt"
 icon: "dns"
 date: "2025-10-29T22:21:43Z"
-lastmod: "2026-08-05T23:41:25Z"
+lastmod: "2026-10-03T16:30:00Z"
 order: 3
 ---
 
@@ -633,9 +633,11 @@ auth:
       signup: false
 
 userDefaults:
-  darkMode: true
-  locale: "en"
-  disableOnlyOfficeExt: ".txt .html .md"
+  ui:
+    darkMode: true
+    locale: "en"
+  fileViewer:
+    disableOnlyOfficeExt: ".txt .html .md"
 
 integrations:
   office:

@@ -3,7 +3,7 @@ title: "Migration Guide"
 description: "Upgrade FileBrowser Quantum from v1.x to v2.0.0"
 icon: "upgrade"
 date: "2026-07-23T17:03:27Z"
-lastmod: "2026-08-30T16:50:15Z"
+lastmod: "2026-10-03T16:30:00Z"
 order: 1
 ---
 
@@ -188,10 +188,11 @@ server:
         defaultEnabled: true
 
 userDefaults:
-  permissions:
-    admin: false
-    api: true
-    share: true
+  account:
+    permissions:
+      admin: false
+      api: true
+      share: true
 ```
 
 **After migration (Phase 3–4):**
