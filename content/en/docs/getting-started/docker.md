@@ -3,7 +3,7 @@ title: "Docker (v2.0.0)"
 description: "Get started with FileBrowser v2.0.0 (beta) using Docker"
 icon: "deployed_code"
 date: "2025-10-08T14:59:30Z"
-lastmod: "2026-10-03T14:40:00Z"
+lastmod: "2026-10-04T17:20:00Z"
 order: 1
 ---
 
@@ -49,7 +49,9 @@ docker run -d \
   ghcr.io/gtsteffaniak/filebrowser:beta
 ```
 
-Access at `http://localhost` with `admin` / `admin`
+Access at `http://localhost`.
+
+On v2.x (v2.0.0+), if `adminPassword` is unset or left as `admin`, a random admin password is generated, logged once, and a password reset is required on first login. Any other value of `auth.methods.password.adminPassword` or `auth.adminPassword` is used as-is.
 
 ## Basic Setup with Docker Compose
 
