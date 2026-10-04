@@ -29,11 +29,12 @@ Run FileBrowser Quantum **v2.0.0 (beta)** natively on Linux using the binary rel
    - `linux-arm64-filebrowser` (64-bit)
    - `linux-armv6-filebrowser` (32-bit)
    - `linux-armv7-filebrowser` (32-bit)
+   - `linux-riscv64-filebrowser` (64-bit RISC-V, v2.0.7-beta and later)
 
 ## Make Executable
 
 ```bash
-chmod +x filebrowser-linux-amd64
+chmod +x linux-amd64-filebrowser
 ```
 
 ## Optional: Install FFmpeg
@@ -54,7 +55,7 @@ sudo pacman -S ffmpeg
 Interactive setup:
 
 ```bash
-./filebrowser-linux-amd64 setup
+./linux-amd64-filebrowser setup
 ```
 
 Or create `config.yaml`:
@@ -76,7 +77,7 @@ v2.0.0 and later read the listen port from `http.port`. A `server.port` key is r
 ## Run FileBrowser
 
 ```bash
-./filebrowser-linux-amd64 -c config.yaml
+./linux-amd64-filebrowser -c config.yaml
 ```
 
 Access at `http://localhost:80`
@@ -86,7 +87,7 @@ Access at `http://localhost:80`
 ### Step 1: Move Binary
 
 ```bash
-sudo mv filebrowser-linux-amd64 /usr/local/bin/filebrowser
+sudo mv linux-amd64-filebrowser /usr/local/bin/filebrowser
 sudo chmod +x /usr/local/bin/filebrowser
 ```
 

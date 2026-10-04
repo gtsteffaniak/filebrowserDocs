@@ -3,7 +3,7 @@ title: "Beta"
 description: "See what changed in beta versions"
 icon: "rocket_launch"
 date: "2026-07-02T23:17:05Z"
-lastmod: "2026-09-14T19:27:36Z"
+lastmod: "2026-10-03T14:00:00Z"
 ---
 
 {{% alert context="info" %}}
@@ -13,6 +13,79 @@ You can also check the releases on [GitHub!](https://github.com/gtsteffaniak/fil
 {{% alert context="warning" %}}
 **v2.0.0** requires a config update and one-time database migration from v1.x. See {{< doclink path="getting-started/v2/migration/" text="Migration guide" />}} and {{< doclink path="getting-started/v2/about/" text="About v2.0.0" />}}.
 {{% /alert %}}
+
+---
+
+## [v2.1.0-beta](https://github.com/gtsteffaniak/filebrowser/releases/tag/v2.1.0-beta)
+
+**Security**:
+ - [Moderate] Conflicting upload responses no longer synchronously drain the request body before returning HTTP 409; the server now closes the body and marks the connection for closure, preventing denial-of-service from clients that never send EOF (CWE-400).
+ - Share download links no longer create links with token, instead they link to the UI prompting for password before download. If a direct download is required, the `/api/share/direct` api exists and documented by swagger. ([issue #2888](https://github.com/gtsteffaniak/filebrowser/issues/2888))
+
+**New Features**:
+ - Added Storage Quotas
+   - configurable by folder, source, user, and share.
+   - Administrators can create, edit, view, and delete folder quotas through the interface.
+   - Quota information now appears in source views, share details, sidebar progress bars, and folder prompts.
+ - Enhancements to the editor ([pr #2714](https://github.com/gtsteffaniak/filebrowser/pull/2714)):
+   - Added a floating button to open a resizable split view with live editing for markdown files, the scrolling is synced in both sides and scrolling in single-view modes (the viewer and editor in non-split) now also tries to sync with each other so you don't lose context easily.
+   - Added a toolbar: This toolbar is present on all the files.
+     - JSON files have a button to toggle between formatted and minified versions ([pr #2854](https://github.com/gtsteffaniak/filebrowser/pull/2854)) ([issue #2566](https://github.com/gtsteffaniak/filebrowser/issues/2566)).
+     - Markdown files have a richer toolbar with lots of quick actions, for example you can now browse, navigate and insert images more easily from your current source.
+   - Added a prompt to configure some editor settings in UI, that prompt is accessible via the toolbar in the three-dots menu, there you can configure things like:
+     - Word wrap, keybinds, autocompletion, scrollbar, etc.
+   - The markdown viewer now supports rendering LaTeX Math and Chemistry formulas.
+   - Improved and fixed some styles that weren't following the app light/dark theme ([pr #2949](https://github.com/gtsteffaniak/filebrowser/pull/2949)).
+ - Proxy auth group support: `groupsClaim`, `adminGroup`, and `userGroups` now control role-based access when the proxy sends a group/role header ([issue #2755](https://github.com/gtsteffaniak/filebrowser/issues/2755)). Admin is determined by `adminGroup` only.
+ - Support for `.elrc` (word-by-word lyrics), `.vtt`, `.srt` sidecar files for lyrics in audio files in the media player. ([pr #2838](https://github.com/gtsteffaniak/filebrowser/pull/2838))
+ - Added setting to configure the placement of the prompts close button in profile settings ([pr #2853](https://github.com/gtsteffaniak/filebrowser/pull/2853)) ([issue #2595](https://github.com/gtsteffaniak/filebrowser/issues/2595)).
+ - Added "New file templates". You can now add and configure pre-defined filenames + extension for the creation of new files in the context menu on profile settings! ([pr #2881](https://github.com/gtsteffaniak/filebrowser/pull/2881)) ([issue #1239](https://github.com/gtsteffaniak/filebrowser/issues/1239)).
+ - sidebar links can be bulk edited as yaml ([issue #1963](https://github.com/gtsteffaniak/filebrowser/issues/1963)) (settings > user management)
+ - admins can customize more defaults:
+   - share creation defaults and enforcements ([issue #1692](https://github.com/gtsteffaniak/filebrowser/issues/1692)) ([issue #2434](https://github.com/gtsteffaniak/filebrowser/issues/2434)) ([issue #2279](https://github.com/gtsteffaniak/filebrowser/issues/2279)) ([issue #2812](https://github.com/gtsteffaniak/filebrowser/issues/2812)) (settings > share management)
+   - sidebar link defaults and enforcements ([issue #2561](https://github.com/gtsteffaniak/filebrowser/issues/2561)) (settings > user management)
+   - tool defaults and enforcement (settings > user management)
+ - Sort header in file listings inside prompts like move/copy/quick jump, is now sticky. Also added a button to show a search input and filter the items of the current listing ([pr #3028](https://github.com/gtsteffaniak/filebrowser/pull/3028)).
+ - Quick jump now scrolls and highlights the current item you are previewing ([pr #3028](https://github.com/gtsteffaniak/filebrowser/pull/3028)).
+ - When hovering `date` and `name` in the listings, will show up the formatted/raw date (the inverse of what you have configured to display) and the full filename ([pr #3028](https://github.com/gtsteffaniak/filebrowser/pull/3028)) ([issue #2623](https://github.com/gtsteffaniak/filebrowser/issues/2623)).
+ - User groups can now be managed from the WebUI under `User Management` -> `Groups` and when editing a user ([pr #2983](https://github.com/gtsteffaniak/filebrowser/pull/2983)) ([pr #3040](https://github.com/gtsteffaniak/filebrowser/pull/3040)).
+
+**Notes**:
+ - Moved `auth.adminUsername` and `auth.adminPassword` to `auth.methods.password` (legacy top-level keys are migrated automatically on load).
+ - An Admin can remove a `defautlEnabled` source for a user and it will remove removed until an admin adds it back.
+ - Enhancements to cross-source copy/move permissions and behavior.
+ - Improved resume upload behavior.
+ - Play/pause on videos in mobile now is toggled by the button in the middle rather than the whole container ([pr #2828](https://github.com/gtsteffaniak/filebrowser/pull/2828)).
+ - improved video thumbnail generation speed and efficiency.
+ - Added icons based on extension to the upload prompt and new file/folder/rename prompts ([pr #2881](https://github.com/gtsteffaniak/filebrowser/pull/2881)).
+ - Profile settings show minimal options by default. Full advanced profile settings can be shown by default by enabling `account.showAdvancedProfile`.
+ - sidebar links/navigation is button group toggle for clearer visibility
+ - Pop-up preview has 200ms debounce delay so it doesn't flash from moving the cursor across files quickly.
+ - Polished a bit some styles across various places of the UI ([pr #3019](https://github.com/gtsteffaniak/filebrowser/pull/3019)) ([pr #3028](https://github.com/gtsteffaniak/filebrowser/pull/3028)).
+ - Moved `Access Management` under `User Management` in the UI ([pr #3040](https://github.com/gtsteffaniak/filebrowser/pull/3040)).
+ - improved developer experience with native vue webhook reloads.
+ - improved ffmpeg handling and concurrency via library upgrades
+
+**Bug Fixes**:
+ - Undo in a fresh opened file on the editor was setting the file empty ([pr #2714](https://github.com/gtsteffaniak/filebrowser/pull/2714))
+ - Added some missing styles in the markdown viewer ([pr #2714](https://github.com/gtsteffaniak/filebrowser/pull/2714))
+ - Recaptcha not working ([issue #1925](https://github.com/gtsteffaniak/filebrowser/issues/1925)) ([pr #2861](https://github.com/gtsteffaniak/filebrowser/pull/2861))
+ - Fix disk-usage overstatement on virtiofs bind mounts ([issue #2894](https://github.com/gtsteffaniak/filebrowser/issues/2894))
+ - Support non-ASCII share passwords ([pr #2933](https://github.com/gtsteffaniak/filebrowser/pull/2933))
+ - Fall back to buffered copies when FUSE rejects fast paths ([pr #2938](https://github.com/gtsteffaniak/filebrowser/pull/2938))
+ - Preserve deleted sidebar links across restarts ([pr #2935](https://github.com/gtsteffaniak/filebrowser/pull/2935))
+ - scope padding to listing view ([pr #2934](https://github.com/gtsteffaniak/filebrowser/pull/2934))
+ - Hide the Replace option on upload/create conflict prompts when the user lacks modify permission (or when a public share disallows replacements), so create-only users are not offered an action that the server rejects ([issue #2837](https://github.com/gtsteffaniak/filebrowser/issues/2837))
+ - Preserve Ctrl-click file selection when keyboard state is stale ([pr #2958](https://github.com/gtsteffaniak/filebrowser/pull/2958)) ([issue #2923](https://github.com/gtsteffaniak/filebrowser/issues/2923))
+ - Avoid false stalls during parallel transfers ([pr #2950](https://github.com/gtsteffaniak/filebrowser/pull/2950)) ([issue #2948](https://github.com/gtsteffaniak/filebrowser/issues/2948)) thanks [@gudcks0305](https://github.com/gudcks0305)
+ - Cap source usage-bar percentage at 100% when indexed size exceeds partition total ([issue #2761](https://github.com/gtsteffaniak/filebrowser/issues/2761)) ([issue #2238](https://github.com/gtsteffaniak/filebrowser/issues/2238))
+ - On Linux, source partition totals sum distinct filesystems mounted under the source root (nested mounts) so usage bars match indexed content ([issue #2761](https://github.com/gtsteffaniak/filebrowser/issues/2761))
+ - Context menu stuck when opened from a listing in a prompt like move/copy or search ([pr #3028](https://github.com/gtsteffaniak/filebrowser/pull/3028)).
+
+**Community Contributions**:
+* feat(access): manage user groups from the settings UI [pr #2983](https://github.com/gtsteffaniak/filebrowser/pull/2983) -- thanks [@connorjfarrell](https://github.com/connorjfarrell)
+
+**Full Changelog**: [v2.0.9-beta...v2.1.0-beta](https://github.com/gtsteffaniak/filebrowser/compare/v2.0.9-beta...v2.1.0-beta)
 
 ---
 
