@@ -3,7 +3,7 @@ title: "Windows (v2.0.0)"
 description: "Install FileBrowser v2.0.0 (beta) on Windows"
 icon: "desktop_windows"
 date: "2025-10-08T14:59:30Z"
-lastmod: "2026-10-03T14:10:00Z"
+lastmod: "2026-10-03T14:20:00Z"
 order: 4
 ---
 
@@ -42,8 +42,9 @@ Interactive setup:
 Or Create `config.yaml` in the same folder:
 
 ```yaml
-server:
+http:
   port: 80
+server:
   sources:
     - path: "C:\\Users\\YourName\\Documents"
       config:
@@ -51,6 +52,8 @@ server:
 auth:
   adminUsername: admin
 ```
+
+v2.0.0 and later read the listen port from `http.port`. A `server.port` key is rejected at startup.
 
 Or generate interactively:
 
