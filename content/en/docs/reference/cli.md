@@ -3,7 +3,7 @@ title: "CLI Commands"
 description: "Command-line interface reference"
 icon: "terminal"
 date: "2025-10-08T14:59:30Z"
-lastmod: "2026-10-03T16:00:00Z"
+lastmod: "2026-10-03T14:50:00Z"
 ---
 
 {{% alert context="warning" %}}
@@ -324,11 +324,12 @@ Display version information.
 ./filebrowser version
 ```
 
-**Output**:
+**Output** (v1.5.x stable and v2.x beta):
 ```
-FileBrowser version: v0.10.0
-Built: 2025-01-15
-Go version: go1.23
+FileBrowser Quantum - A modern web-based file manager
+	Version 	 : v1.5.6-stable
+	Commit 		 : <commit sha>
+	Release Info 	 : https://github.com/gtsteffaniak/filebrowser/releases/tag/v1.5.6-stable
 ```
 
 ### filebrowser user set
