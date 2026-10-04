@@ -3,7 +3,7 @@ title: "Windows (v2.0.0)"
 description: "Install FileBrowser v2.0.0 (beta) on Windows"
 icon: "desktop_windows"
 date: "2025-10-08T14:59:30Z"
-lastmod: "2026-10-03T14:30:00Z"
+lastmod: "2026-10-04T16:45:00Z"
 order: 4
 ---
 
@@ -66,9 +66,7 @@ Or generate interactively:
 
 Access at `http://localhost:80`.
 
-On **v2.1.0-beta and later**, a fresh install does not sign in as `admin` / `admin`. If the password is unset or set to `admin`, FileBrowser generates a random password and logs it once (`Generated initial admin password`). The username stays `admin` unless you change it. Set `auth.methods.password.adminPassword` or `FILEBROWSER_ADMIN_PASSWORD` before the first start when you want a chosen password. That value is applied again on every startup.
-
-**v1.5.x (stable)** still uses `admin` / `admin`. See {{< doclink path="getting-started/windows-v1.5.x" text="Windows (v1.5.x)" />}}.
+On v2.x (v2.0.0+), the first startup generates an admin password and logs it once. A password reset is required on first login.
 
 ## Troubleshooting
 
