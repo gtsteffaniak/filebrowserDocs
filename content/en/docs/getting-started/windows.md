@@ -3,7 +3,7 @@ title: "Windows (v2.0.0)"
 description: "Install FileBrowser v2.0.0 (beta) on Windows"
 icon: "desktop_windows"
 date: "2025-10-08T14:59:30Z"
-lastmod: "2026-08-10T15:05:25Z"
+lastmod: "2026-10-03T14:10:00Z"
 order: 4
 ---
 
@@ -24,7 +24,7 @@ Run FileBrowser Quantum **v2.0.0 (beta)** natively on Windows.
 ## Download
 
 1. Go to [releases page](https://github.com/gtsteffaniak/filebrowser/releases)
-2. Download the **beta** `filebrowser-windows-amd64.exe` release
+2. Download the **beta** Windows asset `filebrowser.exe`
 3. Save to a folder (e.g., `C:\FileBrowser\`)
 
 ## Optional: Install FFmpeg
