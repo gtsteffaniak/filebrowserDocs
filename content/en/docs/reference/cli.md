@@ -3,7 +3,7 @@ title: "CLI Commands"
 description: "Command-line interface reference"
 icon: "terminal"
 date: "2025-10-08T14:59:30Z"
-lastmod: "2026-08-05T23:41:25Z"
+lastmod: "2026-10-03T16:00:00Z"
 ---
 
 {{% alert context="warning" %}}
@@ -37,6 +37,9 @@ set rule -s access -p / -r user -v admin --allow -c cfg
 filebrowser -c cfg
 filebrowser setup
 filebrowser version
+
+# Initialize or migrate the database without starting the server (v2.0.7-beta+)
+filebrowser init -c cfg
 ```
 
 ## Available Commands
@@ -64,6 +67,24 @@ Create new configuration file:
 ```
 
 Generates `config.yaml` with defaults.
+
+### Initialize database
+
+`filebrowser init` was added in **v2.0.x**
+
+The command is hidden from the default help list. Its help text is "Initialize the database or migrate from a legacy database".
+
+```bash
+./filebrowser init -c /path/to/config.yaml
+```
+
+It loads the config (`-c`, or `FILEBROWSER_CONFIG`, default `config.yaml`), then:
+
+- Opens the SQLite database at `server.database.path`, or creates it when that file does not exist yet
+- Imports a legacy BoltDB database when `server.database.migrateFrom` points at a populated legacy file and the SQLite file is missing or empty
+- Exits without starting the HTTP server
+
+Shut down a running server before `init`. Only one process can use the database.
 
 ### Version
 

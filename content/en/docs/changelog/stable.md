@@ -3,12 +3,25 @@ title: "Stable"
 description: "See what changed in stable versions"
 icon: "api"
 date: "2026-07-02T23:17:05Z"
-lastmod: "2026-09-09T23:06:38Z"
+lastmod: "2026-10-03T14:00:00Z"
 ---
 
 {{% alert context="info" %}}
 You can also check the releases on [GitHub!](https://github.com/gtsteffaniak/filebrowser/releases)
 {{% /alert %}}
+
+---
+
+## [v1.5.6-stable](https://github.com/gtsteffaniak/filebrowser/releases/tag/v1.5.6-stable)
+
+**Security**:
+ - [Moderate] public metadata api returns file content to anonymous share visitors, ignoring the share's download limit and file-viewer setting (GHSA-55mw-cwg7-m8f5) -- thanks [@kta1kri](https://github.com/kta1kri)
+
+**BugFixes**:
+ - Saving an existing share clears its password, even with no changes made ([issue #2898](https://github.com/gtsteffaniak/filebrowser/issues/2898))
+ - Fixed infinite loading spinner on `/` and `/login` after CSP security hardening ([issue #2886](https://github.com/gtsteffaniak/filebrowser/issues/2886)) ([issue #2890](https://github.com/gtsteffaniak/filebrowser/issues/2890))
+
+**Full Changelog**: [v1.5.5-stable...v1.5.6-stable](https://github.com/gtsteffaniak/filebrowser/compare/v1.5.5-stable...v1.5.6-stable)
 
 ---
 
