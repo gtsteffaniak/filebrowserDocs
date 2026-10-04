@@ -3,7 +3,7 @@ title: "macOS (v2.0.0)"
 description: "Install FileBrowser v2.0.0 (beta) on macOS"
 icon: "laptop_mac"
 date: "2025-10-08T14:59:30Z"
-lastmod: "2026-10-04T16:45:00Z"
+lastmod: "2026-10-04T17:20:00Z"
 order: 3
 ---
 
@@ -79,7 +79,7 @@ v2.0.0 and later read the listen port from `http.port`. A `server.port` key is r
 
 Access at `http://localhost:80`.
 
-On v2.x (v2.0.0+), the first startup generates an admin password and logs it once. A password reset is required on first login.
+On v2.x (v2.0.0+), if `adminPassword` is unset or left as `admin`, a random admin password is generated, logged once, and a password reset is required on first login. Any other value of `auth.methods.password.adminPassword` or `auth.adminPassword` is used as-is.
 
 ## Run as Service (launchd)
 

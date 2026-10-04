@@ -3,7 +3,7 @@ title: "Password Authentication"
 description: "Configure password authentication"
 icon: "key"
 date: "2025-10-08T14:59:30Z"
-lastmod: "2026-10-04T16:45:00Z"
+lastmod: "2026-10-04T17:20:00Z"
 ---
 
 Password authentication uses the typical `username` and `password` to login a user. Password authentication also supports **Signup**, **recaptcha**, and **Two-Factor Authentication** features.
@@ -37,7 +37,7 @@ auth:
 |--------|---------|-------------|
 | `enabled` | `true` | Enable password authentication |
 | `adminUsername` | `admin` | Built-in password admin username |
-| `adminPassword` | — | Built-in admin password. On v2.x (v2.0.0+), generated on first startup if unset |
+| `adminPassword` | — | On v2.x (v2.0.0+), random and logged once when unset or `admin`. Any other value is used as-is |
 | `minLength` | `5` | Minimum password length |
 | `signup` | `false` | Allow user self-registration |
 | `enforcedOtp` | `false` | Require all password users to enable Two-Factor Authentication |
@@ -57,7 +57,7 @@ auth:
 
 If password authentication is enabled, FileBrowser creates a built-in password admin on first startup. The username defaults to `admin`.
 
-On v2.x (v2.0.0+), the first startup generates an admin password and logs it once. A password reset is required on first login.
+On v2.x (v2.0.0+), if `adminPassword` is unset or left as `admin`, a random admin password is generated, logged once, and a password reset is required on first login. Any other value of `auth.methods.password.adminPassword` or `auth.adminPassword` is used as-is.
 
 ### Best practice - use environment variable:
 
