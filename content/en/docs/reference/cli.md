@@ -3,7 +3,7 @@ title: "CLI Commands"
 description: "Command-line interface reference"
 icon: "terminal"
 date: "2025-10-08T14:59:30Z"
-lastmod: "2026-10-03T14:50:00Z"
+lastmod: "2026-10-03T15:00:00Z"
 ---
 
 {{% alert context="warning" %}}
@@ -197,15 +197,14 @@ docker compose down
 
 ```bash
 docker run -it \
-  -v $(pwd)/database.db:/home/filebrowser/database.db \
-  -v $(pwd)/config.yaml:/home/filebrowser/config.yaml \
+  -v $(pwd)/data:/home/filebrowser/data \
   --entrypoint="" \
   ghcr.io/gtsteffaniak/filebrowser:stable sh
 ```
 
 Inside container:
 ```bash
-./filebrowser user set admin --password newpass -c config.yaml
+./filebrowser user set admin --password newpass -c /home/filebrowser/data/config.yaml
 exit
 ```
 
@@ -214,22 +213,22 @@ exit
 **Password reset**:
 ```bash
 docker run -it --rm \
-  -v $(pwd)/database.db:/home/filebrowser/database.db \
-  -v $(pwd)/config.yaml:/home/filebrowser/config.yaml \
+  -v $(pwd)/data:/home/filebrowser/data \
   --entrypoint="" \
   ghcr.io/gtsteffaniak/filebrowser:stable \
-  ./filebrowser user set admin --password newpassword -c config.yaml
+  ./filebrowser user set admin --password newpassword -c /home/filebrowser/data/config.yaml
 ```
 
 **Create user**:
 ```bash
 docker run -it --rm \
-  -v $(pwd)/database.db:/home/filebrowser/database.db \
-  -v $(pwd)/config.yaml:/home/filebrowser/config.yaml \
+  -v $(pwd)/data:/home/filebrowser/data \
   --entrypoint="" \
   ghcr.io/gtsteffaniak/filebrowser:stable \
-  ./filebrowser user set newuser --password password -c config.yaml
+  ./filebrowser user set newuser --password password -c /home/filebrowser/data/config.yaml
 ```
+
+Mount the data directory, not a single database file. Official images keep config and the database under `/home/filebrowser/data` (`FILEBROWSER_CONFIG`). **v1.5.x (stable)** stores `database.db` there. **v2.0.0+ (beta)** stores `database.sqlite` there unless `server.database.path` is set. Use the `beta` image tag when the data directory is a v2 install.
 
 ## Common Operations
 
