@@ -3,7 +3,7 @@ title: "Environment Variables"
 description: "Optional environment variables for configuration"
 icon: "input"
 date: "2025-10-08T14:59:30Z"
-lastmod: "2026-10-03T14:40:00Z"
+lastmod: "2026-10-03T15:20:00Z"
 ---
 
 The preferred configuration method is to use config.yaml. However, environment variables are available for **secrets**, **config override**, and **developer purposes**.
@@ -34,6 +34,7 @@ When upgrading, rename **`FILEBROWSER_DATABASE`** → **`FILEBROWSER_DATABASE_PA
 | `FILEBROWSER_JWT_TOKEN_SECRET` | `auth.key` | JWT signing key |
 | `FILEBROWSER_TOTP_SECRET` | `auth.totpSecret` | TOTP encryption secret |
 | `FILEBROWSER_RECAPTCHA_SECRET` | `auth.methods.password.recaptcha.secret` | reCAPTCHA secret key |
+| `FILEBROWSER_LDAP_USER_PASSWORD` | `auth.methods.ldap.userPassword` | LDAP bind (service account) password. Same on v1.5.x stable and v2.x beta. |
 | `FILEBROWSER_DISABLE_AUTOMATIC_BACKUP` | N/A | Disable automatic backup |
 
 
