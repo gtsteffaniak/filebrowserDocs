@@ -3,7 +3,7 @@ title: "Password Authentication"
 description: "Configure password authentication"
 icon: "key"
 date: "2025-10-08T14:59:30Z"
-lastmod: "2026-10-04T17:20:00Z"
+lastmod: "2026-10-05T13:30:00Z"
 ---
 
 Password authentication uses the typical `username` and `password` to login a user. Password authentication also supports **Signup**, **recaptcha**, and **Two-Factor Authentication** features.
@@ -37,7 +37,7 @@ auth:
 |--------|---------|-------------|
 | `enabled` | `true` | Enable password authentication |
 | `adminUsername` | `admin` | Built-in password admin username |
-| `adminPassword` | — | On v2.x (v2.0.0+), random and logged once when unset or `admin`. Any other value is used as-is |
+| `adminPassword` | — | **v2.x beta:** random speakable password (`word-xxxxx-xx`) logged once when unset or `admin`; bootstrap admin gets `requirePasswordChange`. Any other value is used as-is |
 | `minLength` | `5` | Minimum password length |
 | `signup` | `false` | Allow user self-registration |
 | `enforcedOtp` | `false` | Require all password users to enable Two-Factor Authentication |
@@ -57,7 +57,7 @@ auth:
 
 If password authentication is enabled, FileBrowser creates a built-in password admin on first startup. The username defaults to `admin`.
 
-On v2.x (v2.0.0+), if `adminPassword` is unset or left as `admin`, a random admin password is generated, logged once, and a password reset is required on first login. Any other value of `auth.methods.password.adminPassword` or `auth.adminPassword` is used as-is.
+On v2.x (v2.0.0+), if `adminPassword` is unset or left as `admin` (including when `auth.methods.password.adminPassword` is unset or `admin`), a random **speakable** bootstrap password is generated, logged once, and the admin account is flagged **`requirePasswordChange`** so login is blocked until a new password is set. The generated form is `word-xxxxx-xx` (a random word from a fixed list, a 5-character code, and a 2-character code) instead of a long hex string. **v2.0.10-beta+** uses this format; earlier v2.0.x betas used a hex string with the same forced-change behavior. Any other explicit `adminPassword` / `auth.adminPassword` value (or `FILEBROWSER_ADMIN_PASSWORD`) is used as-is and does not set `requirePasswordChange` automatically.
 
 ### Best practice - use environment variable:
 
@@ -79,6 +79,18 @@ auth:
       adminUsername: admin
       adminPassword: "choose-a-password"
 ```
+
+## Require password change (v2.0.10-beta+)
+
+**Beta (v2.x) only.**
+
+Password-based users can be required to set a new password before any other login succeeds:
+
+- **User defaults:** `userDefaults.account.requirePasswordChange` (also configurable under **Settings → User management → User defaults**).
+- **Per user:** admins can toggle **Require password change** when editing a user.
+- **Bootstrap admin:** when the initial admin password is **generated** (unset/`admin` config as above), `requirePasswordChange` is set automatically.
+
+When `requirePasswordChange` is true, normal login returns a change-password flow in the UI. The API endpoint is `POST /api/auth/password/change-required` (current password in the `X-Password` header; new password in the JSON body). After a successful change, the flag is cleared.
 
 ## Two-Factor Authentication (2FA)
 
