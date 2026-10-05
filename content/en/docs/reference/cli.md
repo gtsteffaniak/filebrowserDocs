@@ -3,7 +3,7 @@ title: "CLI Commands"
 description: "Command-line interface reference"
 icon: "terminal"
 date: "2025-10-08T14:59:30Z"
-lastmod: "2026-10-03T15:00:00Z"
+lastmod: "2026-10-05T13:30:00Z"
 ---
 
 {{% alert context="warning" %}}
