@@ -159,6 +159,10 @@ When `enforcedOtp: true`:
 
 ### User Management
 
+{{% alert context="info" %}}
+**Stable (v1.5.7+) and beta (v2.0.10+):** Replacing or resetting an existing TOTP secret via `POST /api/auth/otp/generate` and `POST /api/auth/otp/verify` requires an authenticated session as the same user or as an admin. Anonymous callers can no longer replace a second factor using only the account password. First-time enrollment (no MFA configured yet) is unchanged.
+{{% /alert %}}
+
 #### Enable 2FA (User)
 
 Users can enable 2FA from their profile settings:
