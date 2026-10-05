@@ -3,7 +3,7 @@ title: "CLI Commands"
 description: "Command-line interface reference"
 icon: "terminal"
 date: "2025-10-08T14:59:30Z"
-lastmod: "2026-10-03T15:00:00Z"
+lastmod: "2026-10-05T13:30:00Z"
 ---
 
 {{% alert context="warning" %}}
@@ -66,7 +66,9 @@ Create new configuration file:
 ./filebrowser setup
 ```
 
-Generates `config.yaml` with defaults.
+**v2.0.10-beta+** writes a **minimal** `config.yaml` in the current directory: essential keys (sources, database path, HTTP port, logging) plus comments, not the full generated reference. Earlier v2.x betas emitted the full default config shape.
+
+**v1.5.x stable** and **v2.x beta** both use the same command name; only the generated file size differs on v2.0.10-beta+.
 
 ### Initialize database
 
@@ -312,7 +314,7 @@ Create default configuration file.
 ./filebrowser setup
 ```
 
-**Output**: Creates `config.yaml` in current directory.
+**Output**: Creates `config.yaml` in the current directory. On **v2.0.10-beta+**, the file is a minimal commented template; on earlier releases, output includes the full default config tree.
 
 ### filebrowser version
 
