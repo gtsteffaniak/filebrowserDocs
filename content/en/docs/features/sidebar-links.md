@@ -41,7 +41,7 @@ After selecting the desired source, you can configure the display name, a subpat
 
 If you leave icon blank, it will default to the green/yellow/red status indicator with the progress bar. If you specify an icon, it will show a minimal button with that icon.
 
-When editing a **source** link (**v2.0.10-beta+**), the **Limit disk usage to source filesystem** toggle switches the usage bar between:
+When editing a **source** link, the **Limit disk usage to source filesystem** toggle switches the usage bar between:
 
 - **Off (default):** aggregated disk total for the source path, including nested mounts. Shared pools (for example multiple ZFS datasets under one source) are counted once.
 - **On:** usage for only the filesystem that contains the source root path (root-filesystem-only view).
