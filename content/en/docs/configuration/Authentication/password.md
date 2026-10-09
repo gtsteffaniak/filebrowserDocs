@@ -55,9 +55,9 @@ auth:
 
 ## Set Admin Password
 
-If password authentication is enabled, FileBrowser creates a built-in password admin on first startup. The username defaults to `admin`.
+If password authentication is enabled, FileBrowser creates a built-in admin password on first startup. The username defaults to `admin`.
 
-On v2.x (v2.0.0+), if `adminPassword` is unset or left as `admin` (including when `auth.methods.password.adminPassword` is unset or `admin`), a random **speakable** bootstrap password is generated, logged once, and the admin account is flagged **`requirePasswordChange`** so login is blocked until a new password is set. The generated form is `word-xxxxx-xx` (a random word from a fixed list, a 5-character code, and a 2-character code) instead of a long hex string. **v2.0.10-beta+** uses this format; earlier v2.0.x betas used a hex string with the same forced-change behavior. Any other explicit `adminPassword` / `auth.adminPassword` value (or `FILEBROWSER_ADMIN_PASSWORD`) is used as-is and does not set `requirePasswordChange` automatically.
+On v2.x (v2.0.0+), if `adminPassword` is unset or left as `admin` (including when `auth.methods.password.adminPassword` is unset or `admin`), a random **speakable** bootstrap password is generated, logged once, and the admin account is flagged **`requirePasswordChange`** so login is blocked until a new password is set. The generated form is `word-xxxxx-xx` (a random word from a fixed list, a 5-character code, and a 2-character code) instead of a long hex string. **v2.0+** uses this format.
 
 ### Best practice - use environment variable:
 
@@ -80,9 +80,7 @@ auth:
       adminPassword: "choose-a-password"
 ```
 
-## Require password change (v2.0.10-beta+)
-
-**Beta (v2.x) only.**
+## Require password change (v2.0.0)
 
 Password-based users can be required to set a new password before any other login succeeds:
 
