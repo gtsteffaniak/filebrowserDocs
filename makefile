@@ -73,14 +73,17 @@ check-frontmatter:
 	@echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 	@echo "Validating YAML front matter..."
 	@echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-	@command -v yq >/dev/null 2>&1 || { echo "❌ Please install yq: brew install yq (macOS) or see https://github.com/mikefarah/yq"; exit 1; }
-	@find content -name "*.md" -type f | while read file; do \
-		awk '/^---$$/ {flag++; next} flag==1' "$$file" | yq e '.' - > /dev/null 2>&1 || { \
-			echo "❌ Invalid front matter in: $$file"; \
-			exit 1; \
-		}; \
-	done
-	@echo "✅ All front matter is valid YAML"
+	@if command -v yq >/dev/null 2>&1; then \
+		find content -name "*.md" -type f | while read file; do \
+			awk '/^---$$/ {flag++; next} flag==1' "$$file" | yq e '.' - > /dev/null 2>&1 || { \
+				echo "❌ Invalid front matter in: $$file"; \
+				exit 1; \
+			}; \
+		done; \
+		echo "✅ All front matter is valid YAML"; \
+	else \
+		node ./scripts/check-frontmatter.js; \
+	fi
 	@echo ""
 
 # 2. Validate required front matter fields
@@ -180,32 +183,8 @@ check-internal-links:
 	@echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 	@echo "Validating internal links..."
 	@echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-	@echo "Checking for broken internal links in markdown files..."
-	@ERROR_COUNT=0; \
-	TEMP_FILE=$$(mktemp); \
-	find content -name "*.md" -type f | while read file; do \
-		grep -oP '\]\((?!http|#|mailto:)[^)]+\)' "$$file" 2>/dev/null | sed 's/](\(.*\))/\1/' | while read link; do \
-			link_path=$$(echo "$$link" | sed 's/#.*$$//'); \
-			if [ -n "$$link_path" ]; then \
-				file_dir=$$(dirname "$$file"); \
-				target="$$file_dir/$$link_path"; \
-				if [ ! -f "$$target" ] && [ ! -f "$$target.md" ] && [ ! -f "$${target}/index.md" ]; then \
-					echo "❌ Broken link in $$file: $$link"; \
-					echo "1" >> "$$TEMP_FILE"; \
-				fi; \
-			fi; \
-		done; \
-	done; \
-	if [ -s "$$TEMP_FILE" ]; then \
-		ERROR_COUNT=$$(wc -l < "$$TEMP_FILE"); \
-		rm -f "$$TEMP_FILE"; \
-		echo ""; \
-		echo "❌ Found $$ERROR_COUNT broken internal links"; \
-		exit 1; \
-	else \
-		rm -f "$$TEMP_FILE"; \
-	fi
-	@echo "✅ Internal link check complete"
+	@chmod +x scripts/check-internal-links.sh
+	@bash scripts/check-internal-links.sh
 	@echo ""
 
 # 8. Validate external links (URLs)
