@@ -8,8 +8,6 @@ order: 6
 ---
 
 {{% alert context="info" %}}
-**This guide is for v2.0.0 (beta).** It uses SQLite (`server.database.path`). Standalone default filename is `filebrowser.sqlite`. The Docker image default is `database.sqlite`.
-
 Using **v1.5.x or older**? See the {{< doclink path="getting-started/config-v1.5.x" text="v1.5.x configuration guide" />}} instead.
 {{% /alert %}}
 
@@ -46,9 +44,7 @@ export FILEBROWSER_CONFIG="/path/to/config.yaml"
 ./filebrowser
 ```
 
-### 3. Environment variable substitution in YAML (v2.0.10-beta+)
-
-**Beta (v2.x) only** — not available in v1.5.x stable releases.
+### 3. Environment variable substitution in YAML
 
 After the config file is loaded, string values in `config.yaml` may reference process environment variables using `$VAR` or `${VAR}`. Expansion runs on the decoded YAML tree, so secrets can contain characters that would break unquoted YAML.
 
