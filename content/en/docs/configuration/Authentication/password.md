@@ -57,15 +57,15 @@ auth:
 
 If password authentication is enabled, FileBrowser creates a built-in admin password on first startup. The username defaults to `admin`.
 
-On v2.x (v2.0.0+), if `adminPassword` is unset or left as `admin` (including when `auth.methods.password.adminPassword` is unset or `admin`), a random **speakable** bootstrap password is generated, logged once, and the admin account is flagged **`requirePasswordChange`** so login is blocked until a new password is set. The generated form is `word-xxxxx-xx` (a random word from a fixed list, a 5-character code, and a 2-character code) instead of a long hex string. **v2.0+** uses this format.
+If `adminPassword` is unset or left as `admin` (including when `auth.methods.password.adminPassword` is unset or `admin`), a random **speakable** bootstrap password is generated, logged once, and the admin account is flagged **`requirePasswordChange`** so login is blocked until a new password is set. The generated form is `word-xxxxx-xx` (a random word from a fixed list, a 5-character code, and a 2-character code) instead of a long hex string. **v2.0+** uses this format.
 
-### Best practice - use environment variable:
+### Best practice - use an environment variable:
 
 ```bash
 export FILEBROWSER_ADMIN_PASSWORD="secure-password"
 ```
 
-### Config based admin password
+### Config-based admin password
 
 {{% alert context="warning" %}}
 If `adminPassword` is set in config, it is reset on every startup to that value. Prefer `FILEBROWSER_ADMIN_PASSWORD` for production.
