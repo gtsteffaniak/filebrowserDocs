@@ -169,6 +169,10 @@ When `enforcedOtp: true`:
 
 ### User Management
 
+{{% alert context="info" %}}
+Replacing or resetting an existing TOTP secret via `POST /api/auth/otp/generate` and `POST /api/auth/otp/verify` requires an authenticated session as the same user or as an admin.
+{{% /alert %}}
+
 #### Enable 2FA (User)
 
 Users can enable 2FA from their profile settings:
