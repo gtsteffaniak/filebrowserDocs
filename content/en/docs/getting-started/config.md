@@ -8,8 +8,6 @@ order: 6
 ---
 
 {{% alert context="info" %}}
-**This guide is for v2.0.0 (beta).** It uses SQLite (`server.database.path`). Standalone default filename is `filebrowser.sqlite`. The Docker image default is `database.sqlite`.
-
 Using **v1.5.x or older**? See the {{< doclink path="getting-started/config-v1.5.x" text="v1.5.x configuration guide" />}} instead.
 {{% /alert %}}
 
@@ -46,7 +44,22 @@ export FILEBROWSER_CONFIG="/path/to/config.yaml"
 ./filebrowser
 ```
 
-### 3. Default Locations
+### 3. Environment variable substitution in YAML
+
+After the config file is loaded, string values in `config.yaml` may reference process environment variables using `$VAR` or `${VAR}`. Expansion runs on the decoded YAML tree, so secrets can contain characters that would break unquoted YAML.
+
+```yaml
+auth:
+  methods:
+    ldap:
+      userPassword: "${FILEBROWSER_LDAP_USER_PASSWORD}"
+```
+
+When a scalar is **only** a single `$VAR` or `${VAR}` reference, the expanded value may be coerced to a boolean or number when unambiguous (for example `port: ${PORT}`). Partial substitutions and ordinary strings stay strings.
+
+Named `FILEBROWSER_*` variables in {{< doclink path="reference/environment-variables/" text="Environment variables" />}} still override matching config keys after expansion. Prefer those variables or `${VAR}` in YAML for secrets rather than plaintext in the file.
+
+### 4. Default Locations
 - Current directory (`./config.yaml`)
 - Docker default: `/home/filebrowser/data/config.yaml`
 
