@@ -3,7 +3,7 @@ title: "Understanding Hugo Documentation"
 description: "Guide to understanding Hugo-generated documentation structure and conventions"
 icon: "code"
 date: "2025-10-08T14:59:30Z"
-lastmod: "2025-11-07T01:17:22Z"
+lastmod: "2026-10-03T16:40:00Z"
 katex: true
 ---
 
@@ -145,8 +145,9 @@ The theme uses **Hugo's built-in Chroma syntax highlighting** for code blocks. Y
 **Fenced Code Blocks (Recommended for simple highlighting):**
 
 ```yaml
-server:
+http:
   port: 8080
+server:
   sources:
     - path: "/data"
 ```
@@ -154,8 +155,9 @@ server:
 **Hugo Highlight Shortcode with Line Numbers:**
 
 {{< highlight yaml "linenos=table" >}}
-server:
+http:
   port: 8080
+server:
   sources:
     - path: "/data"
 {{< /highlight >}}

@@ -3,7 +3,7 @@ title: "Sources"
 description: "Configure file system sources"
 icon: "folder_open"
 date: "2025-10-08T14:59:30Z"
-lastmod: "2026-08-24T17:05:51Z"
+lastmod: "2026-10-03T16:40:00Z"
 order: 3
 ---
 
@@ -44,8 +44,10 @@ When only one source is configured, source paths will be available at `http://yo
 ### Multiple Sources
 
 ```yaml
-server:
+http:
   port: 80
+
+server:
   sources:
     - path: "/path/to/source1" # enabled for all users
       name: "My Files"

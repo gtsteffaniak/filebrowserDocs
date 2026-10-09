@@ -3,7 +3,7 @@ title: "Debug Logging"
 description: "Enable detailed logging for troubleshooting"
 icon: "bug_report"
 date: "2025-10-09T00:23:04Z"
-lastmod: "2026-08-05T23:41:25Z"
+lastmod: "2026-10-03T16:40:00Z"
 ---
 
 Debug logging must be configured to see more detailed "debug" level logs.
@@ -60,8 +60,9 @@ When debug logging is enabled, you'll see detailed information about:
 If you don't configure logging, you get this by default:
 
 ```yaml
-server:
+http:
   port: 8080
+server:
   # No logging config = default stdout with colors and API logs
   sources:
     - path: "/data"
@@ -73,8 +74,9 @@ This gives you INFO, WARNING, ERROR, and API logs to stdout with colors.
 ### Enable Debug Logging
 
 ```yaml
-server:
+http:
   port: 8080
+server:
   logging:
     - output: "stdout"
       levels: "info|warning|error|debug"
@@ -88,8 +90,9 @@ server:
 Log to a file:
 
 ```yaml
-server:
+http:
   port: 8080
+server:
   logging:
     - levels: "info|debug|warning|error"
       output: "/var/log/filebrowser/debug.log"
@@ -104,8 +107,9 @@ server:
 Enable JSON structured logs for log aggregation tools:
 
 ```yaml
-server:
+http:
   port: 8080
+server:
   logging:
     - levels: "info|debug|warning|error"
       output: "stdout"
@@ -121,8 +125,9 @@ server:
 You can have multiple file loggers and one stdout logger:
 
 ```yaml
-server:
+http:
   port: 8080
+server:
   logging:
     # Console output without API logs
     - output: "stdout"
@@ -151,8 +156,9 @@ You can have as many file output loggers as you want, but **only one stdout logg
 Configure separate log levels for API requests:
 
 ```yaml
-server:
+http:
   port: 8080
+server:
   logging:
     - output: "stdout"
       levels: "info|warning|error"
@@ -165,8 +171,9 @@ server:
 Or disable API logs entirely:
 
 ```yaml
-server:
+http:
   port: 8080
+server:
   logging:
     - output: "stdout"
       levels: "info|warning|error"
@@ -181,9 +188,10 @@ server:
 For production environments, recommended logging configuration:
 
 ```yaml
-server:
+http:
   port: 8080
   baseURL: "/"
+server:
   database:
     path: "/database/filebrowser.sqlite"
   logging:

@@ -3,7 +3,7 @@ title: "Configuration Overview"
 description: "Complete configuration guide for FileBrowser Quantum"
 icon: "settings"
 date: "2025-10-08T14:59:30Z"
-lastmod: "2026-08-05T23:41:25Z"
+lastmod: "2026-10-03T16:40:00Z"
 order: 1
 ---
 
@@ -17,8 +17,8 @@ Complete configuration guide for all aspects of FileBrowser Quantum.
 
 ## Configuration Topics
 
-- {{< doclink path="configuration/server/" text="Server Settings" />}} - Port, address, database, caching
-- {{< doclink path="configuration/http/" text="HTTP Settings" />}} - Trusted proxy headers and auth rate limiting
+- {{< doclink path="configuration/server/" text="Server Settings" />}} - Database, sources, caching
+- {{< doclink path="configuration/http/" text="HTTP Settings" />}} - Port, listen address, base URL, TLS, WebDAV, proxy headers, and auth rate limiting
 - {{< doclink path="configuration/sources/" text="Sources" />}} - File system source configuration
 - {{< doclink path="configuration/authentication/" text="Authentication" />}} - Auth methods (password, OIDC, proxy)
 - {{< doclink path="configuration/users/" text="Users" />}} - User management and permissions
@@ -29,8 +29,10 @@ Complete configuration guide for all aspects of FileBrowser Quantum.
 ## Basic Configuration Example
 
 ```yaml
-server:
+http:
   port: 80
+
+server:
   sources:
     - path: "/data"
       config:
