@@ -3,7 +3,7 @@ title: "macOS (v2.0.0)"
 description: "Install FileBrowser v2.0.0 (beta) on macOS"
 icon: "laptop_mac"
 date: "2025-10-08T14:59:30Z"
-lastmod: "2026-08-10T15:05:25Z"
+lastmod: "2026-10-04T17:20:00Z"
 order: 3
 ---
 
@@ -24,7 +24,7 @@ Run FileBrowser Quantum **v2.0.0 (beta)** natively on macOS.
 ## Download
 
 1. Go to [releases page](https://github.com/gtsteffaniak/filebrowser/releases)
-2. Download the **beta** `filebrowser-darwin-amd64` (Intel) or `filebrowser-darwin-arm64` (Apple Silicon) release
+2. Download the **beta** `darwin-amd64-filebrowser` (Intel) or `darwin-arm64-filebrowser` (Apple Silicon) release
 3. Save to a folder
 
 ## Enable Permissions
@@ -32,14 +32,14 @@ Run FileBrowser Quantum **v2.0.0 (beta)** natively on macOS.
 ### Step 1: Make Executable
 
 ```bash
-chmod +x filebrowser-darwin-arm64
+chmod +x darwin-arm64-filebrowser
 ```
 
 ### Step 2: Allow in Security Settings
 
 On first run, macOS will block the app:
 
-1. Try to run: `./filebrowser-darwin-arm64`
+1. Try to run: `./darwin-arm64-filebrowser`
 2. Go to **System Preferences** → **Security & Privacy**
 3. Click **Allow** for FileBrowser
 
@@ -52,14 +52,15 @@ brew install ffmpeg
 ## Create Configuration
 
 ```bash
-./filebrowser-darwin-arm64 setup
+./darwin-arm64-filebrowser setup
 ```
 
 Or create `config.yaml`:
 
 ```yaml
-server:
+http:
   port: 80
+server:
   sources:
     - path: "/Users/yourname/Documents"
       config:
@@ -68,13 +69,17 @@ auth:
   adminUsername: admin
 ```
 
+v2.0.0 and later read the listen port from `http.port`. A `server.port` key is rejected at startup.
+
 ## Run FileBrowser
 
 ```bash
-./filebrowser-darwin-arm64 -c config.yaml
+./darwin-arm64-filebrowser -c config.yaml
 ```
 
-Access at `http://localhost:80`
+Access at `http://localhost:80`.
+
+On v2.x (v2.0.0+), if `adminPassword` is unset or left as `admin`, a random admin password is generated, logged once, and a password reset is required on first login. Any other value of `auth.methods.password.adminPassword` or `auth.adminPassword` is used as-is.
 
 ## Run as Service (launchd)
 

@@ -3,7 +3,7 @@ title: "Linux (v2.0.0)"
 description: "Install FileBrowser v2.0.0 (beta) on Linux"
 icon: "terminal"
 date: "2025-10-08T14:59:30Z"
-lastmod: "2026-08-10T15:05:25Z"
+lastmod: "2026-10-04T17:20:00Z"
 order: 2
 ---
 
@@ -29,11 +29,12 @@ Run FileBrowser Quantum **v2.0.0 (beta)** natively on Linux using the binary rel
    - `linux-arm64-filebrowser` (64-bit)
    - `linux-armv6-filebrowser` (32-bit)
    - `linux-armv7-filebrowser` (32-bit)
+   - `linux-riscv64-filebrowser` (64-bit RISC-V, v2.0.7-beta and later)
 
 ## Make Executable
 
 ```bash
-chmod +x filebrowser-linux-amd64
+chmod +x linux-amd64-filebrowser
 ```
 
 ## Optional: Install FFmpeg
@@ -54,14 +55,15 @@ sudo pacman -S ffmpeg
 Interactive setup:
 
 ```bash
-./filebrowser-linux-amd64 setup
+./linux-amd64-filebrowser setup
 ```
 
 Or create `config.yaml`:
 
 ```yaml
-server:
+http:
   port: 80
+server:
   sources:
     - path: "/home/user/files" # Do not use a root "/" directory or include the "/var" folder
       config:
@@ -70,20 +72,24 @@ auth:
   adminUsername: admin
 ```
 
+v2.0.0 and later read the listen port from `http.port`. A `server.port` key is rejected at startup.
+
 ## Run FileBrowser
 
 ```bash
-./filebrowser-linux-amd64 -c config.yaml
+./linux-amd64-filebrowser -c config.yaml
 ```
 
-Access at `http://localhost:80`
+Access at `http://localhost:80`.
+
+On v2.x (v2.0.0+), if `adminPassword` is unset or left as `admin`, a random admin password is generated, logged once, and a password reset is required on first login. Any other value of `auth.methods.password.adminPassword` or `auth.adminPassword` is used as-is.
 
 ## Run as Systemd Service
 
 ### Step 1: Move Binary
 
 ```bash
-sudo mv filebrowser-linux-amd64 /usr/local/bin/filebrowser
+sudo mv linux-amd64-filebrowser /usr/local/bin/filebrowser
 sudo chmod +x /usr/local/bin/filebrowser
 ```
 

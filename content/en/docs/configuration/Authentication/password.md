@@ -3,7 +3,7 @@ title: "Password Authentication"
 description: "Configure password authentication"
 icon: "key"
 date: "2025-10-08T14:59:30Z"
-lastmod: "2026-08-30T16:50:15Z"
+lastmod: "2026-10-04T17:20:00Z"
 ---
 
 Password authentication uses the typical `username` and `password` to login a user. Password authentication also supports **Signup**, **recaptcha**, and **Two-Factor Authentication** features.
@@ -37,7 +37,7 @@ auth:
 |--------|---------|-------------|
 | `enabled` | `true` | Enable password authentication |
 | `adminUsername` | `admin` | Built-in password admin username |
-| `adminPassword` | — | If set, password admin is reset to this value on every startup |
+| `adminPassword` | — | On v2.x (v2.0.0+), random and logged once when unset or `admin`. Any other value is used as-is |
 | `minLength` | `5` | Minimum password length |
 | `signup` | `false` | Allow user self-registration |
 | `enforcedOtp` | `false` | Require all password users to enable Two-Factor Authentication |
@@ -55,7 +55,9 @@ auth:
 
 ## Set Admin Password
 
-If password authentication is enabled, by default filebrowser will create a default `admin` user. This admin user is uniquely able to have the password set by the config. This happens automatically on startup if you specify an admin password via environment variable or config file.
+If password authentication is enabled, FileBrowser creates a built-in password admin on first startup. The username defaults to `admin`.
+
+On v2.x (v2.0.0+), if `adminPassword` is unset or left as `admin`, a random admin password is generated, logged once, and a password reset is required on first login. Any other value of `auth.methods.password.adminPassword` or `auth.adminPassword` is used as-is.
 
 ### Best practice - use environment variable:
 
@@ -66,7 +68,7 @@ export FILEBROWSER_ADMIN_PASSWORD="secure-password"
 ### Config based admin password
 
 {{% alert context="warning" %}}
-If `adminPassword` is set in config, it is reset on every startup to that value—prefer `FILEBROWSER_ADMIN_PASSWORD` for production.
+If `adminPassword` is set in config, it is reset on every startup to that value. Prefer `FILEBROWSER_ADMIN_PASSWORD` for production.
 {{% /alert %}}
 
 ```yaml
@@ -75,7 +77,7 @@ auth:
     password:
       enabled: true
       adminUsername: admin
-      adminPassword: admin # if set it will get reset on startup.
+      adminPassword: "choose-a-password"
 ```
 
 ## Two-Factor Authentication (2FA)

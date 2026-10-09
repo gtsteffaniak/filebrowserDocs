@@ -3,12 +3,12 @@ title: "Docker (v2.0.0)"
 description: "Get started with FileBrowser v2.0.0 (beta) using Docker"
 icon: "deployed_code"
 date: "2025-10-08T14:59:30Z"
-lastmod: "2026-08-10T15:05:25Z"
+lastmod: "2026-10-04T17:20:00Z"
 order: 1
 ---
 
 {{% alert context="info" %}}
-**This guide is for v2.0.0 (beta).** It uses the `beta` Docker image and the **database** (`filebrowser.sqlite`).
+**This guide is for v2.0.0 (beta).** It uses the `beta` Docker image and a SQLite database. The image default file is `database.sqlite` (see [Database Location](#database-location)).
 
 Using **v1.5.x or older**? See the {{< doclink path="getting-started/docker-v1.5.x" text="v1.5.x Docker guide" />}} instead.
 {{% /alert %}}
@@ -49,7 +49,9 @@ docker run -d \
   ghcr.io/gtsteffaniak/filebrowser:beta
 ```
 
-Access at `http://localhost` with `admin` / `admin`
+Access at `http://localhost`.
+
+On v2.x (v2.0.0+), if `adminPassword` is unset or left as `admin`, a random admin password is generated, logged once, and a password reset is required on first login. Any other value of `auth.methods.password.adminPassword` or `auth.adminPassword` is used as-is.
 
 ## Basic Setup with Docker Compose
 
@@ -164,11 +166,11 @@ services:
 {{% alert context="warning" %}}
 **v2.0.0 change**
 
-v2.0.0 uses the **database** (default: `filebrowser.sqlite`), not the legacy database (`database.db`). Set `server.database.path` in config or use `FILEBROWSER_DATABASE_PATH`. Upgrading from v1.x? See {{< doclink path="getting-started/v2/migration/" text="v2 migration guide" />}}.
+v2.0.0 uses SQLite, not the legacy database (`database.db`). Upgrading from v1.x? See {{< doclink path="getting-started/v2/migration/" text="v2 migration guide" />}}.
 {{% /alert %}}
 
 {{% alert context="info" %}}
-**Default Database Location (v2.0.0+)**: In Docker, the default is `/home/filebrowser/data/filebrowser.sqlite` when using the recommended `./data` mount. Standalone default is `./filebrowser.sqlite` in the current directory.
+**Default Database Location (v2.0.0+)**: The Docker image sets `FILEBROWSER_DATABASE_PATH=/home/filebrowser/data/database.sqlite`. With the recommended `./data` mount, that file is `./data/database.sqlite` on the host when `server.database.path` is omitted. A path set in config wins over that environment variable. Standalone builds with no env var and no config path use `./filebrowser.sqlite`.
 
 To persist your database, mount a volume to `/home/filebrowser/data`:
 

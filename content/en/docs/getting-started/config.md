@@ -3,12 +3,12 @@ title: "Configuration Files (v2.0.0)"
 description: "Understanding and using configuration files in FileBrowser v2.0.0 (beta)"
 icon: "settings"
 date: "2025-10-23T00:50:09Z"
-lastmod: "2026-08-14T19:16:36Z"
+lastmod: "2026-10-04T17:20:00Z"
 order: 6
 ---
 
 {{% alert context="info" %}}
-**This guide is for v2.0.0 (beta).** It uses the **database** (`filebrowser.sqlite`) and the `server.database.path` config format.
+**This guide is for v2.0.0 (beta).** It uses SQLite (`server.database.path`). Standalone default filename is `filebrowser.sqlite`. The Docker image default is `database.sqlite`.
 
 Using **v1.5.x or older**? See the {{< doclink path="getting-started/config-v1.5.x" text="v1.5.x configuration guide" />}} instead.
 {{% /alert %}}
@@ -55,13 +55,13 @@ export FILEBROWSER_CONFIG="/path/to/config.yaml"
 The database path is configured under `server.database.path`. See {{< doclink path="configuration/server/#database" text="Server configuration" />}} for details.
 
 **Default database locations (v2.0.0+):**
-- Standalone: `./filebrowser.sqlite` (current directory)
-- Docker: `/home/filebrowser/data/filebrowser.sqlite` when using the recommended `./data` mount
+- Standalone, when neither config nor `FILEBROWSER_DATABASE_PATH` sets a path: `./filebrowser.sqlite`
+- Docker image, when config omits `server.database.path`: `/home/filebrowser/data/database.sqlite` (`FILEBROWSER_DATABASE_PATH` in `_docker/Dockerfile`)
 
 **Priority for database path:**
-1. `FILEBROWSER_DATABASE_PATH` environment variable (if set)
-2. Path in `config.yaml` via `server.database.path`
-3. Default location based on deployment type
+1. `server.database.path` in `config.yaml`, when it is set
+2. `FILEBROWSER_DATABASE_PATH`, when the config path is empty
+3. `filebrowser.sqlite`
 
 {{% alert context="info" %}}
 **Upgrading from v1.x?** v2.0.0 uses a new database instead of the legacy database (`database.db`). Rename your old database file, set `migrateFrom`, and follow the {{< doclink path="getting-started/v2/migration/" text="migration guide" />}}. The `FILEBROWSER_DATABASE` env var is removed — use `FILEBROWSER_DATABASE_PATH` instead.
@@ -113,9 +113,12 @@ server:
         defaultEnabled: true  # Grant to all users on create; v2.0.1+ also merges for existing users on startup
 
 auth:
-  adminUsername: admin
-  adminPassword: admin
+  methods:
+    password:
+      enabled: true
 ```
+
+On v2.x (v2.0.0+), if `adminPassword` is unset or left as `admin`, a random admin password is generated, logged once, and a password reset is required on first login. Any other value of `auth.methods.password.adminPassword` or `auth.adminPassword` is used as-is.
 
 ## Configuration Options
 

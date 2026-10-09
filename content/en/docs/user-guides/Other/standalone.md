@@ -3,7 +3,7 @@ title: "Standalone docker guide (v2.0.0)"
 description: "A basic working example on setting up FileBrowser v2.0.0 in Docker with persistent indexing"
 icon: "deployed_Code"
 date: "2026-01-30T13:20:14Z"
-lastmod: "2026-08-14T19:16:36Z"
+lastmod: "2026-10-04T17:20:00Z"
 ---
 
 This guide will help you set up your FileBrowser **v2.0.0** instance alone. This will be helpful for users who just want to access their files over LAN for storage.
@@ -88,10 +88,10 @@ auth:
       enabled: true
       minLength: 5
       signup: true
-  adminUsername: admin
-  adminPassword: admin # remove this after first startup if you want to change this password manually.
 
 ```
+
+On v2.x (v2.0.0+), if `adminPassword` is unset or left as `admin`, a random admin password is generated, logged once, and a password reset is required on first login. Any other value of `auth.methods.password.adminPassword` or `auth.adminPassword` is used as-is.
 
 ## Running container with a different user
 

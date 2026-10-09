@@ -3,7 +3,7 @@ title: "About"
 description: "Overview of office integration features"
 icon: "info"
 date: "2025-10-08T14:59:30Z"
-lastmod: "2026-08-05T23:41:25Z"
+lastmod: "2026-10-03T16:40:00Z"
 ---
 
 Overview of office document preview and editing capabilities.
@@ -110,7 +110,7 @@ If using Docker, ensure services can communicate, they both should be in the sam
 
 ```yaml
 # config.yaml
-server:
+http:
   port: 80
   internalUrl: "http://filebrowser:80"
 

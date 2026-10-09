@@ -84,9 +84,11 @@ WIREDOOR_TOKEN=YOUR_GATEWAY_NODE_TOKEN
 Minimal Filebrowser Configuration:
 
 ```yaml
-server:
+http:
   port: 80
-  baseURL:  "/"
+  baseURL: "/"
+  internalUrl: "http://filebrowser"
+server:
   logging:
     - levels: "info|warning|error"
   sources:

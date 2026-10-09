@@ -3,7 +3,7 @@ title: "Linux (v1.5.x)"
 description: "Install FileBrowser v1.5.x (stable) on Linux"
 icon: "terminal"
 date: "2025-10-08T14:59:30Z"
-lastmod: "2026-08-10T15:05:25Z"
+lastmod: "2026-10-03T14:10:00Z"
 order: 102
 ---
 
@@ -33,7 +33,7 @@ Run FileBrowser Quantum **v1.5.x (stable)** natively on Linux using the binary r
 ## Make Executable
 
 ```bash
-chmod +x filebrowser-linux-amd64
+chmod +x linux-amd64-filebrowser
 ```
 
 ## Optional: Install FFmpeg
@@ -54,7 +54,7 @@ sudo pacman -S ffmpeg
 Interactive setup:
 
 ```bash
-./filebrowser-linux-amd64 setup
+./linux-amd64-filebrowser setup
 ```
 
 Or create `config.yaml`:
@@ -73,7 +73,7 @@ auth:
 ## Run FileBrowser
 
 ```bash
-./filebrowser-linux-amd64 -c config.yaml
+./linux-amd64-filebrowser -c config.yaml
 ```
 
 Access at `http://localhost:80`
@@ -83,7 +83,7 @@ Access at `http://localhost:80`
 ### Step 1: Move Binary
 
 ```bash
-sudo mv filebrowser-linux-amd64 /usr/local/bin/filebrowser
+sudo mv linux-amd64-filebrowser /usr/local/bin/filebrowser
 sudo chmod +x /usr/local/bin/filebrowser
 ```
 

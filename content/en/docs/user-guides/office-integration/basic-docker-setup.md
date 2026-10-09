@@ -83,10 +83,11 @@ mkdir data && touch data/config.yaml
 Then populate the config, see {{< doclink path="getting-started/config/" text="Getting started" />}}.
 
 ```yaml
-server:
+http:
   port: 80 # Should be 80, this is the internal port.
   externalUrl: "http://localhost:8080" # External filebrowser URL
   internalUrl: "http://filebrowser:80" # The filebrowser container name with the internal port.
+server:
   sources:
     - name: "files" # You can change this name
       path: "/srv" # The docker volume for your files.

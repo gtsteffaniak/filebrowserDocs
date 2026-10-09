@@ -603,9 +603,13 @@ See {{< doclink path="configuration/configuration-overview/" text="configuration
 Create `filebrowser/data/config.yaml`:
 
 ```yaml
-server:
+http:
   port: 80
   baseURL: "/"
+  externalUrl: "https://files.yourdomain.com"
+  internalUrl: "http://filebrowser:80"
+
+server:
   sources:
   # Sources for filebrowser, the path should match your volume mount (of the right)
     - path: "/files"
@@ -618,10 +622,6 @@ server:
       config:
         defaultEnabled: false
         createUserDir: false
-
-  # Critical for OnlyOffice integration
-  externalUrl: "https://files.yourdomain.com"
-  internalUrl: "http://filebrowser:80"
 
 auth:
   tokenExpirationHours: 6
