@@ -3,7 +3,7 @@ title: "Beta"
 description: "See what changed in beta versions"
 icon: "rocket_launch"
 date: "2026-07-02T23:17:05Z"
-lastmod: "2026-10-03T14:00:00Z"
+lastmod: "2026-10-05T13:30:00Z"
 ---
 
 {{% alert context="info" %}}
@@ -86,6 +86,35 @@ You can also check the releases on [GitHub!](https://github.com/gtsteffaniak/fil
 * feat(access): manage user groups from the settings UI [pr #2983](https://github.com/gtsteffaniak/filebrowser/pull/2983) -- thanks [@connorjfarrell](https://github.com/connorjfarrell)
 
 **Full Changelog**: [v2.0.9-beta...v2.1.0-beta](https://github.com/gtsteffaniak/filebrowser/compare/v2.0.9-beta...v2.1.0-beta)
+
+---
+
+## [v2.0.10-beta](https://github.com/gtsteffaniak/filebrowser/releases/tag/v2.0.10-beta)
+
+**Security**:
+ - [High] Restricted custom API tokens (`minimal=false`) can no longer be upgraded to a full-permission session via `POST /api/auth/renew`; renew accepts only web session tokens registered in `hashed_tokens` (GHSA-6gr6-5qpq-888p) -- thanks [@tao0845](https://github.com/tao0845).
+ - [High] TOTP re-enrollment via `POST /api/auth/otp/generate` and `POST /api/auth/otp/verify` no longer allows anonymous callers to replace an existing second factor using only the account password; reset or replace requires an authenticated self or admin session (first-time enrollment without MFA unchanged) (GHSA-qx86-4v5r-26g5) -- thanks [@tao0845](https://github.com/tao0845).
+ - [Low] Public share lyrics and subtitle media routes now honor the share's file-viewer setting, download disable flag, and download limits, matching the public download route (GHSA-p7x3-p5jj-9xfh) -- thanks Yves Soete of Blacksight LLC. @yssoe
+
+**New Features**:
+ - Require password change at next login for password-based users: new user setting `requirePasswordChange` (user defaults + per-user admin toggle), login blocked until the user sets a new password; bootstrap admins with a generated initial password get this automatically ([issue #2977](https://github.com/gtsteffaniak/filebrowser/issues/2977)). Generated bootstrap passwords use a speakable `word-xxxxx-xx` form (random word from a fixed list plus a 5-character and 2-character code) instead of a long hex string, for easier handoff before the forced change.
+ - Config YAML expands `$VAR` and `${VAR}` so values such as `userPassword: "${FILEBROWSER_LDAP_USER_PASSWORD}"` work as documented ([issue #3042](https://github.com/gtsteffaniak/filebrowser/issues/3042)).
+
+**Notes**:
+ - Sidebar navigation tree rows are real hyperlinks: middle-click, Ctrl/Cmd+click, and Shift+click use the browser’s default new-tab or new-window behavior.
+ - Sidebar source links can now switch between aggregated usage (default) and a root-filesystem-only view via a new "Limit disk usage to source filesystem" toggle.
+ - [docker] upgraded ffmpeg from 9.0 to 9.0.2
+ - CLI setup command no longer produces full config, instead a minimal config.yaml with comments.
+
+**Bugfixes**:
+ - Fixed slow or broken file listing when `http.baseURL` is a subpath (for example `/files/`): the default source redirect navigated to `/files/{source}` on top of the app base URL, producing `/files/files/{source}` and resolving the wrong storage source until the route recovered.
+ - Anonymous visitors on public shares could not play inline video or audio: `GET /public/api/media/stream` returned 403 because view grants were validated before share context was fully hydrated; playback now works when download and the file viewer are allowed ([issue #3041](https://github.com/gtsteffaniak/filebrowser/issues/3041)).
+ - Fixed inflated disk usage for sources spanning multiple ZFS datasets (or btrfs subvolumes): shared-pool filesystems are now grouped by pool and counted once, instead of multiplying capacity by the number of mounted datasets ([issue #3025](https://github.com/gtsteffaniak/filebrowser/issues/3025)) ([issue #2997](https://github.com/gtsteffaniak/filebrowser/issues/2997)) ([issue #2761](https://github.com/gtsteffaniak/filebrowser/issues/2761)).
+ - LDAP `userGroups` matching now accepts CN-only config values against full `memberOf` DNs and compares case-insensitively, instead of failing the shared auth helper with strict string equality ([issue #3044](https://github.com/gtsteffaniak/filebrowser/issues/3044)).
+ - OIDC session expires despite tokenExpirationHours ([issue #3006](https://github.com/gtsteffaniak/filebrowser/issues/3006)).
+ - Media playback becomes stuck after opening a failing media file since v2.0.8-beta ([issue #3031](https://github.com/gtsteffaniak/filebrowser/issues/3031))
+
+**Full Changelog**: [v2.0.9-beta...v2.0.10-beta](https://github.com/gtsteffaniak/filebrowser/compare/v2.0.9-beta...v2.0.10-beta)
 
 ---
 
