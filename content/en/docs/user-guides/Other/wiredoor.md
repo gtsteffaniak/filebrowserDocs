@@ -3,7 +3,7 @@ title: "OnlyOffice integration with Wiredoor"
 description: "A basic working example on setting up OnlyOffice and FileBrowser with Wiredoor"
 icon: "deployed_Code"
 date: "2026-01-30T13:20:14Z"
-lastmod: "2026-10-03T16:40:00Z"
+lastmod: "2026-10-03T16:30:00Z"
 ---
 
 This guide shows how to integrate OnlyOffice and FileBrowser via Wiredoor. Wiredoor is a self-hosted ingress-as-a-service platform that lets you route internet traffic to internal apps, IoT, Kubernetes and more using a reverse VPN powered by WireGuard. Below steps are derived from this [discussion](https://github.com/orgs/wiredoor/discussions/110).
@@ -11,7 +11,7 @@ This guide shows how to integrate OnlyOffice and FileBrowser via Wiredoor. Wired
 {{% alert context="warning" %}}
 **v2.0.0 behavior change**
 
-File permissions are **per source**. `userDefaults.permissions.modify` (and related keys) apply as **defaults for new scopes**, not as global modify access. Grant **view** and **modify** on the relevant scope in User Management if users cannot open or edit Office files after upgrade.
+File permissions are **per source**. v2.0.0 rejects `userDefaults.permissions`. Set **view** and **modify** with `server.sources[].config.defaultPermissions` or on the scope in User Management. Global flags are `userDefaults.account.permissions`.
 {{% /alert %}}
 
 {{% alert context="warning" %}}
@@ -93,6 +93,14 @@ server:
     - levels: "info|warning|error"
   sources:
     - path: "/srv"
+      config:
+        defaultPermissions:
+          view: true
+          download: true
+          modify: true
+          create: true
+          delete: true
+  internalUrl: "http://filebrowser"
 userDefaults:
   preview:
     image: true
@@ -100,19 +108,17 @@ userDefaults:
     video: false
     office: false
     highQuality: false
-  darkMode: true
-  disableSettings: false
-  singleClick: false
-  permissions:
-    admin: false
-    api: false
-    share: false
-    realtime: false
-    # v2.0.0+: default per-source permissions for new scopes
-    modify: true
-    download: true
-    create: true
-    delete: true
+  ui:
+    darkMode: true
+  listing:
+    singleClick: false
+  account:
+    disableSettings: false
+    permissions:
+      admin: false
+      api: false
+      share: false
+      realtime: false
 integrations:
   office:
     url: "https://onlyoffice.example.com"   # Domain used to expose onlyoffice

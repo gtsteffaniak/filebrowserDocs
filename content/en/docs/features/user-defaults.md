@@ -3,7 +3,7 @@ title: "User Defaults"
 description: "Universal user defaults and enforceable profile preferences in FileBrowser Quantum v2.0.0"
 icon: "tune"
 date: "2026-08-07T19:31:41Z"
-lastmod: "2026-08-07T19:31:41Z"
+lastmod: "2026-10-03T16:30:00Z"
 order: 3
 ---
 
@@ -34,14 +34,17 @@ On **first startup**, `userDefaults` in `config.yaml` seeds database. Only field
 
 ```yaml
 userDefaults:
-  darkMode: true
-  locale: "en"
-  stickySidebar: true
-  permissions:
-    admin: false
-    api: false
-    share: false
-    realtime: false
+  ui:
+    darkMode: true
+    locale: "en"
+  sidebar:
+    sticky: true
+  account:
+    permissions:
+      admin: false
+      api: false
+      share: false
+      realtime: false
   preview:
     image: true
     video: true

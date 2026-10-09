@@ -3,7 +3,7 @@ title: "Basic Docker Setup"
 description: "Simple OnlyOffice setup with Docker for local development"
 icon: "deployed_Code"
 date: "2025-10-09T00:23:04Z"
-lastmod: "2026-10-03T16:40:00Z"
+lastmod: "2026-10-03T16:30:00Z"
 ---
 
 Complete setup for running FileBrowser Quantum with OnlyOffice using Docker Compose on your local network.
@@ -11,7 +11,7 @@ Complete setup for running FileBrowser Quantum with OnlyOffice using Docker Comp
 {{% alert context="warning" %}}
 **v2.0.0 behavior change**
 
-`userDefaults.permissions` values such as `modify` and `download` seed **default per-source permissions** for new users' scopes — they are not global file caps. To edit documents in OnlyOffice, each user needs **view** and **modify** (and usually **download**) on the **source** containing the files. Adjust scopes in **User Management** after creating users.
+v2.0.0 rejects `userDefaults.permissions`. File permissions are per source: set `server.sources[].config.defaultPermissions` (**view**, **download**, **modify**, **create**, **delete**) or edit the scope in **User Management**. Global flags are `userDefaults.account.permissions` (**admin**, **api**, **share**, **realtime**). To edit documents in OnlyOffice, each user needs **view** and **modify** (and usually **download**) on the source that contains the files.
 {{% /alert %}}
 
 {{% alert context="warning" %}}
@@ -93,6 +93,10 @@ server:
       path: "/srv" # The docker volume for your files.
       config:
         defaultEnabled: true
+        defaultPermissions:
+          view: true
+          download: true
+          modify: true
 
 auth:
   adminPassword: yourpassword # Change this with a strong password.
@@ -105,20 +109,17 @@ integrations:
     viewOnly: false
 
 userDefaults:
-  permissions:
-    api: false
-    admin: false
-    share: false
-    realtime: false
-    # Default per-source permissions for new scopes (v2.0.0+)
-    modify: false
-    delete: false
-    create: false
-    download: true
-  disableOnlyOfficeExt: ".md .txt .pdf"   # List of file extensions to disable onlyoffice editor for - only applied to new users.
+  account:
+    permissions:
+      api: false
+      admin: false
+      share: false
+      realtime: false
+  fileViewer:
+    disableOnlyOfficeExt: ".md .txt .pdf"   # applied to new users
 ```
 
-For editing (not view-only), set `modify: true` here **or** enable **Modify** on the user's scope in User Management. OnlyOffice requires **view** on the source; editing also requires **modify**.
+For editing (not view-only), set `modify: true` under `server.sources[].config.defaultPermissions` **or** enable **Modify** on the user's scope in User Management. OnlyOffice requires **view** on the source; editing also requires **modify**.
 
 ### Step 4: Start Services
 
