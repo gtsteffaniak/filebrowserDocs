@@ -8,16 +8,16 @@ order: 5
 ---
 
 {{% alert context="warning" %}}
-**v2.0.0 only**
+**v2.0.0+ only**
 
-The Activity Viewer and semantic activity audit log were introduced in **v2.0.0**. They require the SQLite database migration from v1.x. If you are still on v1.x, see {{< doclink path="getting-started/v2/migration/" text="Migration guide" />}} before upgrading.
+The Activity Viewer and semantic activity audit log were introduced in **v2.0.0**. If you are still on v1.x, see {{< doclink path="getting-started/v2/migration/" text="Migration guide" />}} before upgrading.
 {{% /alert %}}
 
 ## Overview
 
-v2.0.0 stores **semantic activity events** — downloads, uploads, share changes, logins, and similar actions — in SQLite. The **Activity Viewer** turns that history into a searchable table, interactive charts, and CSV exports.
+Any action performed in the UI or webdav will get recorded such as downloads, uploads, share changes, logins, and similar actions.
 
-This feature depends on the v2 write-through **state** layer and structured SQL storage introduced in v2.0.0. Events are buffered in memory and written to SQLite in batches. By default, there can be a **short delay** (up to **10 seconds**) before a new event appears in the Activity Viewer — events sit in an in-memory buffer until the next flush. Old rows are purged automatically based on retention settings (**30 days** by default).
+By default, there can be a **short delay** (up to **10 seconds**) before a new event appears in the Activity Viewer — events sit in an in-memory buffer until the next flush. This activity data history is stored for **30 days** by default.
 
 ## Opening the Activity Viewer
 
@@ -139,6 +139,7 @@ Each row stores the actor username, event type, timestamp, client IP, auth metho
 
 These actions do **not** create activity rows:
 
+- Any action that does not go through filebrowser. This includes manually copying, moving, or editing files outside of filebrowser user actions.
 - **Inline viewing** via `viewToken` (`GET /api/resources/view`, `GET /api/media/stream`, and related share/public endpoints) — previewing in the UI does not count as a download and is not audited as activity. See {{< doclink path="features/user-permissions/#view-vs-download" text="View vs download" />}}.
 - **WebDAV file reads** — opening or copying file bytes over WebDAV does not create `download` events (WebDAV writes are logged; see above).
 - **Disabled logging** — When `server.database.activity.disabled` is `true`, new events are not recorded (existing rows remain until retention purge).
