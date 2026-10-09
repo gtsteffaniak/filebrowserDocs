@@ -8,10 +8,6 @@ lastmod: "2026-10-05T13:30:00Z"
 
 The preferred configuration method is to use config.yaml. However, environment variables are available for **secrets**, **config override**, and **developer purposes**.
 
-{{% alert context="info" %}}
-**v2.0.10-beta+:** Config YAML string values also expand `$VAR` and `${VAR}` from the process environment when the file is loaded (for example `userPassword: "${FILEBROWSER_LDAP_USER_PASSWORD}"`). This is **beta (v2.x) only**; v1.5.x stable does not expand variables inside YAML. See {{< doclink path="getting-started/config/#3-environment-variable-substitution-in-yaml-v2010-beta" text="Configuration files — env substitution" />}}.
-{{% /alert %}}
-
 {{% alert context="warning" %}}
 **v2.0.0 behavior change**
 
