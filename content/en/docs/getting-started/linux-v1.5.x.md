@@ -10,7 +10,7 @@ order: 102
 {{% alert context="info" %}}
 **This guide is for v1.5.x and older (stable).** Download a **stable** release from GitHub.
 
-Looking for **v2.0.0 (beta)**? See the {{< doclink path="getting-started/linux" text="v2.0.0 Linux guide" />}} instead.
+Looking for **v2.0.x (stable)**? See the {{< doclink path="getting-started/linux" text="v2.0.x Linux guide" />}} instead.
 {{% /alert %}}
 
 {{% alert context="warning" %}}

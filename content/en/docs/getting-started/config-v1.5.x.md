@@ -10,7 +10,7 @@ order: 106
 {{% alert context="info" %}}
 **This guide is for v1.5.x and older (stable).** It uses the **legacy database** (`database.db`) and the flat `server.database` config format.
 
-Looking for **v2.0.0 (beta)**? See the {{< doclink path="getting-started/config" text="v2.0.0 configuration guide" />}} instead.
+Looking for **v2.0.x (stable)**? See the {{< doclink path="getting-started/config" text="v2.0.x configuration guide" />}} instead.
 {{% /alert %}}
 
 {{% alert context="warning" %}}

@@ -10,7 +10,7 @@ order: 107
 {{% alert context="info" %}}
 **This guide is for v1.5.x and older (stable).** Config examples use `server.baseURL` and `http.trustedHeaders`.
 
-Looking for **v2.0.0 (beta)**? See the {{< doclink path="getting-started/reverse-proxy" text="v2.0.0 reverse proxy guide" />}} instead.
+Looking for **v2.0.x (stable)**? See the {{< doclink path="getting-started/reverse-proxy" text="v2.0.x reverse proxy guide" />}} instead.
 {{% /alert %}}
 
 {{% alert context="warning" %}}
