@@ -1,6 +1,6 @@
 ---
 title: "Docker (v2.0.0)"
-description: "Get started with FileBrowser v2.0.0 (beta) using Docker"
+description: "Get started with FileBrowser v2.0.x (stable) using Docker"
 icon: "deployed_code"
 date: "2025-10-08T14:59:30Z"
 lastmod: "2026-10-04T17:20:00Z"
@@ -8,7 +8,7 @@ order: 1
 ---
 
 {{% alert context="info" %}}
-**This guide is for v2.0.0 (beta).** It uses the `beta` Docker image and a SQLite database. The image default file is `database.sqlite` (see [Database Location](#database-location)).
+**This guide is for v2.0.x (stable).** It uses the `stable` or `2.0-stable` Docker image and a SQLite database. The image default file is `database.sqlite` (see [Database Location](#database-location)). For **v2.1.x** previews, use the `beta` or `2.1-beta` tag instead — see {{< doclink path="getting-started/version/" text="release channels" />}}.
 
 Using **v1.5.x or older**? See the {{< doclink path="getting-started/docker-v1.5.x" text="v1.5.x Docker guide" />}} instead.
 {{% /alert %}}
@@ -16,10 +16,10 @@ Using **v1.5.x or older**? See the {{< doclink path="getting-started/docker-v1.5
 {{% alert context="warning" %}}
 **Upgrading from v1.x?**
 
-v2.0.0 uses a **new database format** and requires a one-time migration. Use a **directory mount** (`./data:/home/filebrowser/data`) rather than a single database file mount. Replace `FILEBROWSER_DATABASE` with `FILEBROWSER_DATABASE_PATH`. See the {{< doclink path="getting-started/v2/migration/" text="v2 migration guide" />}} before changing your image tag to `beta`.
+v2.0.x uses a **new database format** and requires a one-time migration. Use a **directory mount** (`./data:/home/filebrowser/data`) rather than a single database file mount. Replace `FILEBROWSER_DATABASE` with `FILEBROWSER_DATABASE_PATH`. See the {{< doclink path="getting-started/v2/migration/" text="v2 migration guide" />}} before changing your image tag to `stable` or `2.0-stable`.
 {{% /alert %}}
 
-The fastest way to get started with FileBrowser Quantum **v2.0.0 (beta)**.
+The fastest way to get started with FileBrowser Quantum **v2.0.x (stable)**.
 
 ## Available Images
 
@@ -35,7 +35,7 @@ Images from Docker Hub (`gtstef/filebrowser`) and GitHub Container Registry (`gh
 Learn more about the versions and tags {{< doclink path="getting-started/version#docker-version-tags" text="here." />}}
 
 {{% alert context="info" %}}
-To pin a specific v2 release instead of tracking the latest beta, use a version tag such as `2.0-beta` or `2.0.0-beta`.
+To pin a specific v2.0.x release instead of tracking the latest stable, use a version tag such as `2.0-stable` or `2.0.0-stable`. For v2.1.x previews, use `2.1-beta` or a full beta tag from [GitHub releases](https://github.com/gtsteffaniak/filebrowser/releases).
 {{% /alert %}}
 
 ## Quick Try
@@ -46,7 +46,7 @@ Test without persistence (changes not saved). In this example we run it mounting
 docker run -d \
   -v $(pwd):/srv \
   -p 80:80 \
-  ghcr.io/gtsteffaniak/filebrowser:beta
+  ghcr.io/gtsteffaniak/filebrowser:stable
 ```
 
 Access at `http://localhost`.
@@ -106,7 +106,7 @@ Then type in the below docker configuration.
 ```yaml
 services:
   filebrowser:
-    image: ghcr.io/gtsteffaniak/filebrowser:beta
+    image: ghcr.io/gtsteffaniak/filebrowser:stable
     volumes:
       - /path/to/your/folder:/folder # Do not use a root "/" directory or include the "/var" folder
       - ./data:/home/filebrowser/data
@@ -139,7 +139,7 @@ If you configure FileBrowser to use a different port in your `config.yaml`, you 
 ```yaml
 services:
   filebrowser:
-    image: ghcr.io/gtsteffaniak/filebrowser:beta
+    image: ghcr.io/gtsteffaniak/filebrowser:stable
     volumes:
       - /path/to/your/folder:/folder
       - ./data:/home/filebrowser/data
@@ -177,7 +177,7 @@ To persist your database, mount a volume to `/home/filebrowser/data`:
 ```yaml
 services:
   filebrowser:
-    image: ghcr.io/gtsteffaniak/filebrowser:beta
+    image: ghcr.io/gtsteffaniak/filebrowser:stable
     volumes:
       - /path/to/files:/folder
       - ./data:/home/filebrowser/data  # Database and config stored here
@@ -192,7 +192,7 @@ Docker images run as the built-in `filebrowser` user (UID:GID **1000:1000**) by 
 ```yaml
 services:
   filebrowser:
-    image: ghcr.io/gtsteffaniak/filebrowser:beta
+    image: ghcr.io/gtsteffaniak/filebrowser:stable
     user: filebrowser
     volumes:
       - /path/to/files:/folder

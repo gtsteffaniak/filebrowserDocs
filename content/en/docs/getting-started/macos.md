@@ -1,6 +1,6 @@
 ---
 title: "macOS (v2.0.0)"
-description: "Install FileBrowser v2.0.0 (beta) on macOS"
+description: "Install FileBrowser v2.0.x (stable) on macOS"
 icon: "laptop_mac"
 date: "2025-10-08T14:59:30Z"
 lastmod: "2026-10-04T17:20:00Z"
@@ -8,7 +8,7 @@ order: 3
 ---
 
 {{% alert context="info" %}}
-**This guide is for v2.0.0 (beta).** Download a **beta** release from GitHub.
+**This guide is for v2.0.x (stable).** Download a **stable** release from GitHub (or use `beta` for v2.1.x previews).
 
 Using **v1.5.x or older**? See the {{< doclink path="getting-started/macos-v1.5.x" text="v1.5.x macOS guide" />}} instead.
 {{% /alert %}}
@@ -19,7 +19,7 @@ Using **v1.5.x or older**? See the {{< doclink path="getting-started/macos-v1.5.
 v2.0.0 requires a config update and one-time database migration. See the {{< doclink path="getting-started/v2/migration/" text="v2 migration guide" />}} before upgrading.
 {{% /alert %}}
 
-Run FileBrowser Quantum **v2.0.0 (beta)** natively on macOS.
+Run FileBrowser Quantum **v2.0.x (stable)** natively on macOS.
 
 ## Download
 
