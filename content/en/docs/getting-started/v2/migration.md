@@ -56,6 +56,10 @@ If an unrenamed `database.db` remains in the working directory, v2.0.0 refuses t
 
 Use the {{< doclink path="getting-started/v2/config-migration/" text="config migration tool" />}} to convert your v1 `config.yaml` to the v2-compatible structure.
 
+{{% alert context="info" %}}
+If you are running behind a reverse proxy, please set [http.trustProxyHeaders: true](https://filebrowserquantum.com/en/docs/getting-started/reverse-proxy/#proxy-headers-filebrowser-understands) if not already set in the config migration tool.
+{{% /alert %}}
+
 Then set the new SQLite path and point `migrateFrom` at your renamed BoltDB file:
 
 ```yaml
