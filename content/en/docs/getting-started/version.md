@@ -3,34 +3,34 @@ title: "Which version should I use?"
 description: "Understanding stable vs beta releases and v1.5.x vs v2.0.0"
 icon: "numbers"
 date: "2025-10-28T22:14:01Z"
-lastmod: "2026-08-10T15:05:25Z"
+lastmod: "2026-10-10T00:00:00Z"
 order: 5
 ---
 
-FileBrowser Quantum comes with two release channels (**stable** and **beta**) and is currently transitioning from **v1.5.x** to **v2.0.0**. Choosing the right version is an important first step.
+FileBrowser Quantum comes with two release channels (**stable** and **beta**) across **v1.5.x**, **v2.0.x**, and **v2.1.x**. Choosing the right version is an important first step.
 
 {{% alert context="info" %}}
-**Current state:** **v1.5.x** is on the `stable` channel. **v2.0.0** is available on the `beta` channel only and requires a one-time migration from v1.x. See {{< doclink path="getting-started/v2/migration/" text="v2 migration guide" />}} before upgrading.
+**Current state:** **v2.0.x** and **v1.5.x** both ship on the `stable` channel (**v2.0.0-stable** is the latest v2 stable release). **v2.1.x** is on the `beta` channel. Upgrading from v1.x to v2.0.x requires a one-time migration — see {{< doclink path="getting-started/v2/migration/" text="v2 migration guide" />}} before changing tags.
 {{% /alert %}}
 
 {{% alert context="success" %}}
-**Recommended for new users:** Start with **v1.5.x (`stable`)** for the most reliable experience, unless you specifically want v2.0.0 features.
+**Recommended for new users:** Start with **v2.0.x (`stable`)** for current v2 features, or stay on **v1.5.x (`stable`)** if you are not ready to migrate. Use **v2.1.x (`beta`)** when you want the newest v2 features before they reach stable.
 {{% /alert %}}
 
 ## Release Types
 
-### Stable Release (v1.5.x)
+### Stable Release (v1.5.x and v2.0.x)
 
-The `stable` release build is the most reliable version as the name implies. It currently tracks **v1.5.x**. It gets updated less frequently, but is ideal for:
+The `stable` release build is the most reliable version as the name implies. It currently includes **v2.0.x** (latest: **v2.0.0-stable**) and **v1.5.x** maintenance releases. It gets updated less frequently than beta, and is ideal for:
 
 - Those getting started with FileBrowser Quantum
 - Users with a userbase that doesn't want to see occasional bugs
 - Production environments requiring stability
 - Anyone who prefers proven, tested features
 
-### Beta Release (v2.0.0)
+### Beta Release (v2.1.x)
 
-The `beta` release build currently tracks **v2.0.0** and is ideal for those who:
+The `beta` release build currently tracks **v2.1.x** (building on the **v2.0.x** stable base) and is ideal for those who:
 
 - Don't have a large userbase
 - Want the latest features immediately
@@ -63,14 +63,15 @@ One major difference is the release cadence between the two versions:
   </div>
 </div>
 
-## Major version: v1.5.x vs v2.0.0
+## Major version: v1.5.x vs v2.0.x vs v2.1.x
 
-| | v1.5.x (`stable`) | v2.0.0 (`beta`) |
-|---|---|---|
-| Release channel | `stable`, `1.5-stable` | `beta`, `2.0-beta` |
-| Database | Legacy (`database.db`) | New (`filebrowser.sqlite`) |
-| Getting started docs | {{< doclink path="getting-started/docker-v1.5.x" text="v1.5.x guides" />}} | {{< doclink path="getting-started/docker" text="v2.0.0 guides" />}} |
-| Upgrade path | Stay on stable for production | Follow {{< doclink path="getting-started/v2/migration/" text="v2 migration guide" />}} from v1.x |
+| | v1.5.x (`stable`) | v2.0.x (`stable`) | v2.1.x (`beta`) |
+|---|---|---|---|
+| Release channel | `stable`, `1.5-stable` | `stable`, `2.0-stable` | `beta`, `2.1-beta` |
+| Database | Legacy (`database.db`) | SQLite (`filebrowser.sqlite`) | Same as v2.0.x |
+| Getting started docs | {{< doclink path="getting-started/docker-v1.5.x" text="v1.5.x guides" />}} | {{< doclink path="getting-started/docker" text="v2.0.x guides" />}} | Same v2 guides; see {{< doclink path="changelog/beta/" text="beta changelog" />}} for v2.1.x-only features |
+| Upgrade path | Stay on 1.5-stable for legacy | Default for new v2 installs | Move from v2.0.x when you want v2.1.x features |
+| From v1.x | N/A | Follow {{< doclink path="getting-started/v2/migration/" text="v2 migration guide" />}} | Migrate to v2.0.x first, then beta if desired |
 
 ## Feature Differences
 
