@@ -3,7 +3,7 @@ title: "Beta"
 description: "See what changed in beta versions"
 icon: "rocket_launch"
 date: "2026-07-02T23:17:05Z"
-lastmod: "2026-10-03T14:00:00Z"
+lastmod: "2026-10-10T00:00:00Z"
 ---
 
 {{% alert context="info" %}}
@@ -13,6 +13,42 @@ You can also check the releases on [GitHub!](https://github.com/gtsteffaniak/fil
 {{% alert context="warning" %}}
 **v2.0.0** requires a config update and one-time database migration from v1.x. See {{< doclink path="getting-started/v2/migration/" text="Migration guide" />}} and {{< doclink path="getting-started/v2/about/" text="About v2.0.0" />}}.
 {{% /alert %}}
+
+---
+
+## [v2.1.1-beta](https://github.com/gtsteffaniak/filebrowser/releases/tag/v2.1.1-beta)
+
+**Note:** this release also contains all changes from [v2.0.10-beta changelog](https://github.com/gtsteffaniak/filebrowser/releases/tag/v2.0.10-beta)
+
+**Tip:** Also, consider enabling "analytics" in admin settings, which will help me populate an anonymous public dashboard for everyone to see. Currently, there are 60 deployments details populated from beta, so after a percentage of you enable this, there should be plenty to make the dashboard available to everyone soon. No private information is used -- you can see exactly what data is sent in the UI.
+
+**New Features**:
+ - User and group picker with partial, case-insensitive search when creating access rules ([issue #3085](https://github.com/gtsteffaniak/filebrowser/issues/3085)), assigning groups on user edit, and choosing members on group edit.
+ - New `PUT /api/access/user-groups` endpoint that atomically replaces a user's group memberships.
+ - feat(search): configure the advanced search result limit ([pr #3058](https://github.com/gtsteffaniak/filebrowser/pull/3058)) [@beemines](https://github.com/beemines)
+ - feat(listing): add sortable Date added and Type columns ([pr #3052](https://github.com/gtsteffaniak/filebrowser/pull/3052)) [@dweebzxx](https://github.com/dweebzxx)
+ - feat(archive): suggest and preview ZIP filename encodings ([pr #3024](https://github.com/gtsteffaniak/filebrowser/pull/3024)) [@AnaTofuZ](https://github.com/AnaTofuZ)
+
+**Notes**:
+ - Group API breaking changes: `POST /api/access` returns 400 when `ruleCategory=group` names a nonexistent group or `ruleCategory=user` names a nonexistent user, group endpoints return 400/409 instead of 500 for client errors, and `PUT /api/access/group` accepts a `create` flag and returns `unknownMembers`. Existing database records are unaffected; no migration is required.
+ - update halloween theme ([pr #3055](https://github.com/gtsteffaniak/filebrowser/pull/3055))
+ - Add soft wrap option to the editor config ([pr #3063](https://github.com/gtsteffaniak/filebrowser/pull/3063))
+ - add better screenshot view handling ([pr #3059](https://github.com/gtsteffaniak/filebrowser/pull/3059))
+ - Update nl.json ([pr #3089](https://github.com/gtsteffaniak/filebrowser/pull/3089)) [@Stephan-P](https://github.com/Stephan-P)
+ - update german translations ([pr #3062](https://github.com/gtsteffaniak/filebrowser/pull/3062)) [@fehnomenal](https://github.com/fehnomenal)
+ - Update dev dependencies, add biome, fix types and linting ([pr #3075](https://github.com/gtsteffaniak/filebrowser/pull/3075)) [@Kurami32](https://github.com/Kurami32)
+
+**Bug Fixes**:
+ - Groups assigned in the user edit prompt now refresh the Groups settings list.
+ - Creating a group with an existing name now returns a conflict instead of silently overwriting its members.
+ - Access rules can no longer create empty groups from typos; group rules must reference an existing group.
+ - Empty group names are rejected and new group names must be 2-128 characters without control characters (existing records are unaffected); deleting or renaming a user now updates group memberships.
+ - fix(auth): use login endpoint for existing TOTP authentication ([pr #3074](https://github.com/gtsteffaniak/filebrowser/pull/3074))
+ - fix: apply theme toggles on anonymous public shares ([pr #3049](https://github.com/gtsteffaniak/filebrowser/pull/3049)) [@mvanhorn](https://github.com/mvanhorn)
+ - fix(frontend): keep source named files in extractSourceFromPath ([pr #3099](https://github.com/gtsteffaniak/filebrowser/pull/3099)) ([issue #3095](https://github.com/gtsteffaniak/filebrowser/issues/3095))
+ - fix(auth): identify login fields for password autofill ([pr #3077](https://github.com/gtsteffaniak/filebrowser/pull/3077))
+ - fix(backend): skip denied paths in multi-file downloads, 404 when none remain ([pr #3100](https://github.com/gtsteffaniak/filebrowser/pull/3100)) [@hippi345](https://github.com/hippi345)
+ - fix: persist the user scope path chosen in the edit dialog ([pr #3065](https://github.com/gtsteffaniak/filebrowser/pull/3065)) [@mvanhorn](https://github.com/mvanhorn)
 
 ---
 
