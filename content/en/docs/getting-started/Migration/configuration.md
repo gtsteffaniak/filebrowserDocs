@@ -40,7 +40,7 @@ also reference your `config.json`
 
 Create a new `config.yaml` file with your settings.
 
-**v2.0.0-beta and later** Listen settings are under `http`. The database is a SQLite file under `server.database.path` (standalone default `filebrowser.sqlite`). Password auth is `auth.methods.password`. Global share permission is `userDefaults.account.permissions.share`. File modify/create/delete/download/view defaults are `server.sources[].config.defaultPermissions`.
+**v2.0.x** Listen settings are under `http`. The database is a SQLite file under `server.database.path` (standalone default `filebrowser.sqlite`). Password auth is `auth.methods.password`. Global share permission is `userDefaults.account.permissions.share`. File modify/create/delete/download/view defaults are `server.sources[].config.defaultPermissions`.
 
 ```yaml
 http:
@@ -98,7 +98,7 @@ userDefaults:
 
 ### 3. Map Old Flags to New Config
 
-| Original Flag | v2.0.0-beta and later | v1.5.6-stable |
+| Original Flag | v2.0.x | v1.5.6-stable |
 |--------------|------------------------|---------------|
 | `--port` | `http.port` | `server.port` |
 | `--address` | `http.listen` | `server.listen` |

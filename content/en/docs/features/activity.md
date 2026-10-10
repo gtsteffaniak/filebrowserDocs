@@ -31,7 +31,7 @@ There are several ways to open the tool:
    - **Settings → Access** — access rule changes for the selected source
 3. **Context shortcuts** — While browsing or editing:
    - **File info** — activity for the current file or folder
-   - **Storage quota editor (v2.1.0+)** — folder quota create, update, and remove events for the current path
+   - **Storage quota editor (v2.1.x)** — folder quota create, update, and remove events for the current path
    - **Share editor** — activity for a specific share or path
    - **Access editor** — access changes for the current path
 
@@ -61,7 +61,7 @@ Scopes limit which event types appear. Use them in the viewer or in API query pa
 | **all** | Every event type (default) |
 | **files** | Download, move, copy, rename, upload, delete, bulk delete, archive, unarchive |
 | **access** | Access create, update, delete |
-| **quotas** | Folder quota create, update, delete (v2.1.0+) |
+| **quotas** | Folder quota create, update, delete (v2.1.x) |
 | **shares** | Share create, update, delete, and **download** events tied to a share (via `shareHash` in details) |
 
 ## View types
@@ -94,17 +94,17 @@ Activity covers file operations from the Web UI, administration, authentication,
 
 Web UI operations on files and folders — including multi-select delete, drag-and-drop move/copy, and archive/unarchive — produce the corresponding activity rows with source, path, and field-level details where applicable.
 
-### Shares, access, and quotas (v2.1.0+)
+### Shares, access, and quotas (v2.1.x)
 
 | Event type | Triggered by |
 |---|---|
 | **shareCreate**, **shareUpdate**, **shareDelete** | Share lifecycle (field-level changes on update) |
 | **accessCreate**, **accessUpdate**, **accessDelete** | Per-path access rules |
-| **quotaCreate**, **quotaUpdate**, **quotaDelete** | Folder storage quota create, update, and remove (v2.1.0+; admin API and Storage quota dialog) |
+| **quotaCreate**, **quotaUpdate**, **quotaDelete** | Folder storage quota create, update, and remove (v2.1.x; admin API and Storage quota dialog) |
 
 Share **downloads** appear as **download** events with `details.shareHash` set. The share's download counter and per-user limits are updated separately in share state (not duplicate audit rows).
 
-Folder quota events (v2.1.0+) include source, path, and field-level details (`limitBytes`, `meter`, optional `userId` binding).
+Folder quota events (v2.1.x) include source, path, and field-level details (`limitBytes`, `meter`, optional `userId` binding).
 
 ### Users, tokens, and auth
 
@@ -207,6 +207,6 @@ See {{< doclink path="reference/api/" text="API reference" />}} for authenticati
 - {{< doclink path="getting-started/v2/migration/" text="v2 migration guide" />}} — SQLite upgrade required for activity
 - {{< doclink path="features/user-permissions/" text="User permissions" />}} — view vs download; what counts as a logged download
 - {{< doclink path="configuration/users/" text="User management" />}} — per-source permissions and scopes shown in activity paths
-- {{< doclink path="features/quotas/" text="Storage quotas (v2.1.0+)" />}} — folder quota changes appear in the **quotas** activity scope
+- {{< doclink path="features/quotas/" text="Storage quotas (v2.1.x)" />}} — folder quota changes appear in the **quotas** activity scope
 - {{< doclink path="features/webdav/" text="WebDAV" />}} — WebDAV write operations appear in activity
 - {{< doclink path="features/sidebar-links/#tool-link-configuration" text="Sidebar tool links" />}} — pin the Activity Viewer in the sidebar

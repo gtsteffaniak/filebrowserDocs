@@ -33,7 +33,7 @@ auth:
     proxy:
       enabled: true
       header: "X-Forwarded-User"  # or "Remote-User"
-      # Optional role/group headers (v2.1.0+):
+      # Optional role/group headers (v2.1.x):
       # groupsClaim: "x-cosmos-role"  # HTTP header name for group/role value
       # userGroups: ["2", "1"]        # allow-list; omit to allow all
       # adminGroup: "2"               # group value that grants admin
@@ -43,7 +43,7 @@ auth:
 ```
 
 {{% alert context="info" %}}
-**v2.1.0+:** `groupsClaim`, `adminGroup`, and `userGroups` enable role-based access for proxy auth. For proxy auth, `groupsClaim` is the **HTTP header name** (for example `x-cosmos-role`), not a JSON claim field. Admin privileges come from `adminGroup` only. Versions before v2.1.0 ignore these options; admin is only granted when the proxy username matches `auth.adminUsername`.
+**v2.1.x:** `groupsClaim`, `adminGroup`, and `userGroups` enable role-based access for proxy auth. For proxy auth, `groupsClaim` is the **HTTP header name** (for example `x-cosmos-role`), not a JSON claim field. Admin privileges come from `adminGroup` only. Versions before v2.1.0 ignore these options; admin is only granted when the proxy username matches `auth.adminUsername`.
 {{% /alert %}}
 
 ## Options
@@ -52,9 +52,9 @@ auth:
 |--------|-------------|
 | `enabled` | Enable proxy authentication |
 | `header` | **Required.** Header whose value is trusted as the username (must sit behind a trusted proxy) |
-| `adminGroup` | **v2.1.0+.** Group/role header value that grants admin privileges |
-| `userGroups` | **v2.1.0+.** If set, only users whose group/role header value is in this list may log in |
-| `groupsClaim` | **v2.1.0+.** HTTP header name for the user's group/role (required when `userGroups` or `adminGroup` is set) |
+| `adminGroup` | **v2.1.x.** Group/role header value that grants admin privileges |
+| `userGroups` | **v2.1.x.** If set, only users whose group/role header value is in this list may log in |
+| `groupsClaim` | **v2.1.x.** HTTP header name for the user's group/role (required when `userGroups` or `adminGroup` is set) |
 | `userIdentifier` | Field to use as username when not using the raw header value in composite setups |
 | `disableVerifyTLS` | Disable TLS verification for any outbound calls (testing only) |
 | `logoutRedirectUrl` | Optional URL to redirect after logout |
@@ -65,7 +65,7 @@ auth:
 
 ## Sources for proxy users
 
-Proxy users are auto-created on first successful header auth. Source access follows the callout at the top of this page. From **v2.1.0+**, proxy auth syncs group/role header values into the access-control GroupMap (write-through to the database), same as OIDC / LDAP / JWT.
+Proxy users are auto-created on first successful header auth. Source access follows the callout at the top of this page. From **v2.1.x**, proxy auth syncs group/role header values into the access-control GroupMap (write-through to the database), same as OIDC / LDAP / JWT.
 
 ## Example Use Cases
 
@@ -77,7 +77,7 @@ Proxy users are auto-created on first successful header auth. Source access foll
 
 <div class="pattern-card">
 
-## Cosmos Cloud Example (v2.1.0+)
+## Cosmos Cloud Example (v2.1.x)
 
 Cosmos Cloud sends a username header and a numeric role header (`0` = guest, `1` = user, `2` = admin):
 

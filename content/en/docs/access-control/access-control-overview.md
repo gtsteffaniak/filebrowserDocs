@@ -18,7 +18,7 @@ FileBrowser combines three separate ideas. Together they decide whether someone 
 
 Access rules refine **which paths** under a source are reachable once the user already has that source and sufficient **per-source permissions** for the action.
 
-**Storage quotas (v2.1.0+)** are a separate control: they limit how much data can be stored in a folder, user scope, or share link without changing who can see a path. See {{< doclink path="features/quotas/" text="Storage quotas (v2.1.0+)" />}}.
+**Storage quotas (v2.1.x)** are a separate control: they limit how much data can be stored in a folder, user scope, or share link without changing who can see a path. See {{< doclink path="features/quotas/" text="Storage quotas (v2.1.x)" />}}.
 
 {{% alert context="info" %}}
 **Access rules are not file permissions.** Allow/deny rules control path visibility. They do **not** replace **create**, **modify**, or **delete** on the user's scope — those are configured in **User management** (per user) and **Access management** (defaults and enforce). See {{< doclink path="features/user-permissions/" text="User permissions" />}}.
@@ -86,7 +86,7 @@ Access rules are configured in the admin UI or via the API: per user or group, p
 
 ## Next steps
 
-- {{< doclink path="features/quotas/" text="Storage quotas (v2.1.0+)" />}}
+- {{< doclink path="features/quotas/" text="Storage quotas (v2.1.x)" />}}
 - {{< doclink path="access-control/rules/" text="Access rules" />}}
 - {{< doclink path="access-control/troubleshooting/" text="Troubleshooting" />}}
 - {{< doclink path="configuration/users/" text="User management" />}}

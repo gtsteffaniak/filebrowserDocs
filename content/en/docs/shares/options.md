@@ -81,7 +81,7 @@ Allow modify, create, and delete only apply to **normal shares** when the source
 
 {{< fb-field label="Max Bandwidth" type="number" placeholder="kbps" help="The maximum download bandwidth in kbps. Leave empty for unlimited (normal shares only)." />}}
 
-{{< fb-toggle name="Limit storage through this share" help="Counts bytes uploaded through this share link (v2.1.0+). Uploads also count against the share owner's scope quota on that source, if one is set." />}}
+{{< fb-toggle name="Limit storage through this share" help="Counts bytes uploaded through this share link (v2.1.x). Uploads also count against the share owner's scope quota on that source, if one is set." />}}
 
 {{< fb-field label="Share Theme Color" type="text" placeholder="e.g., red, rgb(33,150,243)" help="CSS color value applied to the share theme." />}}
 
@@ -101,11 +101,11 @@ Allow modify, create, and delete only apply to **normal shares** when the source
 
 When **Only share to certain users** is enabled, enter comma-separated usernames (e.g., `john, mary, admin`).
 
-### Storage quota (v2.1.0+)
+### Storage quota (v2.1.x)
 
 For **upload shares** and normal shares with **allow create**, you can cap how much data may be uploaded through the link. When enabled, choose a preset limit (for example 1 GB or 10 GB) or enter a custom size in GB. The dialog shows **used / limit** while editing.
 
-Full behavior, measurement types, and admin folder limits are described in {{< doclink path="features/quotas/" text="Storage quotas (v2.1.0+)" />}}.
+Full behavior, measurement types, and admin folder limits are described in {{< doclink path="features/quotas/" text="Storage quotas (v2.1.x)" />}}.
 
 Paths for banner and favicon can be absolute URLs (`https://domain.com/image.png`) or index paths (`/path/to/image.png`).
 

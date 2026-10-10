@@ -117,7 +117,7 @@ server:
 
 Sources are indexed by default, which enables:
 - **Search functionality** - Fast full-text and filename search
-- **Folder size calculations** - Accurate directory size reporting (also used for **indexed-size storage quotas (v2.1.0+)**; use tracked usage when indexing is disabled — see {{< doclink path="features/quotas/" text="Storage quotas (v2.1.0+)" />}})
+- **Folder size calculations** - Accurate directory size reporting (also used for **indexed-size storage quotas (v2.1.x)**; use tracked usage when indexing is disabled — see {{< doclink path="features/quotas/" text="Storage quotas (v2.1.x)" />}})
 - **Folder previews** - Thumbnail previews for image directories
 - **Health monitoring** - Source statistics and health information
 

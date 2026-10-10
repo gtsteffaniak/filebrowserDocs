@@ -7,10 +7,10 @@ lastmod: "2026-08-24T17:05:51Z"
 order: 6
 ---
 
-Storage quotas (v2.1.0+) let you cap how much data can be stored in a specific place. When a cap applies, uploads that would exceed it are blocked and the UI shows how much space is used.
+Storage quotas (v2.1.x) let you cap how much data can be stored in a specific place. When a cap applies, uploads that would exceed it are blocked and the UI shows how much space is used.
 
 {{% alert context="warning" %}}
-**v2.1.0+ feature**
+**v2.1.x feature**
 
 Storage quotas require **FileBrowser Quantum v2.1.0 or newer**.
 {{% /alert %}}
@@ -132,7 +132,7 @@ Optional tuning for how often tracked usage counters are flushed to disk lives u
 
 ## Related documentation
 
-- {{< doclink path="features/indexing/" text="Indexing" />}} — folder sizes, scan behavior, and indexed-size quotas (v2.1.0+)
+- {{< doclink path="features/indexing/" text="Indexing" />}} — folder sizes, scan behavior, and indexed-size quotas (v2.1.x)
 - {{< doclink path="configuration/sources/" text="Sources" />}} — source setup, indexing-disabled sources, and `useLogicalSize`
 - {{< doclink path="advanced/source-configuration/sources/" text="Advanced source configuration" />}}
 - {{< doclink path="advanced/source-configuration/conditional-rules/" text="Conditional rules" />}} — rules that disable indexing (e.g. `viewable` on root)

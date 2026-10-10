@@ -61,7 +61,7 @@ sources:
           viewable: true          # allow viewing in the ui
 ```
 
-On sources where indexing is disabled, **folder and scope quotas (v2.1.0+)** can only use **tracked usage** measurement. See {{< doclink path="features/quotas/" text="Storage quotas (v2.1.0+)" />}}.
+On sources where indexing is disabled, **folder and scope quotas (v2.1.x)** can only use **tracked usage** measurement. See {{< doclink path="features/quotas/" text="Storage quotas (v2.1.x)" />}}.
 
 ## Rule Properties
 
@@ -334,4 +334,4 @@ sources:
 
 - {{< doclink path="advanced/source-configuration/sources/" text="Source Configuration" />}}
 - {{< doclink path="features/indexing/" text="Understanding Indexing" />}}
-- {{< doclink path="features/quotas/" text="Storage quotas (v2.1.0+)" />}} — measurement styles when indexing is on vs off
+- {{< doclink path="features/quotas/" text="Storage quotas (v2.1.x)" />}} — measurement styles when indexing is on vs off
