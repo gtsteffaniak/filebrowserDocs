@@ -21,7 +21,7 @@ FileBrowser Quantum uses SQLite as its indexing backend. This brings several imp
 - More detailed metadata can be indexed without memory concerns
 - Enables advanced features like persistent folder sizes and preview detection
 - Supports complex queries for search and filtering
-- Powers **indexed-size storage quotas (v2.1.0+)** (folder and scope limits that use folder size). For upload-only caps or indexing-disabled sources, use **tracked usage** instead — see {{< doclink path="features/quotas/" text="Storage quotas (v2.1.0+)" />}}.
+- Powers **indexed-size storage quotas (v2.1.x)** (folder and scope limits that use folder size). For upload-only caps or indexing-disabled sources, use **tracked usage** instead — see {{< doclink path="features/quotas/" text="Storage quotas (v2.1.x)" />}}.
 
 **Data Persistence**
 - Index data persists between restarts by default

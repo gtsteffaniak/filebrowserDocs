@@ -34,7 +34,7 @@ When upgrading, rename **`FILEBROWSER_DATABASE`** → **`FILEBROWSER_DATABASE_PA
 | `FILEBROWSER_JWT_TOKEN_SECRET` | `auth.key` | JWT signing key |
 | `FILEBROWSER_TOTP_SECRET` | `auth.totpSecret` | TOTP encryption secret |
 | `FILEBROWSER_RECAPTCHA_SECRET` | `auth.methods.password.recaptcha.secret` | reCAPTCHA secret key |
-| `FILEBROWSER_LDAP_USER_PASSWORD` | `auth.methods.ldap.userPassword` | LDAP bind (service account) password. Same on v1.5.x stable and v2.x beta. |
+| `FILEBROWSER_LDAP_USER_PASSWORD` | `auth.methods.ldap.userPassword` | LDAP bind (service account) password. Same on v1.5.x stable and v2.x. |
 | `FILEBROWSER_DISABLE_AUTOMATIC_BACKUP` | N/A | Disable automatic backup |
 
 

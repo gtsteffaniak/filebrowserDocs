@@ -952,7 +952,7 @@ frontend:
   name: "FileBrowser"
 ```
 
-`http.port` and `http.baseURL` are the listen settings on v2.0.0 and later. `auth.methods.password` is the password method on v1.5.6-stable and on v2. Top-level `auth.adminUsername` and `auth.adminPassword` are what v2.0.x reads. On v2.1.0-beta, `auth.methods.password.adminUsername` and `auth.methods.password.adminPassword` take priority when set. File-operation defaults belong under `server.sources[].config.defaultPermissions`, and global permissions belong under `userDefaults.account.permissions`.
+`http.port` and `http.baseURL` are the listen settings on v2.0.0 and later. `auth.methods.password` is the password method on v1.5.6-stable and on v2. Top-level `auth.adminUsername` and `auth.adminPassword` are what v2.0.x reads. On v2.1.x, `auth.methods.password.adminUsername` and `auth.methods.password.adminPassword` take priority when set. File-operation defaults belong under `server.sources[].config.defaultPermissions`, and global permissions belong under `userDefaults.account.permissions`.
 
 ## Next Steps
 

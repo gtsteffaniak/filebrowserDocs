@@ -61,7 +61,7 @@ Legacy flat keys (for example `hideFilesInTree`, `permissions.modify`) are no lo
 **Note**: Config `userDefaults` do not overwrite existing users after creation. They seed universal defaults for **new** users and the admin **User defaults** template in SQLite.
 {{% /alert %}}
 
-This shape is valid on **v2.0.0-beta** through **v2.1.0-beta**. Omit keys you want to leave at defaults. v2.1.0-beta also adds `listing.promptRightCloseButton`, `listing.newFileTemplate`, and `account.showAdvancedProfile`.
+This shape is valid on **v2.0.x** through **v2.1.x**. Omit keys you want to leave at defaults. v2.1.x also adds `listing.promptRightCloseButton`, `listing.newFileTemplate`, and `account.showAdvancedProfile`.
 
 ```yaml
 userDefaults:

@@ -38,7 +38,7 @@ filebrowser -c cfg
 filebrowser setup
 filebrowser version
 
-# Initialize or migrate the database without starting the server (v2.0.7-beta+)
+# Initialize or migrate the database without starting the server (v2.0.x)
 filebrowser init -c cfg
 ```
 

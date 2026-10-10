@@ -9,7 +9,7 @@ order: 3
 
 Sources are the core concept in FileBrowser - each source represents a file system location users can access.
 
-Indexing on each source provides folder sizes used by the UI and by **indexed-size storage quotas (v2.1.0+)**. Sources with indexing disabled only support **tracked usage** quotas (v2.1.0+). See {{< doclink path="features/quotas/" text="Storage quotas (v2.1.0+)" />}} and {{< doclink path="features/indexing/" text="Indexing" />}}.
+Indexing on each source provides folder sizes used by the UI and by **indexed-size storage quotas (v2.1.x)**. Sources with indexing disabled only support **tracked usage** quotas (v2.1.x). See {{< doclink path="features/quotas/" text="Storage quotas (v2.1.x)" />}} and {{< doclink path="features/indexing/" text="Indexing" />}}.
 
 {{% alert context="info" %}}
 **v2.0.0 source config**
@@ -272,7 +272,7 @@ server:
 
 ## Next Steps
 
-- {{< doclink path="features/quotas/" text="Storage quotas (v2.1.0+)" />}}
+- {{< doclink path="features/quotas/" text="Storage quotas (v2.1.x)" />}}
 - {{< doclink path="advanced/source-configuration/sources/" text="Advanced Source Configuration" />}}
 - {{< doclink path="configuration/authentication/" text="Configure authentication" />}}
 - {{< doclink path="configuration/users/" text="Manage users" />}}

@@ -29,7 +29,7 @@ Run FileBrowser Quantum **v2.0.0 (beta)** natively on Linux using the binary rel
    - `linux-arm64-filebrowser` (64-bit)
    - `linux-armv6-filebrowser` (32-bit)
    - `linux-armv7-filebrowser` (32-bit)
-   - `linux-riscv64-filebrowser` (64-bit RISC-V, v2.0.7-beta and later)
+   - `linux-riscv64-filebrowser` (64-bit RISC-V, v2.0.x)
 
 ## Make Executable
 

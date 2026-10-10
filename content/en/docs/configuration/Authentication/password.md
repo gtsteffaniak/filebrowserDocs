@@ -80,7 +80,7 @@ auth:
       adminPassword: "choose-a-password"
 ```
 
-## Require password change (v2.0.0)
+## Require password change (v2.0.x)
 
 Password-based users can be required to set a new password before any other login succeeds:
 
