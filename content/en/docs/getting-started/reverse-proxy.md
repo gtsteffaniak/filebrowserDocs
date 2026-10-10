@@ -1,6 +1,6 @@
 ---
 title: "Running behind a reverse proxy (v2.0.0)"
-description: "Configure FileBrowser v2.0.0 (beta) behind reverse proxies"
+description: "Configure FileBrowser v2.0.x (stable) behind reverse proxies"
 icon: "other_houses"
 date: "2025-10-28T22:14:01Z"
 lastmod: "2026-08-10T15:05:25Z"
@@ -8,12 +8,12 @@ order: 7
 ---
 
 {{% alert context="info" %}}
-**This guide is for v2.0.0 (beta).** Config examples use `http.baseURL` and `http.trustProxyHeaders`.
+**This guide is for v2.0.x (stable).** Config examples use `http.baseURL` and `http.trustProxyHeaders`.
 
 Using **v1.5.x or older**? See the {{< doclink path="getting-started/reverse-proxy-v1.5.x" text="v1.5.x reverse proxy guide" />}} instead.
 {{% /alert %}}
 
-Complete guide for running FileBrowser Quantum **v2.0.0 (beta)** behind reverse proxies including nginx, Traefik, and Caddy with authentication, SSL, and performance optimizations.
+Complete guide for running FileBrowser Quantum **v2.0.x (stable)** behind reverse proxies including nginx, Traefik, and Caddy with authentication, SSL, and performance optimizations.
 
 {{% alert context="info" %}}
 FileBrowser Quantum is designed to work seamlessly behind reverse proxies with proper configuration. This guide covers all major proxy types with complete examples.

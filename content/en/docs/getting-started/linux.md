@@ -1,6 +1,6 @@
 ---
 title: "Linux (v2.0.0)"
-description: "Install FileBrowser v2.0.0 (beta) on Linux"
+description: "Install FileBrowser v2.0.x (stable) on Linux"
 icon: "terminal"
 date: "2025-10-08T14:59:30Z"
 lastmod: "2026-10-04T17:20:00Z"
@@ -8,7 +8,7 @@ order: 2
 ---
 
 {{% alert context="info" %}}
-**This guide is for v2.0.0 (beta).** Download a **beta** release from GitHub.
+**This guide is for v2.0.x (stable).** Download a **stable** release from GitHub (or use `beta` for v2.1.x previews).
 
 Using **v1.5.x or older**? See the {{< doclink path="getting-started/linux-v1.5.x" text="v1.5.x Linux guide" />}} instead.
 {{% /alert %}}
@@ -19,7 +19,7 @@ Using **v1.5.x or older**? See the {{< doclink path="getting-started/linux-v1.5.
 v2.0.0 requires a config update and one-time database migration. See the {{< doclink path="getting-started/v2/migration/" text="v2 migration guide" />}} before upgrading.
 {{% /alert %}}
 
-Run FileBrowser Quantum **v2.0.0 (beta)** natively on Linux using the binary releases.
+Run FileBrowser Quantum **v2.0.x (stable)** natively on Linux using the binary releases.
 
 ## Download
 
@@ -29,7 +29,7 @@ Run FileBrowser Quantum **v2.0.0 (beta)** natively on Linux using the binary rel
    - `linux-arm64-filebrowser` (64-bit)
    - `linux-armv6-filebrowser` (32-bit)
    - `linux-armv7-filebrowser` (32-bit)
-   - `linux-riscv64-filebrowser` (64-bit RISC-V, v2.0.7-beta and later)
+   - `linux-riscv64-filebrowser` (64-bit RISC-V, v2.0.x and later)
 
 ## Make Executable
 
