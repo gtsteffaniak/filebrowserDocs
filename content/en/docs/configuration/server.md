@@ -43,6 +43,21 @@ server:
 
 <div class="pattern-card">
 
+### searchResultsLimit
+
+**v2.1.x** — Maximum indexed matches returned for one advanced search request (default: `1000`). The Advanced Search tool slider and `GET /api/tools/search?limit=…` are capped to this value. Quick search omits `limit` and stays at **100**; File Size Analyzer (`largest=true`) stays at **200**.
+
+```yaml
+server:
+  searchResultsLimit: 1000
+```
+
+See {{< doclink path="tools/advancedSearch/" text="Advanced Search" />}}.
+
+</div>
+
+<div class="pattern-card">
+
 ### disableUpdateCheck
 
 Disable backend update check service
