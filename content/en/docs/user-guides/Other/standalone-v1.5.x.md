@@ -11,7 +11,7 @@ This guide will help you set up your FileBrowser **v1.5.x** and earlier instance
 {{% alert context="info" %}}
 **This guide is for v1.5.x and older (stable).** It uses the `stable` Docker image and the **legacy database** (`database.db`) for the database.
 
-Looking for **v2.0.0 (beta)**? See the {{< doclink path="user-guides/other/standalone" text="v2.0.0 standalone guide" />}} instead.
+Looking for **v2.0.x (stable)**? See the {{< doclink path="user-guides/other/standalone" text="v2.0.x standalone guide" />}} instead.
 {{% /alert %}}
 
 {{% alert context="warning" %}}
