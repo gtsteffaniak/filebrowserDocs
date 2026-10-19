@@ -3,7 +3,7 @@ title: "Beta"
 description: "See what changed in beta versions"
 icon: "rocket_launch"
 date: "2026-07-02T23:17:05Z"
-lastmod: "2026-10-11T00:00:00Z"
+lastmod: "2026-10-13T00:00:00Z"
 ---
 
 {{% alert context="info" %}}
@@ -13,6 +13,24 @@ You can also check the releases on [GitHub!](https://github.com/gtsteffaniak/fil
 {{% alert context="warning" %}}
 **v2.0.0** requires a config update and one-time database migration from v1.x. See {{< doclink path="getting-started/v2/migration/" text="Migration guide" />}} and {{< doclink path="getting-started/v2/about/" text="About v2.0.0" />}}.
 {{% /alert %}}
+
+---
+
+## [v2.1.2-beta](https://github.com/gtsteffaniak/filebrowser/releases/tag/v2.1.2-beta)
+
+ **Security**:
+ - [High] New accounts named with ".." breaks out of scoped folder on creation (GHSA-c84q-q5g6-r47f) -- reporter [@dylanzonix](https://github.com/dylanzonix)
+ - [Medium] Fixed session token collision issue when multiple users login simultaneously. (GHSA-c9cr-w724-gqj3) ([pr #3135](https://github.com/gtsteffaniak/filebrowser/pull/3135)) Thanks [@dl-pt](https://github.com/dl-pt) reporters: [@Ishtiaque-Ahmed-Risat](https://github.com/Ishtiaque-Ahmed-Risat) [@AlexWhiplash](https://github.com/AlexWhiplash) [@tonghuaroot](https://github.com/tonghuaroot)
+
+ **Notes**:
+ - Removed "Editor quick save" setting (`userDefaults.fileViewer.quickSave`), the save button is now always present in the editor toolbar. ([pr #3122](https://github.com/gtsteffaniak/filebrowser/pull/3122))
+ - add Basque (eu) translation and fix Spanish (es) strings ([pr #3118](https://github.com/gtsteffaniak/filebrowser/pull/3118))
+
+ **Bug Fixes**:
+ - fix(webdav): OPTIONS now advertises only methods actually supported and permitted for the user; the DAV header reports class 1 only since LOCK/UNLOCK are not enabled ([issue #3110](https://github.com/gtsteffaniak/filebrowser/issues/3110))
+ - fix(download): revalidate single-file downloads so a changed file is not served stale ([pr #3133](https://github.com/gtsteffaniak/filebrowser/pull/3133))
+ - Language switcher not working ([issue #3114](https://github.com/gtsteffaniak/filebrowser/issues/3114)) ([pr #3117](https://github.com/gtsteffaniak/filebrowser/pull/3117))
+ - Viewer showing a stale image after the file changed on disk: single-file downloads are now revalidated by the browser ([issue #3132](https://github.com/gtsteffaniak/filebrowser/issues/3132))
 
 ---
 
