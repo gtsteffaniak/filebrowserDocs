@@ -33,6 +33,12 @@ When a user accesses a file or directory:
 2. **Recursive parent check** — Parent directories are checked up to the root.
 3. **Default behavior** — Access is granted if no rule applies, unless **denyByDefault** is enabled.
 
+### Path matching
+
+Starting in **v2.1.3** (beta) and **v2.0.2** (stable), access rule paths are matched **case-insensitively** on every source. Rules are stored in lowercase, so `/Private` and `/private` are the same rule.
+
+On upgrade, existing rules are normalized at startup: paths are lowercased, and rules that collide after normalization are merged (allow and deny lists are combined). On case-sensitive filesystems, one rule still applies to every case variant of that path — folders that differ only by letter case share the same rule.
+
 ### Rule precedence
 
 **More specific paths override broader ones.**
