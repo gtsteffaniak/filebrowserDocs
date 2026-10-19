@@ -8,7 +8,7 @@ lastmod: "2026-05-01T16:02:24Z"
 
 File viewer options control media playback, the text editor, markdown opening behavior, and which extensions use File Browser’s built-in viewer/editor versus downloads or other handlers (including OnlyOffice when configured). Users change them under **Settings → Profile** in the **File Viewer Options** section (when settings are not disabled for the account).
 
-Administrators can set defaults for new users with `userDefaults.preview.*`, `userDefaults.editorQuickSave`, `userDefaults.preferEditorForMarkdown`, `userDefaults.disableViewingExt`, `userDefaults.disableOnlyOfficeExt`, and `userDefaults.debugOffice`. Defaults do not retroactively change existing users.
+Administrators can set defaults for new users with `userDefaults.preview.*`, `userDefaults.fileViewer.editorQuickSave`, `userDefaults.preferEditorForMarkdown`, `userDefaults.disableViewingExt`, `userDefaults.disableOnlyOfficeExt`, and `userDefaults.debugOffice`. Defaults do not retroactively change existing users.
 
 For what each viewer supports (formats, editors, images, Office), see {{< doclink path="features/previewing-files/" text="Previewing files" />}}.
 
@@ -28,7 +28,11 @@ When enabled, compatible media starts playback automatically when you open it in
 
 ## Quick save button in editor
 
-**Configuration:** `userDefaults.editorQuickSave`
+**Configuration:** `userDefaults.fileViewer.editorQuickSave`
+
+{{% alert context="info" %}}
+Removed in v2.1.0+: the save button is always shown in the editor toolbar.
+{{% /alert %}}
 
 When enabled, the text editor prioritizes the save action so you always see the save control prominently.
 

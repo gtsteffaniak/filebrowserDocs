@@ -96,7 +96,7 @@ userDefaults:
     folder: true
     models: true
   fileViewer:
-    editorQuickSave: false
+    editorQuickSave: false  # v2.0.0+ only; removed in v2.1.0+
     autoplayMedia: true
     disableViewingExt: ""
     disableOnlyOfficeExt: ".md .txt .pdf .html .xml"
