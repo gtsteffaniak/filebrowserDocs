@@ -56,7 +56,7 @@ Directory-level control uses **allow** and **deny** rules attached to paths unde
 2. **Parent paths** — If nothing applies directly, parent directories are walked toward the root until a matching rule appears or the tree ends.
 3. **Default** — If no rule applies along that chain, access follows the source default (allow unless `denyByDefault` is enabled).
 
-Starting in **v2.1.3** (beta) and **v2.0.2** (stable), rule paths are matched case-insensitively on all sources (stored lowercase; colliding rules merged at startup on upgrade). See {{< doclink path="access-control/rules/#path-matching" text="Path matching" />}}.
+Starting in **v2.1.0+**, rule paths are matched case-insensitively on all sources (stored lowercase; colliding rules merged at startup on upgrade). **v2.0.x and earlier** match rule paths case-sensitively. See {{< doclink path="access-control/rules/#path-matching" text="Path matching" />}}.
 
 ## Rule precedence and overriding
 

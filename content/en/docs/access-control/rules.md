@@ -35,9 +35,9 @@ When a user accesses a file or directory:
 
 ### Path matching
 
-Starting in **v2.1.3** (beta) and **v2.0.2** (stable), access rule paths are matched **case-insensitively** on every source. Rules are stored in lowercase, so `/Private` and `/private` are the same rule.
+Starting in **v2.1.0+**, access rule paths are matched **case-insensitively** on every source. Rules are stored in lowercase, so `/Private` and `/private` are the same rule. On **v2.0.x and earlier**, rule paths are matched **case-sensitively** — the rule path must match the requested path exactly, including letter case.
 
-On upgrade, existing rules are normalized at startup: paths are lowercased, and rules that collide after normalization are merged (allow and deny lists are combined). On case-sensitive filesystems, one rule still applies to every case variant of that path — folders that differ only by letter case share the same rule.
+When you upgrade to **v2.1.0+**, existing rules are normalized at startup: paths are lowercased, and rules that collide after normalization are merged (allow and deny lists are combined). On case-sensitive filesystems, one rule still applies to every case variant of that path — folders that differ only by letter case share the same rule.
 
 ### Known limitation
 
