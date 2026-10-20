@@ -39,6 +39,10 @@ Starting in **v2.1.3** (beta) and **v2.0.2** (stable), access rule paths are mat
 
 On upgrade, existing rules are normalized at startup: paths are lowercased, and rules that collide after normalization are merged (allow and deny lists are combined). On case-sensitive filesystems, one rule still applies to every case variant of that path — folders that differ only by letter case share the same rule.
 
+### Known limitation
+
+Access rules are saved against the source's configured **`path`**. If you change that `path` in config, existing rules for the source no longer apply and must be recreated.
+
 ### Rule precedence
 
 **More specific paths override broader ones.**
