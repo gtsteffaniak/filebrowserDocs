@@ -42,6 +42,12 @@ defaultContentLanguageInSubdir = true
 [params]
     # Enable automatic ordering based purely on file system structure
     autoOrdering = true
+
+    # Site description (meta description, og:description, twitter:description)
+    description = "The best free self-hosted web-based file manager with source configuration, modern authentication, office support, and lightning-fast search."
+
+    # Default social/OG image fallback (used when a page has no featured image)
+    images = ["/images/logos/logo.png"]
     
     # Google Fonts - FileBrowser Quantum uses Roboto
     google_fonts = [
