@@ -3,12 +3,20 @@ title: "Stable"
 description: "See what changed in stable versions"
 icon: "api"
 date: "2026-07-02T23:17:05Z"
-lastmod: "2026-10-10T00:00:00Z"
+lastmod: "2026-10-13T00:00:00Z"
 ---
 
 {{% alert context="info" %}}
 You can also check the releases on [GitHub!](https://github.com/gtsteffaniak/filebrowser/releases)
 {{% /alert %}}
+
+---
+
+## [v2.0.1-stable](https://github.com/gtsteffaniak/filebrowser/releases/tag/v2.0.1-stable)
+
+ **Security**:
+ - [High] New accounts named with ".." breaks out of scoped folder on creation (GHSA-c84q-q5g6-r47f) -- reporter @dylanzonix
+ - [Medium] Fixed session token collision issue when multiple users login simultaneously. (GHSA-c9cr-w724-gqj3) ([pr #3135](https://github.com/gtsteffaniak/filebrowser/pull/3135)) Thanks @dl-pt reporters: @Ishtiaque-Ahmed-Risat @AlexWhiplash @tonghuaroot
 
 ---
 
