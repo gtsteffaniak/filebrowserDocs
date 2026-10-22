@@ -17,7 +17,7 @@ Check:
 1. User has source in scopes
 2. No deny rules blocking access
 3. denyByDefault is not set (or allow rules exist)
-4. Path is correct (case-sensitive)
+4. Rule path matches the directory (**v2.1.0+:** case-insensitive; **v2.0.x and earlier:** case-sensitive; see {{< doclink path="access-control/rules/#path-matching" text="Path matching" />}})
 
 ### Rules Not Taking Effect
 
@@ -25,3 +25,4 @@ Check:
 - Check rule specificity
 - Verify user is in expected groups
 - Review rule inheritance chain
+- Source **`path`** changed in config — rules are tied to the configured path; recreate them (see {{< doclink path="access-control/rules/#known-limitation" text="Known limitation" />}})
