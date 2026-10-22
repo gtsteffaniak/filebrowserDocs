@@ -71,21 +71,61 @@ for file in $(find "$contentDir" -name "*.md" -type f); do
         error_count=$((error_count + 1))
     fi
     
-    # Check for absolute links with language prefix (should use doclink) - warnings only
+    # Check for absolute links with language prefix (e.g. /en/docs/ or /es/docs/)
     if grep -qE '(href=["'\'']/[a-z-]+/docs/|]\(/[a-z-]+/docs/)' "$CLEANED" 2>/dev/null; then
-        grep -n -E '(href=["'\'']/[a-z-]+/docs/|]\(/[a-z-]+/docs/)' "$CLEANED" 2>/dev/null | while IFS=: read -r lineno line; do
-            # Extract the link
+        while IFS=: read -r lineno line; do
+            [ -z "$lineno" ] && continue
             if echo "$line" | grep -q 'href='; then
                 link=$(echo "$line" | sed -E 's/.*href=["'\'']([^"'\'']+)["'\''].*/\1/')
             else
                 link=$(echo "$line" | sed -E 's/.*\]\(([^)]+)\).*/\1/')
             fi
-            echo "⚠️  $file:$lineno"
-            echo "   Link with language prefix (consider using doclink shortcode):"
-            echo "   $link"
-            echo ""
-        done
-        warning_count=$((warning_count + 1))
+            link_clean=$(echo "$link" | sed -E 's/#.*//')
+            target_rel=$(echo "$link_clean" | sed -E 's|^/||')
+            target_path="$contentDir/$target_rel"
+            target_path="${target_path%/}"
+
+            if [ ! -f "$target_path" ] && [ ! -f "${target_path}.md" ] && [ ! -f "${target_path}/_index.md" ] && [ ! -f "${target_path}/index.md" ]; then
+                echo "❌ $file:$lineno"
+                echo "   Broken internal link destination (target not found: $target_path):"
+                echo "   $link"
+                echo ""
+                error_count=$((error_count + 1))
+            else
+                echo "⚠️  $file:$lineno"
+                echo "   Link with language prefix (consider using doclink shortcode):"
+                echo "   $link"
+                echo ""
+                warning_count=$((warning_count + 1))
+            fi
+        done < <(grep -n -E '(href=["'\'']/[a-z-]+/docs/|]\(/[a-z-]+/docs/)' "$CLEANED" 2>/dev/null || true)
+    fi
+
+    # Check for relative markdown links and verify target existence
+    if grep -qE '\]\([^)]+\)' "$CLEANED" 2>/dev/null; then
+        while IFS=: read -r lineno line; do
+            [ -z "$lineno" ] && continue
+            link=$(echo "$line" | sed -E 's/.*\]\(([^)]+)\).*/\1/')
+            case "$link" in
+                http://*|https://*|mailto:*|"#"*|tel:*|/*)
+                    ;;
+                *)
+                    link_clean=$(echo "$link" | sed -E 's/#.*//')
+                    if [ -n "$link_clean" ]; then
+                        file_dir=$(dirname "$file")
+                        target="$file_dir/$link_clean"
+                        target="${target%/}"
+                        if [ ! -f "$target" ] && [ ! -f "${target}.md" ] && [ ! -f "${target}/_index.md" ] && [ ! -f "${target}/index.md" ]; then
+                            echo "❌ $file:$lineno"
+                            echo "   Broken relative link destination (target not found: $target):"
+                            echo "   $link"
+                            echo ""
+                            error_count=$((error_count + 1))
+                        fi
+                    fi
+                    ;;
+            esac
+        done < <(grep -n -E '\]\([^)]+\)' "$CLEANED" 2>/dev/null || true)
     fi
     
     rm -f "$CLEANED"
