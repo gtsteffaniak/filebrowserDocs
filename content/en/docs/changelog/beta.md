@@ -3,7 +3,7 @@ title: "Beta"
 description: "See what changed in beta versions"
 icon: "rocket_launch"
 date: "2026-07-02T23:17:05Z"
-lastmod: "2026-10-13T00:00:00Z"
+lastmod: "2026-10-26T00:00:00Z"
 ---
 
 {{% alert context="info" %}}
@@ -13,6 +13,61 @@ You can also check the releases on [GitHub!](https://github.com/gtsteffaniak/fil
 {{% alert context="warning" %}}
 **v2.0.0** requires a config update and one-time database migration from v1.x. See {{< doclink path="getting-started/v2/migration/" text="Migration guide" />}} and {{< doclink path="getting-started/v2/about/" text="About v2.0.0" />}}.
 {{% /alert %}}
+
+---
+
+## [v2.1.3-beta](https://github.com/gtsteffaniak/filebrowser/releases/tag/v2.1.3-beta)
+
+**Reminder**: consider enabling analytics (it's like steam survey) in admin settings, I will release this dashboard once I have a consistent 100+ reports each week
+
+ **Security**:
+ - [Moderate] Passkey registration and deletion now require the account password when a passkey is already configured, and passkeys cannot be altered through generic user profile PATCH (GHSA-r744-4vm3-2px3) reporter @tonghuaroot
+ - [Medium] Storage quota accounting now records upload byte deltas using the pre-replace file size, and upload paths without size metadata or with resumed chunk offsets cannot skip quota checks (GHSA-m57f-66qj-8jxg) reporter @jayhemnani9910
+ - [High] Sources marked `readOnly` are now enforced on WebDAV writes, server-side archive/unarchive, and OnlyOffice save callbacks (GHSA-4v62-884x-2466) reporter @anpryl
+ - [Moderate] Moving or renaming a folder updates only shares whose paths are under the moved prefix, preserving per-file share roots instead of retargeting unrelated substring matches (GHSA-26fh-r34c-qxh6) reporters @jayhemnani9910 @dylanzonix
+ - [Moderate] WebDAV PUT now requires Create permission when the target path does not yet exist, so Modify-only users cannot create new files (GHSA-8655-2ph3-q7q7) reporter @levanduy181
+ - [Low] Failed-login lockout and auth rate limits now use the rightmost `X-Forwarded-For` hop when proxy headers are trusted, so a client cannot spoof the client IP with a leftmost forwarded value (GHSA-wjp8-g49g-xrhx) reporter @LECOQQ
+ - [Low] Duplicate finder results are cached per requesting user so filtered file names from one account are not served to another (GHSA-4fhx-8pf6-5gmr) reporter @Nazarami
+ - [Moderate] Authenticated `GET /api/resources/view` no longer accepts view tokens minted for a public share when the caller lacks view permission on the requested source (GHSA-wxj5-g3qp-g732) reporter @BlueN0r
+ - [Moderate] SSE source-update and user-targeted delivery hold the client registry lock through nonblocking sends, preventing concurrent map mutation and send-on-closed-channel panics when Realtime clients connect, disconnect, or shut down (GHSA-p9wm-f5jj-75pj) reporter @tao0845
+ - [High] Incomplete symlink-containment remediation: an authenticated non-admin user could create a relative symlink via archive extraction, relocate it with WebDAV MOVE, and write through it to arbitrary host paths with the service account's privileges (GHSA-3j46-5w28-f8p2) reporters @Saku0512 @HuzaifaDal
+ - [Moderate] Source-root containment bypass: create, write, delete, and move operations now resolve symlinks uncached and enforce the caller's scope, closing escapes through pre-existing out-of-source symlinks on upload, PUT, PATCH, delete, and WebDAV endpoints (GHSA-j764-qg3m-rhv7) reporter @chaoming0625
+ - [Moderate] Preview reads resolve symlinks within the caller's scope so authenticated preview cannot follow an out-of-scope symlink target (GHSA-g2q5-r6ch-v25f) reporters @tao0845 @Ly0nt4r
+ - [Moderate] Archive downloads and extraction no longer read or write through symlinks that resolve outside the caller's share or user scope; escaping archive-walk entries are skipped (GHSA-qqf3-2wvq-q4w9) reporter @SmokinCaterpillar
+ - [Moderate] Share directory-archive downloads now apply the share owner's access rules to every entry, closing a bypass where anonymous share visitors could download admin-denied content (GHSA-9fcr-gm58-p839) reporter @Tan-JunWei
+ - [Moderate] Access rule paths are stored and matched case-insensitively so rules cannot be bypassed via path casing on case-insensitive filesystems; existing rules are migrated at startup (GHSA-4vrc-935w-xxq2) reporter @FrogApprentice
+ - [High] Stored XSS in the File Size Analyzer tooltip via unescaped `v-html` with a nonce-CSP bypass through an allowlisted CDN; Tooltip, Generic, and OfficeDebug prompts no longer render HTML (GHSA-rmjp-pfrq-cc3v) ([#3199](https://github.com/gtsteffaniak/filebrowser/pull/3199)) reporter @U3RhcnQ thanks @Kurami32
+ - [Medium] Unarchive extraction could write into folders denied by access rules and overwrite files without modify permission; extraction now enforces access rules and modify permission on every entry (GHSA-p93p-v944-4p44) ([#3203](https://github.com/gtsteffaniak/filebrowser/pull/3203)) reporter @jayhemnani9910
+
+ **New Features**:
+ - chunked uploads for large files like rclone `--owncloud-chunk-size` ([#3112](https://github.com/gtsteffaniak/filebrowser/pull/3112)) @paoValle
+ - File tree sorting is now alphabetical with pinned indicators ([#3154](https://github.com/gtsteffaniak/filebrowser/pull/3154)) @Kurami32
+
+ **Notes**:
+ - Markdown math rendering now uses Temml (MathML) instead of KaTeX; frontend and backend dependencies updated ([#3241](https://github.com/gtsteffaniak/filebrowser/pull/3241))
+ - WebDAV upload handling hardening ([#3151](https://github.com/gtsteffaniak/filebrowser/pull/3151))
+ - Listing highlight now follows the item shown by next/previous navigation ([#3156](https://github.com/gtsteffaniak/filebrowser/pull/3156)) @Kurami32
+ - Updated frontend dependencies ([#3228](https://github.com/gtsteffaniak/filebrowser/pull/3228)) @Kurami32
+ - Dev: fixed vite warnings and dev-server origin restriction ([#3155](https://github.com/gtsteffaniak/filebrowser/pull/3155)) @Kurami32, updated linting and tests on macOS ([#3231](https://github.com/gtsteffaniak/filebrowser/pull/3231)), fixed markdown screenshot tests ([#3171](https://github.com/gtsteffaniak/filebrowser/pull/3171))
+
+ **Bug Fixes**:
+ - keep requested permissions when creating a user ([#3130](https://github.com/gtsteffaniak/filebrowser/pull/3130)) @jayhemnani9910, including partial global permissions on API create ([#3165](https://github.com/gtsteffaniak/filebrowser/pull/3165)) ([#3171](https://github.com/gtsteffaniak/filebrowser/pull/3171))
+ - add missing file modify logging to activity viewer ([#3152](https://github.com/gtsteffaniak/filebrowser/pull/3152)), including uploads and deletes made through a share ([#3166](https://github.com/gtsteffaniak/filebrowser/pull/3166)) @jayhemnani9910
+ - fix(frontend): restore upload prompt close, tab-reload, and in-app navigation guards while uploads are active (including paused uploads) ([#3220](https://github.com/gtsteffaniak/filebrowser/pull/3220)) ([#3222](https://github.com/gtsteffaniak/filebrowser/pull/3222))
+ - fix(frontend): load the default source when browsing `/files/` with a single configured source ([#3215](https://github.com/gtsteffaniak/filebrowser/pull/3215)) ([#3178](https://github.com/gtsteffaniak/filebrowser/issues/3178)) (related: [#3143](https://github.com/gtsteffaniak/filebrowser/issues/3143), [#3144](https://github.com/gtsteffaniak/filebrowser/issues/3144))
+ - Path picker list and thumbnails not working in shares in the markdown editor ([#3223](https://github.com/gtsteffaniak/filebrowser/pull/3223)) @Kurami32.
+ - perf(indexing): single statx per Linux directory entry ([#3230](https://github.com/gtsteffaniak/filebrowser/pull/3230)) ([#1890](https://github.com/gtsteffaniak/filebrowser/issues/1890))
+ - fix(indexing): resume the persisted scan schedule on startup ([#3225](https://github.com/gtsteffaniak/filebrowser/pull/3225)) @paoValle
+ - fix(webdav): free the deleted bytes from the quota counters ([#3160](https://github.com/gtsteffaniak/filebrowser/pull/3160)) @paoValle
+ - fix: upload session not released after a successful single-file upload ([#3186](https://github.com/gtsteffaniak/filebrowser/pull/3186)) @anonymous-writer
+ - fix: preserve file permissions when saving edits ([#3159](https://github.com/gtsteffaniak/filebrowser/pull/3159)) @oodadoudou
+ - fix(auth): preserve admin source scope with createUserDir ([#3125](https://github.com/gtsteffaniak/filebrowser/pull/3125)) @SomSamantray
+ - fix(settings): don't panic when config has no server map ([#3176](https://github.com/gtsteffaniak/filebrowser/pull/3176)) @HawkForge
+ - fix(frontend): hide write actions in read-only sources ([#3149](https://github.com/gtsteffaniak/filebrowser/pull/3149)) @anpryl
+ - fix(frontend): hide activity, quota, and access buttons in the Info prompt inside shares ([#3224](https://github.com/gtsteffaniak/filebrowser/pull/3224)) @Kurami32
+ - fix(share): honor userDefaults singleClick for anonymous shares ([#3147](https://github.com/gtsteffaniak/filebrowser/pull/3147)) @vulragrag-star
+ - fix(markdown): missing creation time and tiny font on markdown viewer code blocks ([#3157](https://github.com/gtsteffaniak/filebrowser/pull/3157)) @Kurami32
+ - assorted CodeRabbit review findings on the v2.1.3 beta ([#3240](https://github.com/gtsteffaniak/filebrowser/pull/3240))
 
 ---
 
