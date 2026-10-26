@@ -228,7 +228,7 @@ docker run -it --rm \
   ./filebrowser user set newuser --password password -c /home/filebrowser/data/config.yaml
 ```
 
-Mount the data directory, not a single database file. Official images keep config and the database under `/home/filebrowser/data` (`FILEBROWSER_CONFIG`). **v1.5.x (stable)** stores `database.db` there. **v2.0.0+ (beta)** stores `database.sqlite` there unless `server.database.path` is set. Use the `beta` image tag when the data directory is a v2 install.
+Mount the data directory, not a single database file. Official images keep config and the database under `/home/filebrowser/data` (`FILEBROWSER_CONFIG`). **v1.5.x (stable)** stores `database.db` there. **v2.0.0+ (stable or beta)** stores `filebrowser.sqlite` there unless `server.database.path` is set. Use the `stable` image tag (or a `2.0-stable` pin) for v2.0.x installs and `beta` (or `2.1-beta`) for v2.1.x previews — see {{< doclink path="getting-started/version/" text="release channels" />}}.
 
 ## Common Operations
 
