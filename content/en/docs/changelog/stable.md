@@ -17,15 +17,15 @@ You can also check the releases on [GitHub!](https://github.com/gtsteffaniak/fil
 **Tip:** Consider enabling analytics (it's like steam survey) in admin settings, I will release this dashboard once I have a consistent 100+ reports each week
 
  **Security**:
- - [High] apply stored permission caps for customized API tokens with no global flags enabled; minimal tokens still inherit the owner's permissions (GHSA-gfgm-886h-6r47) reporter @thakrarsagar
- - [Low] SSE source-update and user-targeted delivery hold the client registry lock through nonblocking sends, preventing concurrent map mutation and send-on-closed-channel panics when Realtime clients connect, disconnect, or shut down (GHSA-p9wm-f5jj-75pj) reporter @tao0845
- - [Moderate] Moving or renaming a folder updates only shares whose paths are under the moved prefix, preserving per-file share roots instead of retargeting unrelated substring matches (GHSA-26fh-r34c-qxh6) reporters @jayhemnani9910 @dylanzonix
- - [High] File Size Analyzer hover tooltips render file paths as plain text instead of HTML, closing stored XSS via crafted file names (GHSA-rmjp-pfrq-cc3v) reporter @U3RhcnQ
- - [Moderate] Passkey registration and deletion now require the account password when a passkey is already configured, and passkeys cannot be altered through generic user profile PATCH (GHSA-r744-4vm3-2px3) reporter @tonghuaroot
- - [Moderate] Authenticated GET /api/resources/view no longer accepts view tokens minted for a public share when the caller lacks view permission on the requested source (GHSA-wxj5-g3qp-g732) reporter @BlueN0r
- - [Low] Duplicate finder results are cached per requesting user so filtered file names from one account are not served to another (GHSA-4fhx-8pf6-5gmr) reporter @Nazarami
- - [Moderate] WebDAV PUT now requires Create permission when the target path does not yet exist, so Modify-only users cannot create new files (GHSA-8655-2ph3-q7q7) reporter @levanduy181
- - [Low] Failed-login lockout and auth rate limits now use the rightmost `X-Forwarded-For` hop when proxy headers are trusted, so a client cannot spoof the client IP with a leftmost forwarded value (GHSA-wjp8-g49g-xrhx) reporter @LECOQQ
+ - [High] apply stored permission caps for customized API tokens with no global flags enabled; minimal tokens still inherit the owner's permissions (GHSA-gfgm-886h-6r47) reporter [@thakrarsagar](https://github.com/thakrarsagar)
+ - [Low] SSE source-update and user-targeted delivery hold the client registry lock through nonblocking sends, preventing concurrent map mutation and send-on-closed-channel panics when Realtime clients connect, disconnect, or shut down (GHSA-p9wm-f5jj-75pj) reporter [@tao0845](https://github.com/tao0845)
+ - [Moderate] Moving or renaming a folder updates only shares whose paths are under the moved prefix, preserving per-file share roots instead of retargeting unrelated substring matches (GHSA-26fh-r34c-qxh6) reporters [@jayhemnani9910](https://github.com/jayhemnani9910) [@dylanzonix](https://github.com/dylanzonix)
+ - [High] File Size Analyzer hover tooltips render file paths as plain text instead of HTML, closing stored XSS via crafted file names (GHSA-rmjp-pfrq-cc3v) reporter [@U3RhcnQ](https://github.com/U3RhcnQ)
+ - [Moderate] Passkey registration and deletion now require the account password when a passkey is already configured, and passkeys cannot be altered through generic user profile PATCH (GHSA-r744-4vm3-2px3) reporter [@tonghuaroot](https://github.com/tonghuaroot)
+ - [Moderate] Authenticated GET /api/resources/view no longer accepts view tokens minted for a public share when the caller lacks view permission on the requested source (GHSA-wxj5-g3qp-g732) reporter [@BlueN0r](https://github.com/BlueN0r)
+ - [Low] Duplicate finder results are cached per requesting user so filtered file names from one account are not served to another (GHSA-4fhx-8pf6-5gmr) reporter [@Nazarami](https://github.com/Nazarami)
+ - [Moderate] WebDAV PUT now requires Create permission when the target path does not yet exist, so Modify-only users cannot create new files (GHSA-8655-2ph3-q7q7) reporter [@levanduy181](https://github.com/levanduy181)
+ - [Low] Failed-login lockout and auth rate limits now use the rightmost `X-Forwarded-For` hop when proxy headers are trusted, so a client cannot spoof the client IP with a leftmost forwarded value (GHSA-wjp8-g49g-xrhx) reporter [@LECOQQ](https://github.com/LECOQQ)
 
  **Bug Fixes**:
  - Preview generation for WebP images (encode as JPEG thumbnail) ([#3259](https://github.com/gtsteffaniak/filebrowser/pull/3259), [#3254](https://github.com/gtsteffaniak/filebrowser/issues/3254))
@@ -45,8 +45,8 @@ You can also check the releases on [GitHub!](https://github.com/gtsteffaniak/fil
 ## [v2.0.1-stable](https://github.com/gtsteffaniak/filebrowser/releases/tag/v2.0.1-stable)
 
  **Security**:
- - [High] New accounts named with ".." breaks out of scoped folder on creation (GHSA-c84q-q5g6-r47f) -- reporter @dylanzonix
- - [Medium] Fixed session token collision issue when multiple users login simultaneously. (GHSA-c9cr-w724-gqj3) ([pr #3135](https://github.com/gtsteffaniak/filebrowser/pull/3135)) Thanks @dl-pt reporters: @Ishtiaque-Ahmed-Risat @AlexWhiplash @tonghuaroot
+ - [High] New accounts named with ".." breaks out of scoped folder on creation (GHSA-c84q-q5g6-r47f) -- reporter [@dylanzonix](https://github.com/dylanzonix)
+ - [Medium] Fixed session token collision issue when multiple users login simultaneously. (GHSA-c9cr-w724-gqj3) ([pr #3135](https://github.com/gtsteffaniak/filebrowser/pull/3135)) Thanks [@dl-pt](https://github.com/dl-pt) reporters: [@Ishtiaque-Ahmed-Risat](https://github.com/Ishtiaque-Ahmed-Risat) [@AlexWhiplash](https://github.com/AlexWhiplash) [@tonghuaroot](https://github.com/tonghuaroot)
 
 ---
 
