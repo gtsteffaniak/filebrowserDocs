@@ -3,13 +3,13 @@ title: "About FileBrowser Quantum"
 description: "Learn about FileBrowser Quantum"
 icon: "info"
 date: "2025-10-08T14:59:30Z"
-lastmod: "2026-09-09T23:07:19Z"
+lastmod: "2026-10-26T00:00:00Z"
 ---
 
 Learn about FileBrowser Quantum - the best free self-hosted web-based file manager.
 
 {{% alert context="info" %}}
-**v2.0.0 is now in beta!** See {{< doclink path="getting-started/v2/about/" text="About v2.0.0" />}} for what's new and migration steps.
+**v2.0.x is on the stable release channel.** See {{< doclink path="getting-started/v2/about/" text="About v2.0.0" />}} for what's new and the {{< doclink path="getting-started/v2/migration/" text="v2 migration guide" />}} if you are upgrading from v1.x.
 {{% /alert %}}
 
 ## Overview
@@ -74,8 +74,9 @@ FileBrowser Quantum uses **SQLite-based indexing** — metadata is stored on dis
 
 ## Current Status
 
-- **v2.0.0** is in beta — the largest upgrade to date! See {{< doclink path="getting-started/v2/about/" text="About v2.0.0" />}}
-- **Stable releases** are available on the main release channel
+- **v2.0.x (`stable`)** is the current major line for new v2 installs (latest: **v2.0.2-stable**). See {{< doclink path="getting-started/v2/about/" text="About v2.0.0" />}} and {{< doclink path="getting-started/version/" text="Which version should I use?" />}}
+- **v2.1.x (`beta`)** previews features ahead of v2.0.x stable
+- **v1.5.x (`stable`)** remains available for deployments that have not migrated yet
 
 See [latest announcements](https://github.com/gtsteffaniak/filebrowser/discussions) for updates.
 
