@@ -3,14 +3,14 @@ title: "Which version should I use?"
 description: "Understanding stable vs beta releases and v1.5.x vs v2.0.0"
 icon: "numbers"
 date: "2025-10-28T22:14:01Z"
-lastmod: "2026-10-13T00:00:00Z"
+lastmod: "2026-10-26T00:00:00Z"
 order: 5
 ---
 
 FileBrowser Quantum comes with two release channels (**stable** and **beta**) across **v1.5.x**, **v2.0.x**, and **v2.1.x**. Choosing the right version is an important first step.
 
 {{% alert context="info" %}}
-**Current state:** **v2.0.x** and **v1.5.x** both ship on the `stable` channel (**v2.0.1-stable** is the latest v2 stable release). **v2.1.x** is on the `beta` channel ahead of stable. Upgrading from v1.x to v2.0.x requires a one-time migration — see {{< doclink path="getting-started/v2/migration/" text="v2 migration guide" />}} before changing tags.
+**Current state:** **v2.0.x** and **v1.5.x** both ship on the `stable` channel (**v2.0.2-stable** is the latest v2 stable release). **v2.1.x** is on the `beta` channel (**v2.1.3-beta** is the latest beta release) ahead of stable. Upgrading from v1.x to v2.0.x requires a one-time migration — see {{< doclink path="getting-started/v2/migration/" text="v2 migration guide" />}} before changing tags.
 {{% /alert %}}
 
 {{% alert context="success" %}}
@@ -21,7 +21,7 @@ FileBrowser Quantum comes with two release channels (**stable** and **beta**) ac
 
 ### Stable Release (v1.5.x and v2.0.x)
 
-The `stable` release build is the most reliable version as the name implies. It currently includes **v2.0.x** (latest: **v2.0.1-stable**) and **v1.5.x** maintenance releases. It gets updated less frequently than beta, and is ideal for:
+The `stable` release build is the most reliable version as the name implies. It currently includes **v2.0.x** (latest: **v2.0.2-stable**) and **v1.5.x** maintenance releases. It gets updated less frequently than beta, and is ideal for:
 
 - Those getting started with FileBrowser Quantum
 - Users with a userbase that doesn't want to see occasional bugs
@@ -30,7 +30,7 @@ The `stable` release build is the most reliable version as the name implies. It 
 
 ### Beta Release (v2.1.x)
 
-The `beta` release build currently tracks **v2.1.x** (features ahead of **v2.0.x** stable) and is ideal for those who:
+The `beta` release build currently tracks **v2.1.x** (latest: **v2.1.3-beta**, features ahead of **v2.0.x** stable) and is ideal for those who:
 
 - Don't have a large userbase
 - Want the latest features immediately
