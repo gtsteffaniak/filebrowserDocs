@@ -3,7 +3,7 @@ title: "About"
 description: "About the v2.0.0 release and what changed"
 icon: "info"
 date: "2026-07-23T17:03:27Z"
-lastmod: "2026-08-07T19:31:41Z"
+lastmod: "2026-10-26T00:00:00Z"
 order: 0
 ---
 
@@ -23,7 +23,7 @@ v2.0.0 replaces that layout with a structured on-disk database and a dedicated s
 
 ## Feature spotlights
 
-The guides below cover v2.0.0's largest additions in depth. For the full release list — media player updates, WebDAV, CLI changes, breaking changes, and more — see the {{< doclink path="changelog/beta/#v200" text="beta changelog" />}}.
+The guides below cover v2.0.0's largest additions in depth. For the full release list — media player updates, WebDAV, CLI changes, breaking changes, and more — see the {{< doclink path="changelog/stable/#v200-stable" text="v2.0.0-stable release notes" />}}.
 
 <div class="feature-spotlight-grid">
 
@@ -47,7 +47,7 @@ Audit log with charts and CSV export — what is recorded, retention, and report
 v2.0.0 includes many breaking changes. Read the release notes carefully before upgrading.
 {{% /alert %}}
 
-Review the full list in the {{< doclink path="changelog/beta/#v200" text="v2.0.0 release notes" />}} and make sure you understand what affects your deployment before upgrading. The {{< doclink path="getting-started/v2/migration/" text="migration guide" />}} walks through the upgrade steps.
+Review the full list in the {{< doclink path="changelog/stable/#v200-stable" text="v2.0.0-stable release notes" />}} and make sure you understand what affects your deployment before upgrading. The {{< doclink path="getting-started/v2/migration/" text="migration guide" />}} walks through the upgrade steps.
 
 ## API and response cleanup
 
@@ -105,7 +105,7 @@ Every change is written through to the on-disk database, so restarts recover a c
 
 ## Next steps
 
-- {{< doclink path="changelog/beta/" text="Beta changelog" />}} — full v2.0.0 feature and fix list
+- {{< doclink path="changelog/stable/#v200-stable" text="v2.0.0-stable changelog" />}} — full v2.0.0 feature and fix list (newer stable patches: {{< doclink path="changelog/stable/" text="stable changelog" />}}; v2.1 previews: {{< doclink path="changelog/beta/" text="beta changelog" />}})
 - {{< doclink path="getting-started/v2/migration/" text="Migration guide" />}} — step-by-step upgrade from v1.x
 - {{< doclink path="features/user-permissions/" text="User permissions" />}} — per-source view/download/modify/create/delete
 - {{< doclink path="features/user-defaults/" text="User defaults" />}} — enforceable profile template
