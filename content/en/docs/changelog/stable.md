@@ -3,12 +3,42 @@ title: "Stable"
 description: "See what changed in stable versions"
 icon: "api"
 date: "2026-07-02T23:17:05Z"
-lastmod: "2026-10-13T00:00:00Z"
+lastmod: "2026-10-26T00:00:00Z"
 ---
 
 {{% alert context="info" %}}
 You can also check the releases on [GitHub!](https://github.com/gtsteffaniak/filebrowser/releases)
 {{% /alert %}}
+
+---
+
+## [v2.0.2-stable](https://github.com/gtsteffaniak/filebrowser/releases/tag/v2.0.2-stable)
+
+**Tip:** Consider enabling analytics (it's like steam survey) in admin settings, I will release this dashboard once I have a consistent 100+ reports each week
+
+ **Security**:
+ - [High] apply stored permission caps for customized API tokens with no global flags enabled; minimal tokens still inherit the owner's permissions (GHSA-gfgm-886h-6r47) reporter [@thakrarsagar](https://github.com/thakrarsagar)
+ - [Low] SSE source-update and user-targeted delivery hold the client registry lock through nonblocking sends, preventing concurrent map mutation and send-on-closed-channel panics when Realtime clients connect, disconnect, or shut down (GHSA-p9wm-f5jj-75pj) reporter [@tao0845](https://github.com/tao0845)
+ - [Moderate] Moving or renaming a folder updates only shares whose paths are under the moved prefix, preserving per-file share roots instead of retargeting unrelated substring matches (GHSA-26fh-r34c-qxh6) reporters [@jayhemnani9910](https://github.com/jayhemnani9910) [@dylanzonix](https://github.com/dylanzonix)
+ - [High] File Size Analyzer hover tooltips render file paths as plain text instead of HTML, closing stored XSS via crafted file names (GHSA-rmjp-pfrq-cc3v) reporter [@U3RhcnQ](https://github.com/U3RhcnQ)
+ - [Moderate] Passkey registration and deletion now require the account password when a passkey is already configured, and passkeys cannot be altered through generic user profile PATCH (GHSA-r744-4vm3-2px3) reporter [@tonghuaroot](https://github.com/tonghuaroot)
+ - [Moderate] Authenticated GET /api/resources/view no longer accepts view tokens minted for a public share when the caller lacks view permission on the requested source (GHSA-wxj5-g3qp-g732) reporter [@BlueN0r](https://github.com/BlueN0r)
+ - [Low] Duplicate finder results are cached per requesting user so filtered file names from one account are not served to another (GHSA-4fhx-8pf6-5gmr) reporter [@Nazarami](https://github.com/Nazarami)
+ - [Moderate] WebDAV PUT now requires Create permission when the target path does not yet exist, so Modify-only users cannot create new files (GHSA-8655-2ph3-q7q7) reporter [@levanduy181](https://github.com/levanduy181)
+ - [Low] Failed-login lockout and auth rate limits now use the rightmost `X-Forwarded-For` hop when proxy headers are trusted, so a client cannot spoof the client IP with a leftmost forwarded value (GHSA-wjp8-g49g-xrhx) reporter [@LECOQQ](https://github.com/LECOQQ)
+
+ **Bug Fixes**:
+ - Preview generation for WebP images (encode as JPEG thumbnail) ([#3259](https://github.com/gtsteffaniak/filebrowser/pull/3259), [#3254](https://github.com/gtsteffaniak/filebrowser/issues/3254))
+ - Public share pages show configured banner when API returns `bannerUrl` ([#3250](https://github.com/gtsteffaniak/filebrowser/pull/3250), [#3246](https://github.com/gtsteffaniak/filebrowser/issues/3246))
+ - Tar extraction creates hard-linked files instead of skipping `TypeLink` entries ([#3234](https://github.com/gtsteffaniak/filebrowser/pull/3234))
+ - Embedded JPEG previews for additional RAW/camera formats (ARW, RW2, RAW, RWL) ([#3243](https://github.com/gtsteffaniak/filebrowser/pull/3243))
+ - fix(preview): generate WebP image previews by encoding thumbnails as JPEG ([#3259](https://github.com/gtsteffaniak/filebrowser/pull/3259)) ([#3254](https://github.com/gtsteffaniak/filebrowser/issues/3254))
+ - fix(frontend): show configured share banner on public share pages when API returns `bannerUrl` ([#3250](https://github.com/gtsteffaniak/filebrowser/pull/3250)) ([#3246](https://github.com/gtsteffaniak/filebrowser/issues/3246))
+ - fix(archive): extract tar hard-linked files instead of skipping `TypeLink` entries ([#3234](https://github.com/gtsteffaniak/filebrowser/pull/3234))
+ - fix(preview): embedded JPEG previews for additional RAW/camera formats (RTF, RW2, RAW, RWL) ([#3243](https://github.com/gtsteffaniak/filebrowser/pull/3243))
+ - fix(frontend): keep source named `files` in `extractSourceFromPath` ([#3143](https://github.com/gtsteffaniak/filebrowser/issues/3143), [#3099](https://github.com/gtsteffaniak/filebrowser/pull/3099))
+ - fix(frontend): load the default source when browsing `/files/` with a single configured source ([#3178](https://github.com/gtsteffaniak/filebrowser/issues/3178)) (related: [#3144](https://github.com/gtsteffaniak/filebrowser/issues/3144))
+ - fix(frontend): restore upload prompt close, tab-reload, and in-app navigation guards while uploads are active (including paused uploads)
 
 ---
 
