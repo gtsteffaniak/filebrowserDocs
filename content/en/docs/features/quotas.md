@@ -3,7 +3,7 @@ title: "Storage Quotas"
 description: "Limit how much storage users, folders, and share links can use"
 icon: "storage"
 date: "2026-08-24T17:05:51Z"
-lastmod: "2026-08-24T17:05:51Z"
+lastmod: "2026-10-29T18:00:00Z"
 order: 6
 ---
 
@@ -29,6 +29,8 @@ FileBrowser can enforce limits at three levels. **All applicable limits must pas
 | **Scope quota** | Admin (per user, per source) | Storage for a user's assignment on one source | Personal home folder on a shared server ([#547](https://github.com/gtsteffaniak/filebrowser/issues/547)) |
 | **Share quota** | Share owner | Files uploaded through a share link | Public upload link with a fixed cap |
 
+The three kinds are **independent**: you configure each where it applies in the UI, and FileBrowser stores them separately. A limit you set on a **user** is not the same record as a limit on a **folder**, even though both can show up in admin views.
+
 ### Folder quota
 
 Admins set a limit on a **single folder** from the file browser:
@@ -36,6 +38,8 @@ Admins set a limit on a **single folder** from the file browser:
 1. Select one folder (not a file).
 2. Open the context menu → **Storage quota**.
 3. Turn on the limit, choose a **measurement style** (when indexing is enabled), pick a preset (for example 10 GB), or enter a custom size.
+
+You can optionally bind a folder quota to **one user** so the cap applies only to them on that path; other users on the same folder are unaffected.
 
 ### Scope quota
 
@@ -45,6 +49,8 @@ In **Settings → User management**, expand a user's source block to set a **sto
 - **Tracked usage** — Counts only uploads, saves, and deletes performed through FileBrowser.
 
 When a scope quota uses **indexed size**, the sidebar shows **your usage vs your cap** for that source instead of whole-disk partition usage ([#2029](https://github.com/gtsteffaniak/filebrowser/issues/2029)).
+
+Scope limits are saved **with the user account** (per source), not with folder quota settings. Both can be active at once—they are configured in different places in the admin UI.
 
 ### Share quota
 
@@ -58,11 +64,39 @@ Share quotas always use **tracked usage** (mutation counter). There is no indexe
 
 See {{< doclink path="shares/options/" text="Share options" />}} and {{< doclink path="shares/upload-shares/" text="Upload shares" />}}.
 
+Share limits are saved **with the share link**, alongside other share options (password, expiry, download limits).
+
+## Confirming a limit is saved
+
+You do **not** need to open or edit the SQLite database to verify quotas. Use the same screens where you set the limit, plus normal upload behavior.
+
+| Kind | Check in the UI | Persistence check |
+|------|-----------------|-------------------|
+| **Scope** | **Settings → User management** → open the user → expand the source block. The storage limit toggle, measurement style, and cap should match what you saved. | Refresh the page or sign out and back in, then open the same user again. After a server restart, the values should still be there. The affected user sees **used / limit** on that source in the sidebar when a cap applies. |
+| **Folder** | Select the folder → context menu → **Storage quota** (or open **Info** on the folder if your build shows quota there). The limit and style should match what you saved. | Same as above: refresh or restart, then open **Storage quota** on that folder again. |
+| **Share** | Edit the share (or **Settings → Shares** for upload links). **Limit storage through this share** and any usage summary should match what you expect. | Refresh or restart, then open the share settings again. On an upload share with a cap, visitors see used vs limit before uploading. |
+
+**Behavior check:** Upload a small file within the cap—it should succeed. Upload (or save) something that would exceed the cap—the UI should block the action and show a storage-quota message. That confirms enforcement is wired to the limit you configured.
+
+**Different screens, different limits:** A cap shown under **User management** is a **scope** quota. It will not appear under **Storage quota** on a folder, and the other way around. That is normal—not a sign that a limit was “lost.”
+
+To **change** or **remove** a limit, use the same UI where you created it (toggle off, or clear the cap, then save).
+
+## Where each kind is configured
+
+| Kind | Where you set it |
+|------|------------------|
+| **Folder** | Context menu → **Storage quota** on a folder |
+| **Scope** | **Settings → User management** → source block for that user |
+| **Share** | Share create/edit dialog → **Limit storage through this share** |
+
+**Tracked usage** styles maintain a separate usage tally from the limit number you typed in. Seeing usage update in the UI while you only set user or share limits—not folder limits—is expected.
+
 ## Choosing a measurement style
 
 Folder and scope quotas support two measurement styles when **indexing is enabled** on the source. You choose the style per quota in the admin UI under **Count usage by**.
 
-When **indexing is disabled** on a source (`viewable` on the root conditional rule, or equivalent rules that disable indexing), **only tracked usage** is available. The UI hides indexed-size options and the API rejects index meters on that source.
+When **indexing is disabled** on a source (`viewable` on the root conditional rule, or equivalent rules that disable indexing), **only tracked usage** is available. The UI hides indexed-size options.
 
 ### Indexed size
 
@@ -78,14 +112,14 @@ Uses folder size totals from the search index at the quota root (folder quotas) 
 
 ### Tracked usage (mutation counter)
 
-Counts bytes in SQLite `quota_counters` when FileBrowser-mediated writes are committed (uploads, editor saves, deletes, and similar API actions). Same model as share quotas.
+Counts bytes when FileBrowser-mediated writes are committed (uploads, editor saves, deletes, and similar actions). Same model as share quotas.
 
 | Strengths | Limitations |
 |-----------|-------------|
 | Works **without indexing** — only option when indexing is disabled | Counts **FileBrowser-mediated changes** only, not full disk usage |
 | **Immediate** reserve/commit on each write — no scan delay | **Starts at 0** when enabled; does not include files already on disk unless you seed (future UX) |
 | Same model as **share quotas** — predictable for upload links | **Drifts** if files are added/removed outside FileBrowser (SFTP, rsync, shell) |
-| Durable counter in SQLite (batched flush) | **Deletes not credited** in v1 — usage may stay high after deletes until delete enforcement lands |
+| Persisted in the database (batched flush) | **Deletes not credited** in v1 — usage may stay high after deletes until delete enforcement lands |
 | Admin can choose this even when indexing works (e.g. upload budget only) | Not a substitute for **filesystem disk quota** — logical cap through the app |
 
 ### Which should I use?
@@ -96,7 +130,7 @@ Counts bytes in SQLite `quota_counters` when FileBrowser-mediated writes are com
 
 ### Runtime fallback
 
-If you configure **indexed size** but the index has not measured that folder yet, enforcement temporarily uses **tracked usage** so uploads are not blocked and usage is not treated as zero. The API reports `configuredMeter` vs `effectiveMeter` and `measurementStatus: accounted_fallback` until folder size is available. When the index catches up, the effective meter switches back to index-based and reported usage may jump.
+If you configure **indexed size** but the index has not measured that folder yet, enforcement temporarily uses **tracked usage** so uploads are not blocked and usage is not treated as zero. The UI may show that fallback until folder size is available. When the index catches up, reported usage may jump to match the indexed total.
 
 Changing a quota from indexed size → tracked usage does **not** auto-seed the counter from disk; usage starts from FileBrowser writes after the change.
 
@@ -124,11 +158,11 @@ Folder sizes and indexing behavior depend on source settings such as `useLogical
 
 ## Upgrades and migration
 
-Quota data lives in the SQLite database (`quotas` and `quota_counters` tables). The `quotas` table includes a `meter` column (`index_size` / `index_scope` for indexed size, or `accounted` for tracked usage). Upgrading from an older SQLite schema adds these tables and columns automatically on first startup.
+Quota limits and usage counters live in the SQLite database. Upgrading from an older schema adds the needed structures automatically on first startup.
 
-If you migrate from a legacy Bolt database to SQLite, users, shares, and access rules are imported as today, but **no quota limits are migrated** (Bolt never stored them). Configure quotas after migration the same as on a new install.
+If you migrate from a legacy Bolt database to SQLite, users, shares, and access rules are imported as today, but **no quota limits are migrated** (Bolt never stored them). Configure folder, scope, and share quotas again after migration—the same way as on a new install.
 
-Optional tuning for how often tracked usage counters are flushed to disk lives under `server.database.quotas` — see {{< doclink path="configuration/server/" text="Server settings" />}}.
+Optional tuning for how often tracked usage is written to disk lives under `server.database.quotas` — see {{< doclink path="configuration/server/" text="Server settings" />}}.
 
 ## Related documentation
 
