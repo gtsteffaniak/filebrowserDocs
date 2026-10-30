@@ -1,29 +1,31 @@
 # External Links Cache
-# Automatically updated: 2026-09-14 14:36:43
+# Automatically updated: 2026-09-21 12:51:37
 # Validated URLs that passed link checking
 
 https://community.letsencrypt.org/t/dns-providers-who-easily-integrate-with-lets-encrypt-dns-validation/86438
 https://developers.cloudflare.com/dns/zone-setups/full-setup/setup/
+https://doc.traefik.io/traefik/
+https://doc.traefik.io/traefik/https/acme/#providers
+https://doc.traefik.io/traefik/reference/install-configuration/providers/others/file/
 https://docs.docker.com/compose/
 https://docs.docker.com/compose/how-tos/environment-variables/set-environment-variables/#use-the-env_file-attribute
 https://docs.docker.com/compose/install/
 https://docs.docker.com/engine/containers/run/#runtime-privilege-and-linux-capabilities
-https://doc.traefik.io/traefik/
-https://doc.traefik.io/traefik/https/acme/#providers
-https://doc.traefik.io/traefik/reference/install-configuration/providers/others/file/
 https://en.wikipedia.org/wiki/WebDAV
 https://ffmpeg.org/download.html
 https://filebrowserquantum.com/en/docs/configuration/server/#cachedir
 https://fonts.google.com/icons
 https://gist.githubusercontent.com/BaccanoMob/83f083b5a021d5c71aa19fbb09b9fc12/raw/626f6c06b77957c52ba806cccd0be45f634d4007/filebrowser-quantum-http-shortcut.json
+https://github.com/Kurami32
+https://github.com/ONLYOFFICE/Docker-DocumentServer
 https://github.com/fstanis/awesome-webdav?tab=readme-ov-file
 https://github.com/gtsteffaniak
 https://github.com/gtsteffaniak/filebrowser
+https://github.com/gtsteffaniak/filebrowser#comparison-chart
+https://github.com/gtsteffaniak/filebrowser/blob/main/.github/workflows/pr.yaml
 https://github.com/gtsteffaniak/filebrowser/blob/main/backend/config.yaml
 https://github.com/gtsteffaniak/filebrowser/blob/main/backend/reduce-rounded-corners.css
 https://github.com/gtsteffaniak/filebrowser/blob/main/frontend/public/config.generated.yaml
-https://github.com/gtsteffaniak/filebrowser/blob/main/.github/workflows/pr.yaml
-https://github.com/gtsteffaniak/filebrowser#comparison-chart
 https://github.com/gtsteffaniak/filebrowser/discussions
 https://github.com/gtsteffaniak/filebrowser/discussions/1237
 https://github.com/gtsteffaniak/filebrowser/discussions/1237#discussion-8913996
@@ -41,8 +43,6 @@ https://github.com/gtsteffaniak/filebrowser/releases
 https://github.com/gtsteffaniak/filebrowser/tree/main/frontend/src/i18n
 https://github.com/gtsteffaniak/filebrowser/wiki
 https://github.com/gtsteffaniak/filebrowser/wiki/Contributing
-https://github.com/Kurami32
-https://github.com/ONLYOFFICE/Docker-DocumentServer
 https://github.com/orgs/wiredoor/discussions/110
 https://github.com/user-attachments/assets/5126c68d-fcec-4a8b-967d-2622f0a98f5f
 https://github.com/user-attachments/assets/682a9f00-784f-4131-af0b-10b5677716d6

@@ -49,28 +49,27 @@ See [hugo syntax examples](content/en/docs/Contributing/Documentation/hugo-docum
 ```
 content/en/docs/
 ├── _index.md                    # Documentation landing page
-├── Getting Started/             # Installation guides (Docker, Linux, macOS, Windows)
+├── getting-started/             # Installation guides (Docker, Linux, macOS, Windows)
 │   └── Migration/               # Migration guides
-├── Configuration/               # Configuration options
+├── configuration/               # Configuration options
 │   ├── Authentication/          # Auth methods (Password, OIDC, Proxy)
 │   └── Frontend/                # UI customization (Branding, Styling, Themes)
-├── Access Control/              # Permissions and rules
-├── Shares/                      # Sharing features (Normal, Upload)
+├── access-control/              # Permissions and rules
+├── shares/                      # Sharing features (Normal, Upload)
 ├── Integrations/                # Third-party integrations
 │   ├── Media/                   # Media server integration
 │   └── Office/                  # Office suite integration
-├── User Guides/                 # How-to guides
-│   ├── Init Scripts/            # Startup scripts
-│   ├── Multiple Configs/        # Multi-instance setups
-│   └── Office Integration/      # Office integration examples
-├── Advanced/                    # Advanced features
-│   └── Logging/                 # Debug and troubleshooting logs
-├── Reference/                   # API, CLI, Environment Variables
+├── user-guides/                 # How-to guides
+│   ├── general-configuration/   # Init scripts & multiple configs
+│   └── office-integration/      # Office integration examples
+├── advanced/                    # Advanced features
+│   └── logging/                 # Debug and troubleshooting logs
+├── reference/                   # API, CLI, Environment Variables
 ├── Contributing/                # Contribution guidelines
 │   ├── Documentation/           # Doc writing guides
 │   ├── Features/                # Feature development
 │   └── Translations/            # Translation guides
-└── Help/                        # FAQ, About, Roadmap
+└── help/                        # FAQ, About, Roadmap
 ```
 
 ## Writing Documentation
