@@ -11,8 +11,6 @@ order: 1
 **Maintainers only.** Do not direct end users or admins to edit SQLite or run the queries below. For normal verification, use {{< doclink path="features/quotas/#confirming-a-limit-is-saved" text="Confirming a limit is saved" />}} (UI only).
 {{% /alert %}}
 
-This page explains reports like [GitHub issue #3293](https://github.com/gtsteffaniak/filebrowser/issues/3293): limits visible via the users API, an empty `quotas` table, and rows in `quota_counters`. User-facing behavior is in {{< doclink path="features/quotas/" text="Storage quotas" />}}.
-
 ## Summary
 
 **Expected** when limits were configured as **user scope quotas**, not **folder quotas**:
