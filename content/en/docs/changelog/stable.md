@@ -15,8 +15,8 @@ You can also check the releases on [GitHub!](https://github.com/gtsteffaniak/fil
 ## [v2.0.1-stable](https://github.com/gtsteffaniak/filebrowser/releases/tag/v2.0.1-stable)
 
  **Security**:
- - [High] New accounts named with ".." breaks out of scoped folder on creation (GHSA-c84q-q5g6-r47f) -- reporter @dylanzonix
- - [Medium] Fixed session token collision issue when multiple users login simultaneously. (GHSA-c9cr-w724-gqj3) ([pr #3135](https://github.com/gtsteffaniak/filebrowser/pull/3135)) Thanks @dl-pt reporters: @Ishtiaque-Ahmed-Risat @AlexWhiplash @tonghuaroot
+ - [High] New accounts named with ".." breaks out of scoped folder on creation (GHSA-c84q-q5g6-r47f) -- reporter [@dylanzonix](https://github.com/dylanzonix)
+ - [Medium] Fixed session token collision issue when multiple users login simultaneously. (GHSA-c9cr-w724-gqj3) ([pr #3135](https://github.com/gtsteffaniak/filebrowser/pull/3135)) Thanks [@dl-pt](https://github.com/dl-pt) reporters: [@Ishtiaque-Ahmed-Risat](https://github.com/Ishtiaque-Ahmed-Risat) [@AlexWhiplash](https://github.com/AlexWhiplash) [@tonghuaroot](https://github.com/tonghuaroot)
 
 ---
 
