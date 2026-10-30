@@ -3,7 +3,7 @@ title: "Storage Quotas"
 description: "Limit how much storage users, folders, and share links can use"
 icon: "storage"
 date: "2026-08-24T17:05:51Z"
-lastmod: "2026-10-29T17:05:51Z"
+lastmod: "2026-10-29T18:00:00Z"
 order: 6
 ---
 
@@ -50,7 +50,7 @@ In **Settings → User management**, expand a user's source block to set a **sto
 
 When a scope quota uses **indexed size**, the sidebar shows **your usage vs your cap** for that source instead of whole-disk partition usage ([#2029](https://github.com/gtsteffaniak/filebrowser/issues/2029)).
 
-Scope limits are saved **with the user account** (per source), not with folder quota settings. If you export or inspect the database, do not expect user scope limits to appear alongside folder limits—they are different configuration paths, and both can be active at once.
+Scope limits are saved **with the user account** (per source), not with folder quota settings. Both can be active at once—they are configured in different places in the admin UI.
 
 ### Share quota
 
@@ -66,19 +66,31 @@ See {{< doclink path="shares/options/" text="Share options" />}} and {{< doclink
 
 Share limits are saved **with the share link**, alongside other share options (password, expiry, download limits).
 
-## Where limits are saved
+## Confirming a limit is saved
 
-Use this when you back up the server database or wonder why one admin screen shows a quota but another does not.
+You do **not** need to open or edit the SQLite database to verify quotas. Use the same screens where you set the limit, plus normal upload behavior.
 
-| Kind | Where you set it | What gets saved |
-|------|------------------|-----------------|
-| **Folder** | Context menu → **Storage quota** on a folder | The folder path, limit, and measurement style |
-| **Scope** | **Settings → User management** → source block for that user | The limit on that user's assignment for that source |
-| **Share** | Share create/edit dialog | **Limit storage through this share** on that link |
+| Kind | Check in the UI | Persistence check |
+|------|-----------------|-------------------|
+| **Scope** | **Settings → User management** → open the user → expand the source block. The storage limit toggle, measurement style, and cap should match what you saved. | Refresh the page or sign out and back in, then open the same user again. After a server restart, the values should still be there. The affected user sees **used / limit** on that source in the sidebar when a cap applies. |
+| **Folder** | Select the folder → context menu → **Storage quota** (or open **Info** on the folder if your build shows quota there). The limit and style should match what you saved. | Same as above: refresh or restart, then open **Storage quota** on that folder again. |
+| **Share** | Edit the share (or **Settings → Shares** for upload links). **Limit storage through this share** and any usage summary should match what you expect. | Refresh or restart, then open the share settings again. On an upload share with a cap, visitors see used vs limit before uploading. |
 
-**Tracked usage** numbers (for styles that count FileBrowser writes, and for all share caps) are stored separately from the limit definitions. That is normal: usage can be recorded even when you only configured user or share limits, not folder limits.
+**Behavior check:** Upload a small file within the cap—it should succeed. Upload (or save) something that would exceed the cap—the UI should block the action and show a storage-quota message. That confirms enforcement is wired to the limit you configured.
 
-To change or repair a limit, edit it in the **same place you created it**. Removing a limit through the UI clears its associated usage tracking for that limit when the app removes the quota definition.
+**Different screens, different limits:** A cap shown under **User management** is a **scope** quota. It will not appear under **Storage quota** on a folder, and the other way around. That is normal—not a sign that a limit was “lost.”
+
+To **change** or **remove** a limit, use the same UI where you created it (toggle off, or clear the cap, then save).
+
+## Where each kind is configured
+
+| Kind | Where you set it |
+|------|------------------|
+| **Folder** | Context menu → **Storage quota** on a folder |
+| **Scope** | **Settings → User management** → source block for that user |
+| **Share** | Share create/edit dialog → **Limit storage through this share** |
+
+**Tracked usage** styles maintain a separate usage tally from the limit number you typed in. Seeing usage update in the UI while you only set user or share limits—not folder limits—is expected.
 
 ## Choosing a measurement style
 
@@ -154,7 +166,6 @@ Optional tuning for how often tracked usage is written to disk lives under `serv
 
 ## Related documentation
 
-- {{< doclink path="advanced/quotas/database-troubleshooting/" text="Quota database troubleshooting" />}} — SQLite and API mapping for operators (e.g. empty `quotas` table with scope limits)
 - {{< doclink path="features/indexing/" text="Indexing" />}} — folder sizes, scan behavior, and indexed-size quotas (v2.1.0+)
 - {{< doclink path="configuration/sources/" text="Sources" />}} — source setup, indexing-disabled sources, and `useLogicalSize`
 - {{< doclink path="advanced/source-configuration/sources/" text="Advanced source configuration" />}}
