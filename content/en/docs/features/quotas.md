@@ -108,7 +108,7 @@ Uses folder size totals from the search index at the quota root (folder quotas) 
 | Good for caps on **existing data** (projects, shared folders) | **Slow to reflect** new uploads until the indexer updates folder sizes |
 | Matches sidebar / listing folder sizes users already see | **Out-of-band changes** (rsync, shell copies) count once the index catches up — not instant |
 | No counter drift from FileBrowser-only semantics | If indexed size is configured but size is **temporarily missing**, enforcement **falls back** to tracked usage until size is known |
-| | Does **not** decrease scope usage on delete until delete hooks exist (index updates on delete via indexer) |
+| Indexed totals **decrease after delete** when the indexer refreshes folder sizes | **Slow to reflect** deletes until the indexer updates folder sizes |
 
 ### Tracked usage (mutation counter)
 
@@ -119,8 +119,8 @@ Counts bytes when FileBrowser-mediated writes are committed (uploads, editor sav
 | Works **without indexing** — only option when indexing is disabled | Counts **FileBrowser-mediated changes** only, not full disk usage |
 | **Immediate** reserve/commit on each write — no scan delay | **Starts at 0** when enabled; does not include files already on disk unless you seed (future UX) |
 | Same model as **share quotas** — predictable for upload links | **Drifts** if files are added/removed outside FileBrowser (SFTP, rsync, shell) |
-| Persisted in the database (batched flush) | **Deletes not credited** in v1 — usage may stay high after deletes until delete enforcement lands |
-| Admin can choose this even when indexing works (e.g. upload budget only) | Not a substitute for **filesystem disk quota** — logical cap through the app |
+| **Deletes credit** accounted usage on API, bulk, share, and WebDAV delete; nested folder quotas **reset** when an ancestor directory is removed | Not a substitute for **filesystem disk quota** — logical cap through the app |
+| Admin can choose this even when indexing works (e.g. upload budget only) | Persisted in the database (batched flush) |
 
 ### Which should I use?
 
@@ -152,7 +152,7 @@ When any quota applies to the destination:
 - The client must send a **known total file size** before the upload body is accepted (`Content-Length` or `X-File-Total-Size` for chunked uploads). Otherwise the request is rejected with a clear error.
 - If the file would exceed the limit, the server responds with **507 Insufficient Storage** and a `quota_*` error code so the UI can show a specific message.
 
-Deletes are not blocked by quotas. Replacing a file only charges the **difference** in size (new size minus old file size).
+Deletes are not blocked by quotas. Replacing a file only charges the **difference** in size (new size minus old file size). For **tracked usage** (accounted) quotas, successful deletes through the API (including bulk delete), share delete endpoints, and WebDAV reduce the counter by the removed bytes; deleting a directory **resets** accounted folder quotas rooted inside that tree to zero.
 
 Folder sizes and indexing behavior depend on source settings such as `useLogicalSize` — see {{< doclink path="configuration/sources/" text="Sources" />}}.
 
