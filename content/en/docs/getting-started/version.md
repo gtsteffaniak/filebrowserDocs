@@ -3,34 +3,35 @@ title: "Which version should I use?"
 description: "Understanding stable vs beta releases and v1.5.x vs v2.0.0"
 icon: "numbers"
 date: "2025-10-28T22:14:01Z"
-lastmod: "2026-10-13T00:00:00Z"
+lastmod: "2026-10-30T00:00:00Z"
 order: 5
 ---
 
 FileBrowser Quantum comes with two release channels (**stable** and **beta**) across **v1.5.x**, **v2.0.x**, and **v2.1.x**. Choosing the right version is an important first step.
 
 {{% alert context="info" %}}
-**Current state:** **v2.0.x** and **v1.5.x** both ship on the `stable` channel (**v2.0.1-stable** is the latest v2 stable release). **v2.1.x** is on the `beta` channel ahead of stable. Upgrading from v1.x to v2.0.x requires a one-time migration — see {{< doclink path="getting-started/v2/migration/" text="v2 migration guide" />}} before changing tags.
+**Current state:** **`stable`** and **`latest`** point to **v2.0.2-stable** (current v2.0.x stable). **v1.5.x** is maintained on the **`1.5-stable`** tag only — not on `stable`/`latest`. **v2.1.x** is on the **`beta`** channel (for example **v2.1.3-beta**). Upgrading from v1.x to v2.0.x requires a one-time migration — see {{< doclink path="getting-started/v2/migration/" text="v2 migration guide" />}} before changing tags.
 {{% /alert %}}
 
 {{% alert context="success" %}}
-**Recommended for new users:** Start with **v2.0.x (`stable`)** for current v2 features, or stay on **v1.5.x (`stable`)** if you are not ready to migrate. Use **v2.1.x (`beta`)** when you want the newest v2 features before they reach stable.
+**Recommended for new users:** Start with **v2.0.x (`stable` / `2.0-stable`)**. Use **`beta` / `2.1-beta`** when you want v2.1.x features before they reach stable. Stay on **`1.5-stable`** only if you must remain on legacy v1.5.x until you are ready to migrate.
 {{% /alert %}}
 
 ## Release Types
 
-### Stable Release (v1.5.x and v2.0.x)
+### Stable Release (v2.0.x)
 
-The `stable` release build is the most reliable version as the name implies. It currently includes **v2.0.x** (latest: **v2.0.1-stable**) and **v1.5.x** maintenance releases. It gets updated less frequently than beta, and is ideal for:
+The `stable` and `latest` tags currently track **v2.0.x** (patch releases such as **v2.0.2-stable**). Pin with **`2.0-stable`** or **`2-stable`** to receive v2.0.x patches without jumping to the next minor line when v2.1.x eventually becomes stable. Ideal for:
 
-- Those getting started with FileBrowser Quantum
-- Users with a userbase that doesn't want to see occasional bugs
+- New FileBrowser Quantum installs on v2
 - Production environments requiring stability
 - Anyone who prefers proven, tested features
 
+**v1.5.x** remains available on **`1.5-stable`** for legacy installs only — not recommended for new projects.
+
 ### Beta Release (v2.1.x)
 
-The `beta` release build currently tracks **v2.1.x** (features ahead of **v2.0.x** stable) and is ideal for those who:
+The `beta` tag currently tracks **v2.1.x** (for example **v2.1.3-beta**), ahead of **v2.0.x** stable. Ideal for those who:
 
 - Don't have a large userbase
 - Want the latest features immediately
@@ -43,7 +44,7 @@ Beta builds are frequently updated and may encounter unexpected issues. If you r
 
 ### Slim Release (for docker only)
 
-`stable` and `beta` images have a `slim` variant. Slim images are much smaller than its counterparts. This is because slim version do not include FFmpeg and document preview bundled along with the image. You can still integrate with OnlyOffice for document editing/viewing. the slim version also supports armv7 platform for devices such as raspberry pi. This is ideal for those who:
+`stable` and `beta` images have a `slim` variant. Slim images omit FFmpeg and bundled document preview. Slim builds also support **arm32** (for example Raspberry Pi). Ideal for those who:
 
 - Don't want preview for files
 - Want to save space in disk
@@ -65,12 +66,12 @@ One major difference is the release cadence between the two versions:
 
 ## Major version: v1.5.x vs v2.0.x vs v2.1.x
 
-| | v1.5.x (`stable`) | v2.0.x (`stable`) | v2.1.x (`beta`) |
+| | v1.5.x (`1.5-stable`) | v2.0.x (`stable`, `2.0-stable`) | v2.1.x (`beta`, `2.1-beta`) |
 |---|---|---|---|
-| Release channel | `stable`, `1.5-stable` | `stable`, `2.0-stable` | `beta`, `2.1-beta` |
-| Database | Legacy (`database.db`) | SQLite (`filebrowser.sqlite`) | Same as v2.0.x |
+| Release channel | `1.5-stable` only | `stable`, `latest`, `2.0-stable`, `2-stable` | `beta`, `2.1-beta` |
+| Database | Legacy (`database.db`) | SQLite — `database.sqlite` in Docker; `filebrowser.sqlite` default on standalone | Same as v2.0.x |
 | Getting started docs | Migrate via {{< doclink path="getting-started/v2/migration/" text="v2 migration guide" />}} | {{< doclink path="getting-started/docker" text="v2.0.x guides" />}} | Same v2 guides; see {{< doclink path="changelog/beta/" text="beta changelog" />}} for v2.1.x-only features |
-| Upgrade path | Stay on 1.5-stable for legacy | Default for new v2 installs | Move from v2.0.x when you want v2.1.x features |
+| Upgrade path | Legacy maintenance only | Default for new v2 installs | Move from v2.0.x when you want v2.1.x features |
 | From v1.x | N/A | Follow {{< doclink path="getting-started/v2/migration/" text="v2 migration guide" />}} | Migrate to v2.0.x first, then beta if desired |
 
 ## Feature Differences
@@ -111,19 +112,21 @@ When using Docker, you have access to multiple tag formats for precise version c
 
 ### Tag Formats
 
-- **Release type tags**: `stable`, `beta`, `latest` - Always point to the latest version of that release type
-- **Full version tags**: `1.2.5-stable`, `1.1.3-beta`, `2.0.0-preview` - Pin to a specific version
-- **Major.minor tags**: `1.2-stable`, `1.1-beta`, `2.0-preview` - Automatically receive patch updates within that minor version
-- **Major tags**: `1-stable`, `2-beta`, `1-preview` - Automatically receive all updates within that major version
+- **Release type tags**: `stable`, `beta`, `latest` — `latest` matches **`stable`** (currently v2.0.x). `beta` tracks v2.1.x.
+- **Full version tags**: `2.0.2-stable`, `2.1.3-beta` — pin to an exact release
+- **Major.minor tags**: `2.0-stable`, `2.1-beta` — receive patch updates within that minor line
+- **Major tags**: `2-stable`, `2-beta` — receive updates within that major version (when v2.1.x becomes stable, `2-stable` will move to the new stable minor — plan migrations accordingly)
+
+Legacy v1 examples still exist (`1.5-stable`, `1.5.8-stable`, and similar) but v2 tags do **not** include `2.0-preview`.
 
 ### Choosing the Right Tag
 
-- **For production**: Use major.minor tags (e.g., `1.2-stable`) to get bug fixes and security patches while avoiding major version changes
-- **For testing**: Use release type tags (e.g., `beta`) to always get the latest version
-- **For stability**: Use full version tags (e.g., `1.2.5-stable`) when you need to lock to a specific version
+- **For production (v2.0.x)**: Use `2.0-stable` or `2-stable` for patch updates without chasing every full version tag
+- **For testing v2.1.x**: Use `beta` or `2.1-beta`
+- **For locking a build**: Use a full tag such as `2.0.2-stable` or `2.1.3-beta`
 
 {{% alert context="info" %}}
-All version tags are available for both regular and slim images. For example: `1.2-stable-slim`, `1-stable-slim`, etc.
+All version tags are available for both regular and slim images. For example: `2.0-stable-slim`, `2-stable-slim`, `beta-slim`.
 {{% /alert %}}
 
 ## When to Move to Beta Instead of Stable?

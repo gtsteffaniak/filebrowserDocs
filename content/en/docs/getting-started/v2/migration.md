@@ -3,7 +3,7 @@ title: "Migration Guide"
 description: "Upgrade FileBrowser Quantum from v1.x to v2.0.0"
 icon: "upgrade"
 date: "2026-07-23T17:03:27Z"
-lastmod: "2026-10-03T16:30:00Z"
+lastmod: "2026-10-30T00:00:00Z"
 order: 1
 ---
 
@@ -60,16 +60,32 @@ Use the {{< doclink path="getting-started/v2/config-migration/" text="config mig
 If you are running behind a reverse proxy, please set [http.trustProxyHeaders: true](https://filebrowserquantum.com/en/docs/getting-started/reverse-proxy/#proxy-headers-filebrowser-understands) if not already set in the config migration tool.
 {{% /alert %}}
 
-Then set the new SQLite path and point `migrateFrom` at your renamed BoltDB file:
+Then set the SQLite path and point `migrateFrom` at your renamed BoltDB file:
 
 ```yaml
 server:
   database:
-    path: "filebrowser.sqlite" # or use FILEBROWSER_DATABASE_PATH env var
+    path: "filebrowser.sqlite"
     migrateFrom: "database.db.old"
 ```
 
-Paths are relative to the FileBrowser working directory (standalone) or your mounted data directory (Docker).
+**Standalone:** paths are relative to the FileBrowser **working directory** (where you run the binary).
+
+**Docker:** relative paths resolve from the container working directory (`/home/filebrowser`), **not** from `/home/filebrowser/data`. Use absolute paths inside the data volume:
+
+```yaml
+server:
+  database:
+    path: "/home/filebrowser/data/database.sqlite"
+    migrateFrom: "/home/filebrowser/data/database.db.old"
+```
+
+Place `database.db.old` in the mounted `./data` directory on the host. Omit `path` to use the image default `database.sqlite` under `/home/filebrowser/data` when `./data` is mounted.
+
+| Context | Default SQLite file |
+| --- | --- |
+| Docker (image env default) | `/home/filebrowser/data/database.sqlite` |
+| Standalone (no config path) | `./filebrowser.sqlite` in working directory |
 
 {{% alert context="info" %}}
 **Keep `userDefaults` in config for now.** On first startup, they seed the new SQLite database. You will decide whether to keep or remove them in Phase 3.
@@ -77,7 +93,8 @@ Paths are relative to the FileBrowser working directory (standalone) or your mou
 
 ### Docker and environment variables
 
-- If you set the database path via env var, rename **`FILEBROWSER_DATABASE`** → **`FILEBROWSER_DATABASE_PATH`** and point it at the new SQLite file. `FILEBROWSER_CONFIG` is unchanged. See {{< doclink path="reference/environment-variables/" text="Environment variables" />}}.
+- **`FILEBROWSER_DATABASE` (v1)** — v2 **refuses to start** if this variable is still set, unless you set `server.database.migrateFrom: "default"` in config. With `"default"`, the legacy path comes from `FILEBROWSER_DATABASE` or falls back to `database.db` in the working directory (Docker: use an absolute path under `/home/filebrowser/data` or migrate using explicit paths above).
+- Rename **`FILEBROWSER_DATABASE`** → **`FILEBROWSER_DATABASE_PATH`** for the new SQLite file after migration. `FILEBROWSER_CONFIG` is unchanged. See {{< doclink path="reference/environment-variables/" text="Environment variables" />}}.
 - If you already mount a **data directory** (recommended in {{< doclink path="getting-started/docker/" text="Docker setup" />}}), no volume changes are needed.
 - **Only update mounts** if you currently bind-mount a **single database file** — switch to a directory mount so the renamed BoltDB and new SQLite can coexist during migration.
 
@@ -179,12 +196,12 @@ You are now running v2.0.0.
 
 ## Quick reference
 
-**Minimal config for migration (Phase 1–2):**
+**Minimal config for migration (Phase 1–2, standalone):**
 
 ```yaml
 server:
   database:
-    path: "filebrowser.sqlite" # or use FILEBROWSER_DATABASE_PATH env var
+    path: "filebrowser.sqlite"
     migrateFrom: "database.db.old"
   sources:
     - path: "/your/files"
@@ -197,6 +214,19 @@ userDefaults:
       admin: false
       api: true
       share: true
+```
+
+**Docker (Phase 1–2)** — absolute paths under the data volume:
+
+```yaml
+server:
+  database:
+    path: "/home/filebrowser/data/database.sqlite"
+    migrateFrom: "/home/filebrowser/data/database.db.old"
+  sources:
+    - path: /folder
+      config:
+        defaultEnabled: true
 ```
 
 **After migration (Phase 3–4):**
@@ -216,6 +246,7 @@ server:
 ## Related resources
 
 - {{< doclink path="getting-started/v2/about/" text="About v2.0.0" />}} — full breaking changes, API cleanup, and state architecture
+- {{< doclink path="getting-started/common-setup-mistakes/" text="Common setup mistakes" />}} — fresh install issues (also covers `FILEBROWSER_DATABASE`)
 - {{< doclink path="getting-started/Migration/troubleshooting/" text="Migration troubleshooting" />}} — common issues after upgrade
 - {{< doclink path="reference/cli/" text="CLI reference" />}} — updated user management commands
 
