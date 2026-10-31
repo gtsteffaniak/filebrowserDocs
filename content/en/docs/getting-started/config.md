@@ -3,7 +3,7 @@ title: "Configuration Files (v2.0.0)"
 description: "Understanding and using configuration files in FileBrowser v2.0.x (stable)"
 icon: "settings"
 date: "2025-10-23T00:50:09Z"
-lastmod: "2026-10-04T17:20:00Z"
+lastmod: "2026-10-30T00:00:00Z"
 order: 6
 ---
 
@@ -78,14 +78,20 @@ The database path is configured under `server.database.path`. See {{< doclink pa
 
 ## Docker Configuration
 
+{{% alert context="warning" %}}
+Create `config.yaml` on the host **before** starting the container. If you bind-mount a path that does not exist yet, Docker may create a **directory** named `config.yaml` and the container will fail to start. Prefer mounting a **data directory** and placing `config.yaml` inside it.
+{{% /alert %}}
+
 ### Using Docker Run
+
 ```bash
-# Mount your config file
+mkdir -p ./data ./files
+# Create config before mount — see ./data/config.yaml example below
 docker run -d \
-  -v /path/to/your/config.yaml:/home/filebrowser/data/config.yaml \
-  -v /path/to/your/folder:/folder \
-  -p 80:80 \
-  ghcr.io/gtsteffaniak/filebrowser:beta
+  -v ./files:/folder \
+  -v ./data:/home/filebrowser/data \
+  -p 8080:80 \
+  ghcr.io/gtsteffaniak/filebrowser:stable
 ```
 
 ### Using Docker Compose
@@ -99,12 +105,12 @@ Mount a host directory on `/home/filebrowser/data` if you want config, database,
 ```yaml
 services:
   filebrowser:
+    image: ghcr.io/gtsteffaniak/filebrowser:stable
     volumes:
-      - '/path/to/folder:/folder'
-      - './data:/home/filebrowser/data'
+      - ./files:/folder
+      - ./data:/home/filebrowser/data
     ports:
-      - '80:80'
-    image: ghcr.io/gtsteffaniak/filebrowser:beta
+      - "8080:80"
     restart: unless-stopped
 ```
 
@@ -117,7 +123,7 @@ Here's a minimal config file to get you started:
 ```yaml
 server:
   sources:
-    - path: "/path/to/your/files" # or '/folder' in above example (do not load the full os filesystem, must be sub path)
+    - path: /folder
       config:
         defaultEnabled: true  # Grant to all users on create; v2.0.1+ also merges for existing users on startup
 
@@ -127,7 +133,9 @@ auth:
       enabled: true
 ```
 
-On v2.x (v2.0.0+), if `adminPassword` is unset or left as `admin`, a random admin password is generated, logged once, and a password reset is required on first login. Any other value of `auth.methods.password.adminPassword` or `auth.adminPassword` is used as-is.
+In Docker, `/folder` is the **in-container** path from your volume mount (for example `./files:/folder`). Using a host path that is not mounted produces an empty UI and log warnings that the source is not available — see {{< doclink path="getting-started/common-setup-mistakes/" text="Common setup mistakes" />}}.
+
+On v2.x (v2.0.0+), if `adminPassword` is unset or left as `admin`, a random admin password is generated, logged once, and a password reset is required on first login. Any **other** value of `auth.adminPassword` or `FILEBROWSER_ADMIN_PASSWORD` is reapplied on every startup — remove it after setup if you want UI password changes to persist.
 
 ## Configuration Options
 
@@ -152,7 +160,7 @@ Only configure the settings you need. A minimal config is easier to read and mai
 ```yaml
 server:
   sources:
-    - path: "/data"
+    - path: /folder
       config:
         defaultEnabled: true
 
@@ -177,6 +185,8 @@ FILEBROWSER_OIDC_CLIENT_ID=exampleID
 FILEBROWSER_OIDC_CLIENT_SECRET=exampleSecret
 ```
 
+`FILEBROWSER_ADMIN_PASSWORD` resets the admin user to that password on **every** restart. Remove it after initial setup if admins should manage passwords only in the UI.
+
 ### 3. Restart After Changes
 Configuration changes require a restart to take effect:
 
@@ -189,6 +199,7 @@ Configuration changes require a restart to take effect:
 
 ## Next Steps
 
+- {{< doclink path="getting-started/common-setup-mistakes/" text="Common setup mistakes" />}} — wrong paths, permissions, and env vars
 - {{< doclink path="configuration/configuration-overview/" text="Configuration Overview" />}} - Complete configuration guide
 - {{< doclink path="reference/fullconfig/" text="Full Configuration Reference" />}} - All available options
 - {{< doclink path="configuration/sources/" text="Source Configuration" />}} - Configure file sources

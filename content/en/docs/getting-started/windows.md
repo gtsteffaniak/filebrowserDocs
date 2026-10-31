@@ -3,7 +3,7 @@ title: "Windows (v2.0.0)"
 description: "Install FileBrowser v2.0.x (stable) on Windows"
 icon: "desktop_windows"
 date: "2025-10-08T14:59:30Z"
-lastmod: "2026-10-04T17:20:00Z"
+lastmod: "2026-10-30T00:00:00Z"
 order: 4
 ---
 
@@ -21,9 +21,9 @@ Run FileBrowser Quantum **v2.0.x (stable)** natively on Windows.
 
 ## Download
 
-1. Go to [releases page](https://github.com/gtsteffaniak/filebrowser/releases)
-2. Download the **beta** Windows asset `filebrowser.exe`
-3. Save to a folder (e.g., `C:\FileBrowser\`)
+1. Go to the [releases page](https://github.com/gtsteffaniak/filebrowser/releases)
+2. Download the **stable** Windows asset `filebrowser.exe`
+3. Save to a folder (for example `C:\FileBrowser\`)
 
 ## Optional: Install FFmpeg
 
@@ -33,18 +33,18 @@ For video preview support, [install FFmpeg](https://phoenixnap.com/kb/ffmpeg-win
 
 Interactive setup:
 
-```bash
+```cmd
 .\filebrowser.exe setup
 ```
 
-Or Create `config.yaml` in the same folder:
+Or create `config.yaml` in the same folder (YAML accepts forward slashes in paths):
 
 ```yaml
 http:
-  port: 80
+  port: 8080
 server:
   sources:
-    - path: "C:\\Users\\YourName\\Documents"
+    - path: C:/Users/YourName/Documents
       config:
         defaultEnabled: true
 auth:
@@ -53,11 +53,7 @@ auth:
 
 v2.0.0 and later read the listen port from `http.port`. A `server.port` key is rejected at startup.
 
-Or generate interactively:
-
-```cmd
-.\filebrowser.exe setup
-```
+Port **80** is often already used (IIS, other apps). **8080** is a safer default. Allow FileBrowser through **Windows Defender Firewall** when prompted for a new listener.
 
 ## Run FileBrowser
 
@@ -65,17 +61,33 @@ Or generate interactively:
 .\filebrowser.exe -c config.yaml
 ```
 
-Access at `http://localhost:80`.
+Access at `http://localhost:8080` (or your `http.port`).
 
-On v2.x (v2.0.0+), if `adminPassword` is unset or left as `admin`, a random admin password is generated, logged once, and a password reset is required on first login. Any other value of `auth.methods.password.adminPassword` or `auth.adminPassword` is used as-is.
+## First login
+
+When `auth.adminPassword` and `FILEBROWSER_ADMIN_PASSWORD` are unset, the **console window** prints a one-time line containing the generated password. First login requires a password change.
+
+- Other values for `auth.adminPassword` / `FILEBROWSER_ADMIN_PASSWORD` (except empty or `admin`) are **reapplied on every restart** — remove after setup if you change the password in the UI.
+- `admin` as the configured password is treated as unset.
+
+**Recovery** (stop the server first if it locks the database):
+
+```cmd
+.\filebrowser.exe -c config.yaml user set admin --password your-new-password
+```
+
+To run as a service, prefer **Task Scheduler** or **[NSSM](https://nssm.cc/)** so you can set the working directory to your install folder (for example `C:\FileBrowser\`). If you use **`sc.exe`**, pass an **absolute** config path — Windows services start in `System32`, so `-c config.yaml` will not find the file and may create `filebrowser.sqlite` in the wrong place:
+
+```cmd
+sc create FileBrowser binPath= "C:\FileBrowser\filebrowser.exe -c C:\FileBrowser\config.yaml" start= auto
+```
 
 ## Troubleshooting
 
-For common issues and solutions, see the {{< doclink path="getting-started/Migration/troubleshooting/" text="Troubleshooting guide" />}}.
+See {{< doclink path="getting-started/common-setup-mistakes/" text="Common setup mistakes" />}}.
 
 ## Next Steps
 
 - {{< doclink path="configuration/sources/" text="Configure sources" />}}
 - {{< doclink path="configuration/authentication/" text="Set up authentication" />}}
-- {{< doclink path="integrations/media/" text="Enable media integration" />}}
-
+- {{< doclink path="integrations/" text="Enable integrations" />}}

@@ -3,7 +3,7 @@ title: "Docker (v2.0.0)"
 description: "Get started with FileBrowser v2.0.x (stable) using Docker"
 icon: "deployed_code"
 date: "2025-10-08T14:59:30Z"
-lastmod: "2026-10-04T17:20:00Z"
+lastmod: "2026-10-30T00:00:00Z"
 order: 1
 ---
 
@@ -14,7 +14,7 @@ order: 1
 {{% alert context="warning" %}}
 **Upgrading from v1.x?**
 
-v2.0.x uses a **new database format** and requires a one-time migration. Use a **directory mount** (`./data:/home/filebrowser/data`) rather than a single database file mount. Replace `FILEBROWSER_DATABASE` with `FILEBROWSER_DATABASE_PATH`. See the {{< doclink path="getting-started/v2/migration/" text="v2 migration guide" />}} before changing your image tag to `stable` or `2.0-stable`.
+v2.0.x uses a **new database format** and requires a one-time migration. Use a **directory mount** (`./data:/home/filebrowser/data`) rather than a single database file mount. On the **first v2 start**, set `server.database.migrateFrom` (or `migrateFrom: "default"` when migrating from legacy `FILEBROWSER_DATABASE`) so the old BoltDB is imported — `FILEBROWSER_DATABASE_PATH` alone only selects the SQLite file and does not migrate v1 data. See the {{< doclink path="getting-started/v2/migration/" text="v2 migration guide" />}} before changing your image tag to `stable` or `2.0-stable`.
 {{% /alert %}}
 
 The fastest way to get started with FileBrowser Quantum **v2.0.x (stable)**.
@@ -23,33 +23,40 @@ The fastest way to get started with FileBrowser Quantum **v2.0.x (stable)**.
 
 Images from Docker Hub (`gtstef/filebrowser`) and GitHub Container Registry (`ghcr.io/gtsteffaniak/filebrowser`):
 
-| Tag                | Size  | Features                            | Architectures       |
-| ------------------ | ----- | ----------------------------------- | ------------------- |
-| `latest`, `stable` | 60 MB | FFmpeg + document preview           | arm64, amd64        |
-| `stable-slim`      | 15 MB | Core service only (no media/office) | arm64, arm32, amd64 |
-| `beta`             | 60 MB | FFmpeg + document preview           | arm64, amd64        |
-| `beta-slim`        | 15 MB | Core service only (no media/office) | arm64, arm32, amd64 |
+| Tag                | Features                            | Architectures       |
+| ------------------ | ----------------------------------- | ------------------- |
+| `latest`, `stable` | FFmpeg + document preview           | arm64, amd64        |
+| `stable-slim`      | Core service only (no media/office) | arm64, arm32, amd64 |
+| `beta`             | FFmpeg + document preview           | arm64, amd64        |
+| `beta-slim`        | Core service only (no media/office) | arm64, arm32, amd64 |
 
-Learn more about the versions and tags {{< doclink path="getting-started/version#docker-version-tags" text="here." />}}
+Slim images are much smaller because they omit FFmpeg and bundled document preview. Learn more about versions and tags {{< doclink path="getting-started/version#docker-version-tags" text="here." />}}
 
 {{% alert context="info" %}}
-To pin a specific v2.0.x release instead of tracking the latest stable, use a version tag such as `2.0-stable` or `2.0.0-stable`. For v2.1.x previews, use `2.1-beta` or a full beta tag from [GitHub releases](https://github.com/gtsteffaniak/filebrowser/releases).
+To pin a specific v2.0.x release instead of tracking the latest stable, use a version tag such as `2.0-stable` or `2.0.2-stable`. For v2.1.x previews, use `2.1-beta` or a full beta tag from [GitHub releases](https://github.com/gtsteffaniak/filebrowser/releases).
 {{% /alert %}}
 
 ## Quick Try
 
-Test without persistence (changes not saved). In this example we run it mounting the local path:
+Try FileBrowser with **no persistent database or config** (the SQLite DB and settings are lost when the container is removed). This example mounts the **current directory read-write** as the file source at `/folder`:
 
 ```bash
 docker run -d \
-  -v $(pwd):/srv \
-  -p 80:80 \
+  --name filebrowser \
+  -v "$(pwd):/folder" \
+  -p 8080:80 \
   ghcr.io/gtsteffaniak/filebrowser:stable
 ```
 
-Access at `http://localhost`.
+Access at `http://localhost:8080`. Find the one-time admin password:
 
-On v2.x (v2.0.0+), if `adminPassword` is unset or left as `admin`, a random admin password is generated, logged once, and a password reset is required on first login. Any other value of `auth.methods.password.adminPassword` or `auth.adminPassword` is used as-is.
+```bash
+docker logs -f filebrowser 2>&1 | grep -m1 -i "initial admin password"
+```
+
+If nothing prints yet, wait for startup and run `docker logs filebrowser 2>&1 | grep -i "initial admin password"` again.
+
+Then complete **First login** below. For a persistent setup, use Docker Compose.
 
 ## Basic Setup with Docker Compose
 
@@ -57,61 +64,55 @@ On v2.x (v2.0.0+), if `adminPassword` is unset or left as `admin`, a random admi
 This set up is just to get the feel of FileBrowser before you get into customization, defining access control, etc. For regular use, Check out the slightly upgraded guide {{< doclink path="user-guides/other/standalone" text="here." />}}
 {{% /alert %}}
 
+### Step 1: Create folders and permissions
 
-### Step 1: Create a base folder for FileBrowser
+Replace `/path/to/your/folder` with a real directory on your host (if you leave the placeholder, Docker creates an empty **root-owned** directory and uploads will fail).
 
 ```bash
-mkdir -p filebrowser/data && cd filebrowser
+mkdir -p filebrowser/data filebrowser/files && cd filebrowser
+sudo chown -R 1000:1000 data files
 ```
 
 {{% alert context="info" %}}
-**Default Config Location**: In Docker, the default config location is `/home/filebrowser/data/config.yaml`. So we create a `data` directory so we can mount the config, database files, and cacheDir in the same volume. If you don't want to follow this process, you can use {{< doclink path="reference/environment-variables" text="environment variables" />}} to set the config path and database path manually.
+**Default config location**: In Docker, config lives at `/home/filebrowser/data/config.yaml` inside the container. Mount `./data:/home/filebrowser/data` so config, database, and cache persist. You can also set paths with {{< doclink path="reference/environment-variables" text="environment variables" />}}.
 {{% /alert %}}
 
-### Step 2: Create Config
+### Step 2: Create config.yaml
 
-Add a `config.yaml` file inside the `data` directory:
+Create the file **before** any bind mount that expects a file (see {{< doclink path="getting-started/common-setup-mistakes/" text="Common setup mistakes" />}}):
 
 ```bash
 touch ./data/config.yaml
 ```
 
-Then fill out your config as needed, for example:
+Example:
 
 ```yaml
 server:
-  cacheDir: /home/filebrowser/data/tmp # using the data volume so it can persist across restarts
+  cacheDir: /home/filebrowser/data/tmp
   sources:
-    - path: /folder # Do not use a root "/" directory or include the "/var" folder
+    - path: /folder
       config:
         defaultEnabled: true
 ```
 
-{{% alert context="info" %}}
-**Important**: Source path specified in the `config.yaml` are in terms of container point of view. ({{< doclink path="getting-started/config" text="Check this page for more information on configurations." />}})
-{{% /alert %}}
+`path` is the **in-container** path (`/folder`), not the host path. It must match the right side of your volume mount (`./files:/folder` → `path: /folder`).
 
 ### Step 3: Create Docker Compose
-
-Create `docker-compose.yaml` in the  directory.
-
-```bash
-touch docker-compose.yaml
-```
-
-Then type in the below docker configuration.
 
 ```yaml
 services:
   filebrowser:
     image: ghcr.io/gtsteffaniak/filebrowser:stable
     volumes:
-      - /path/to/your/folder:/folder # Do not use a root "/" directory or include the "/var" folder
+      - ./files:/folder
       - ./data:/home/filebrowser/data
     ports:
-      - 80:80 # exposes port 80 to host, the left-side number can be changed without config.yaml changes.
+      - "8080:80"
     restart: unless-stopped
 ```
+
+Use `127.0.0.1:8080:80` instead of `8080:80` if only a local reverse proxy should reach the container. Change the **left** port if host port 80 (or 8080) is already in use.
 
 ### Step 4: Start
 
@@ -119,37 +120,75 @@ services:
 docker compose up -d
 ```
 
-### Healthcheck Configuration
+### Step 5: First login {#first-login}
+
+When `auth.adminPassword` and `FILEBROWSER_ADMIN_PASSWORD` are **unset**, FileBrowser generates a random password, logs it **once**, and requires a password change on first login.
+
+Find the password:
+
+```bash
+docker compose logs -f filebrowser 2>&1 | grep -m1 -i "initial admin password"
+```
+
+If the line is not in the log yet, wait a few seconds and run `docker compose logs filebrowser 2>&1 | grep -i "initial admin password"` again.
+
+Open `http://localhost:8080` (or your mapped host port), sign in, and set a new password when prompted.
+
+**Config or env admin password**
+
+- If you set `auth.adminPassword` or `FILEBROWSER_ADMIN_PASSWORD` to any value **other than** empty or `admin`, that password is **reapplied on every startup** (log: `Resetting admin user to default username and password.`). Remove it after setup if you want password changes made in the UI to persist across restarts.
+- Setting the password to `admin` does **not** work: it is treated as unset, a random password is generated and logged, and first-login reset is still required.
+
+**Recovery** (lost password; stop the server first — only one process may use the database):
+
+```bash
+docker compose down
+docker run --rm \
+  -v "$(pwd)/data:/home/filebrowser/data" \
+  --entrypoint="" \
+  ghcr.io/gtsteffaniak/filebrowser:stable \
+  ./filebrowser user set admin --password 'your-new-password' -c /home/filebrowser/data/config.yaml
+docker compose up -d
+```
+
+See {{< doclink path="reference/cli/" text="CLI reference" />}} for `user set` options.
+
+## Healthcheck Configuration
 
 {{% alert context="warning" %}}
-This is only needed if you change the `server.port` in the `config.yaml` -- this is not needed for the above guide where the port remains `80` in the `config.yaml`
+This is only needed if you change **`http.port`** in `config.yaml`. The default image healthcheck curls `http://localhost:80/health`.
 {{% /alert %}}
-
-The FileBrowser Docker image includes a default healthcheck that uses port 80:
 
 ```dockerfile
 HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
   CMD curl -f http://localhost:80/health || exit 1
 ```
 
-If you configure FileBrowser to use a different port in your `config.yaml`, you must override the healthcheck in your `docker-compose.yaml` to match:
+If FileBrowser listens on another port inside the container, override the healthcheck in `docker-compose.yaml`:
 
 ```yaml
 services:
   filebrowser:
     image: ghcr.io/gtsteffaniak/filebrowser:stable
     volumes:
-      - /path/to/your/folder:/folder
+      - ./files:/folder
       - ./data:/home/filebrowser/data
     ports:
-      - 80:8080  # Filebrowser listens on 8080 inside docker, but here we are exposing the host port as 80 still.
+      - "8080:8080"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/health"] # port should match the internal port 8080 
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
       interval: 30s
       timeout: 3s
       start_period: 10s
       retries: 3
     restart: unless-stopped
+```
+
+Example `config.yaml` fragment:
+
+```yaml
+http:
+  port: 8080
 ```
 
 **Healthcheck options:**
@@ -168,7 +207,7 @@ v2.0.0 uses SQLite, not the legacy database (`database.db`). Upgrading from v1.x
 {{% /alert %}}
 
 {{% alert context="info" %}}
-**Default Database Location (v2.0.0+)**: The Docker image sets `FILEBROWSER_DATABASE_PATH=/home/filebrowser/data/database.sqlite`. With the recommended `./data` mount, that file is `./data/database.sqlite` on the host when `server.database.path` is omitted. A path set in config wins over that environment variable. Standalone builds with no env var and no config path use `./filebrowser.sqlite`.
+**Default database location (v2.0.0+)**: The Docker image sets `FILEBROWSER_DATABASE_PATH=/home/filebrowser/data/database.sqlite`. With the recommended `./data` mount, that file is `./data/database.sqlite` on the host when `server.database.path` is omitted. A path set in config wins over that environment variable. Standalone builds with no env var and no config path use `./filebrowser.sqlite`.
 
 To persist your database, mount a volume to `/home/filebrowser/data`:
 
@@ -177,8 +216,8 @@ services:
   filebrowser:
     image: ghcr.io/gtsteffaniak/filebrowser:stable
     volumes:
-      - /path/to/files:/folder
-      - ./data:/home/filebrowser/data  # Database and config stored here
+      - ./files:/folder
+      - ./data:/home/filebrowser/data
 ```
 
 See {{< doclink path="configuration/server/#database" text="Server configuration" />}} and {{< doclink path="getting-started/config/#how-to-specify-a-config-file" text="configuration file priority" />}} for more information on database paths.
@@ -187,24 +226,24 @@ See {{< doclink path="configuration/server/#database" text="Server configuration
 ## Running container with a different user
 
 Docker images run as the built-in `filebrowser` user (UID:GID **1000:1000**) by default. To use a different UID:GID, set `user` in your compose file:
+
 ```yaml
 services:
   filebrowser:
     image: ghcr.io/gtsteffaniak/filebrowser:stable
-    user: filebrowser
+    user: "1001:1001"
     volumes:
-      - /path/to/files:/folder
+      - ./files:/folder
       - ./data:/home/filebrowser/data
     ports:
-      - 80:80
+      - "8080:80"
     restart: unless-stopped
 ```
 
-You can also specify any user UID:GID, but if you choose a UID other than 1000, you will need to make sure the mounted `data` directory has the same permissions ({{< doclink path="configuration/server#cachedir" text="See cacheDir config" />}})
+If you choose a UID other than 1000, the mounted `data` directory and source folder need matching ownership ({{< doclink path="configuration/server#cachedir" text="See cacheDir config" />}}):
 
-for example if you wanted to use `1001:1001` user for Unraid installs.
 ```bash
-chown -R 1001:1001 ./data
+chown -R 1001:1001 ./data ./files
 ```
 
 ## Privileged ports and container capabilities
@@ -213,12 +252,10 @@ chown -R 1001:1001 ./data
 
 Linux treats **ports below 1024** as *privileged*: a non-root user needs the **`NET_BIND_SERVICE`** capability (or a lowered `net.ipv4.ip_unprivileged_port_start`) to bind there.
 
-On **rootful** Docker Engine or Docker Desktop, the container still usually gets **`NET_BIND_SERVICE`** in the default capability set, so that user **can** listen on `80` or `443` without extra flags. **`bind: permission denied` on a low `server.port` shows up more often when:**
+On **rootful** Docker Engine or Docker Desktop, the container still usually gets **`NET_BIND_SERVICE`** in the default capability set, so that user **can** listen on `80` or `443` without extra flags. **`bind: permission denied` on a low `http.port` shows up more often when:**
 
 - you use a **rootless** container engine (**Docker rootless**, **Podman rootless**), or  
 - the runtime uses a **stricter** capability profile (some **Podman** installs, explicit `--cap-drop`, hardened policies).
-
-Because the default user is not root, **`bind: permission denied` on a low `server.port` shows up more often** in those environments when `NET_BIND_SERVICE` is not effective. It is **not** “non-root in Docker always breaks port 443 on every machine.”
 
 ### non-root runtimes can use `NET_BIND_SERVICE`
 
@@ -235,9 +272,12 @@ For `docker run`, use `--cap-add=NET_BIND_SERVICE`. **Podman** supports the same
 
 Further reading: [Docker: Runtime privilege and Linux capabilities](https://docs.docker.com/engine/containers/run/#runtime-privilege-and-linux-capabilities).
 
+## Troubleshooting
+
+See {{< doclink path="getting-started/common-setup-mistakes/" text="Common setup mistakes" />}} for startup failures, empty UI, permission errors, and healthcheck issues.
+
 ## Next Steps
 
 - {{< doclink path="configuration/sources/" text="Configure sources" />}}
 - {{< doclink path="configuration/users/" text="Set up users" />}}
 - {{< doclink path="integrations/" text="Enable integrations" />}}
-

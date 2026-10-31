@@ -3,7 +3,7 @@ title: "Running behind a reverse proxy (v2.0.0)"
 description: "Configure FileBrowser v2.0.x (stable) behind reverse proxies"
 icon: "other_houses"
 date: "2025-10-28T22:14:01Z"
-lastmod: "2026-08-10T15:05:25Z"
+lastmod: "2026-10-30T00:00:00Z"
 order: 7
 ---
 
@@ -124,26 +124,82 @@ Only enable `trustProxyHeaders` when FileBrowser is behind a proxy that controls
 
 See {{< doclink path="configuration/http/#trustproxyheaders" text="HTTP reverse-proxy headers" />}} and {{< doclink path="configuration/http/#built-in-authentication-rate-limiting" text="built-in authentication rate limiting" />}} for details.
 
-### FileBrowser Configuration
+{{% alert context="warning" %}}
+When `http.trustProxyHeaders: true`, bind FileBrowser so it is **not** reachable except through your proxy (for example `127.0.0.1:8080:80` in Docker). Otherwise clients can spoof `X-Forwarded-*` and bypass per-IP limits.
+{{% /alert %}}
 
-Configure FileBrowser to work with your reverse proxy:
+```yaml
+services:
+  filebrowser:
+    ports:
+      - "127.0.0.1:8080:80"
+```
+
+### Dedicated hostname (simplest)
+
+When FileBrowser has its own DNS name and lives at `/`, you usually **do not** need `http.baseURL`:
+
+```yaml
+http:
+  trustProxyHeaders: true
+```
+
+Reverse-proxy to the **internal** listen port (`http.port`, default **80** in Docker):
+
+```nginx
+server {
+    listen 443 ssl;
+    server_name files.example.com;
+
+    location / {
+        proxy_pass http://127.0.0.1:8080/;  # host port mapped to container :80
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_buffering off;
+    }
+}
+```
+
+Subpath deployments (`http.baseURL: "/files"`) are covered below.
+
+### FileBrowser configuration (subpath / baseURL)
+
+Configure FileBrowser when it is served under a path prefix:
 
 ```yaml
 http:
   baseURL: "/files"
-  externalUrl: "https://files.example.com/files"
+  externalUrl: "https://files.example.com"
+  trustProxyHeaders: true
+```
+
+Use a **host-only** `externalUrl` (no path). FileBrowser combines it with `baseURL` for share links and related URLs on v2.0.x.
+
+Do **not** enable `auth.methods.proxy` unless you use external header authentication — see [With Authentication Proxy](#with-authentication-proxy) and {{< doclink path="configuration/authentication/proxy/" text="proxy authentication" />}}.
+
+### FileBrowser configuration (external auth proxy)
+
+When your reverse proxy performs authentication and sends a username header:
+
+```yaml
+http:
+  baseURL: "/files"
+  externalUrl: "https://files.example.com"
   trustProxyHeaders: true
 
 auth:
   methods:
     proxy:
       enabled: true
-      header: "X-Forwarded-User"   # only when using external auth; separate from trustProxyHeaders
+      header: "X-Forwarded-User"
 ```
+
+Only enable proxy auth when FileBrowser is unreachable except through your proxy.
 
 ## nginx Configuration
 
-Minimal nginx configuration for FileBrowser Quantum:
+Minimal nginx configuration for FileBrowser Quantum (subpath `/files`; upstream port must match your **`http.port`**, default **80** in Docker):
 
 ```nginx
 server {
@@ -153,7 +209,7 @@ server {
     # Public endpoints (for shares - no reverse proxy auth required)
     # These routes use hash-based authentication internally
     location /files/public/ {
-        proxy_pass http://filebrowser:8080/files/public/;
+        proxy_pass http://filebrowser:80/files/public/;
         proxy_set_header Host $host;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
@@ -162,7 +218,7 @@ server {
 
     # Private endpoints (authentication required)
     location /files/ {
-        proxy_pass http://filebrowser:8080/files/;
+        proxy_pass http://filebrowser:80/files/;
         proxy_set_header Host $host;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
@@ -195,7 +251,7 @@ server {
 
     # Public endpoints (no auth)
     location /files/public/ {
-        proxy_pass http://filebrowser:8080/files/public/;
+        proxy_pass http://filebrowser:80/files/public/;
         proxy_set_header Host $host;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
@@ -207,7 +263,7 @@ server {
         auth_request /auth/authorize;
         auth_request_set $user $upstream_http_x_forwarded_user;
 
-        proxy_pass http://filebrowser:8080/files/;
+        proxy_pass http://filebrowser:80/files/;
         proxy_set_header Host $host;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
@@ -243,8 +299,8 @@ Minimal Caddy configuration:
 
 ```caddy
 files.example.com {
-    # Public endpoints (no authentication)
-    handle_path /public/* {
+    # Public endpoints — use handle (not handle_path) so /public is not stripped
+    handle /public/* {
         reverse_proxy filebrowser:80 {
             header_up Host {host}
             header_up X-Forwarded-For {remote_host}
@@ -252,7 +308,7 @@ files.example.com {
         }
     }
 
-    # Private endpoints (with authentication)
+    # Private endpoints
     handle /* {
         reverse_proxy filebrowser:80 {
             header_up Host {host}
@@ -292,7 +348,7 @@ FileBrowser Quantum uses SSE for real-time features. Essential settings:
 
 ```nginx
 location /files/ {
-    proxy_pass http://filebrowser:8080/files/;
+    proxy_pass http://filebrowser:80/files/;
     proxy_set_header Host $host;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header X-Forwarded-Proto $scheme;
@@ -311,7 +367,7 @@ If your reverse proxy sets authorization headers, you may need to clear them for
 ```nginx
 location /files/ {
     proxy_set_header Authorization "";  # Clear authorization header
-    proxy_pass http://filebrowser:8080/files/;
+    proxy_pass http://filebrowser:80/files/;
     proxy_set_header Host $host;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header X-Forwarded-Proto $scheme;
