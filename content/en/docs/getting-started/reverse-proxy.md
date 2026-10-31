@@ -170,9 +170,11 @@ Configure FileBrowser when it is served under a path prefix:
 ```yaml
 http:
   baseURL: "/files"
-  externalUrl: "https://files.example.com/files"
+  externalUrl: "https://files.example.com"
   trustProxyHeaders: true
 ```
+
+Use a **host-only** `externalUrl` (no path). FileBrowser combines it with `baseURL` for share links and related URLs on v2.0.x.
 
 Do **not** enable `auth.methods.proxy` unless you use external header authentication — see [With Authentication Proxy](#with-authentication-proxy) and {{< doclink path="configuration/authentication/proxy/" text="proxy authentication" />}}.
 
@@ -183,7 +185,7 @@ When your reverse proxy performs authentication and sends a username header:
 ```yaml
 http:
   baseURL: "/files"
-  externalUrl: "https://files.example.com/files"
+  externalUrl: "https://files.example.com"
   trustProxyHeaders: true
 
 auth:

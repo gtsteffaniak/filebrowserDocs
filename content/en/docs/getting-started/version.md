@@ -21,7 +21,7 @@ FileBrowser Quantum comes with two release channels (**stable** and **beta**) ac
 
 ### Stable Release (v2.0.x)
 
-The `stable` and `latest` tags currently track **v2.0.x** (patch releases such as **v2.0.2-stable**). Pin with **`2.0-stable`** or **`2-stable`** to receive v2.0.x patches without jumping to the next minor line when v2.1.x eventually becomes stable. Ideal for:
+The `stable` and `latest` tags currently track **v2.0.x** (patch releases such as **v2.0.2-stable**). For production on the v2.0.x line, pin **`2.0-stable`** (or a full tag such as **`2.0.2-stable`**). The **`2-stable`** major tag moves to the next stable minor when v2.1.x ships — use it only if you intend to follow that upgrade. Ideal for:
 
 - New FileBrowser Quantum installs on v2
 - Production environments requiring stability
@@ -121,7 +121,7 @@ Legacy v1 examples still exist (`1.5-stable`, `1.5.8-stable`, and similar) but v
 
 ### Choosing the Right Tag
 
-- **For production (v2.0.x)**: Use `2.0-stable` or `2-stable` for patch updates without chasing every full version tag
+- **For production (stay on v2.0.x)**: Use `2.0-stable` or a full tag such as `2.0.2-stable`. Treat `2-stable` as a moving tag that will advance to v2.1.x when that line becomes stable.
 - **For testing v2.1.x**: Use `beta` or `2.1-beta`
 - **For locking a build**: Use a full tag such as `2.0.2-stable` or `2.1.3-beta`
 

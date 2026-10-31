@@ -76,7 +76,11 @@ When `auth.adminPassword` and `FILEBROWSER_ADMIN_PASSWORD` are unset, the **cons
 .\filebrowser.exe -c config.yaml user set admin --password your-new-password
 ```
 
-To run as a service, use Task Scheduler, NSSM, or `sc.exe` with the same `-c config.yaml` arguments and a dedicated working directory so `filebrowser.sqlite` is writable.
+To run as a service, prefer **Task Scheduler** or **[NSSM](https://nssm.cc/)** so you can set the working directory to your install folder (for example `C:\FileBrowser\`). If you use **`sc.exe`**, pass an **absolute** config path — Windows services start in `System32`, so `-c config.yaml` will not find the file and may create `filebrowser.sqlite` in the wrong place:
+
+```cmd
+sc create FileBrowser binPath= "C:\FileBrowser\filebrowser.exe -c C:\FileBrowser\config.yaml" start= auto
+```
 
 ## Troubleshooting
 

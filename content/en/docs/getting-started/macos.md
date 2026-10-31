@@ -3,7 +3,7 @@ title: "macOS (v2.0.0)"
 description: "Install FileBrowser v2.0.x (stable) on macOS"
 icon: "laptop_mac"
 date: "2025-10-08T14:59:30Z"
-lastmod: "2026-10-30T00:00:00Z"
+lastmod: "2026-10-31T00:00:00Z"
 order: 3
 ---
 
@@ -23,25 +23,30 @@ Run FileBrowser Quantum **v2.0.x (stable)** natively on macOS.
 
 1. Go to the [releases page](https://github.com/gtsteffaniak/filebrowser/releases)
 2. Download the **stable** `darwin-amd64-filebrowser` (Intel) or `darwin-arm64-filebrowser` (Apple Silicon) asset
-3. Save to a folder (for example `~/FileBrowser/`)
+3. Save to a folder (for example `~/FileBrowser/`) and set the filename:
+
+```bash
+cd ~/FileBrowser
+FB_BIN=darwin-arm64-filebrowser   # Intel: FB_BIN=darwin-amd64-filebrowser
+```
 
 ## Enable Permissions
 
 ### Step 1: Make Executable
 
 ```bash
-chmod +x darwin-arm64-filebrowser
+chmod +x "$FB_BIN"
 ```
 
 ### Step 2: Allow in Security Settings
 
 On first run, macOS may block the binary:
 
-1. Try to run: `./darwin-arm64-filebrowser version`
+1. Try to run: `./"$FB_BIN" version`
 2. Open **System Settings** → **Privacy & Security** and allow FileBrowser, **or** remove quarantine:
 
 ```bash
-xattr -d com.apple.quarantine ./darwin-arm64-filebrowser
+xattr -d com.apple.quarantine "./$FB_BIN"
 ```
 
 ## Optional: Install FFmpeg
@@ -53,7 +58,7 @@ brew install ffmpeg
 ## Create Configuration
 
 ```bash
-./darwin-arm64-filebrowser setup
+./"$FB_BIN" setup
 ```
 
 Or create `config.yaml`:
@@ -75,10 +80,10 @@ v2.0.0 and later read the listen port from `http.port`. A `server.port` key is r
 ## Run FileBrowser
 
 ```bash
-./darwin-arm64-filebrowser -c config.yaml
+./"$FB_BIN" -c config.yaml
 ```
 
-Access at `http://localhost:8080` (or your `http.port`).
+Access at `http://localhost:8080` (or your `http.port`). Read the generated admin password from this terminal's output.
 
 ## First login
 
@@ -87,10 +92,16 @@ When `auth.adminPassword` and `FILEBROWSER_ADMIN_PASSWORD` are unset, the termin
 - Non-empty `auth.adminPassword` / `FILEBROWSER_ADMIN_PASSWORD` values other than `admin` are **reapplied on every restart** — remove after setup if the UI should manage passwords.
 - `admin` as the configured password is treated as unset.
 
-**Recovery:**
+**Recovery** (stop the running server first):
 
 ```bash
-./darwin-arm64-filebrowser -c config.yaml user set admin --password 'your-new-password'
+# Foreground: press Ctrl+C, then:
+./"$FB_BIN" -c config.yaml user set admin --password 'your-new-password'
+
+# launchd service:
+sudo launchctl bootout system /Library/LaunchDaemons/com.filebrowser.plist
+sudo /usr/local/bin/filebrowser -c /usr/local/etc/filebrowser/config.yaml user set admin --password 'your-new-password'
+sudo launchctl bootstrap system /Library/LaunchDaemons/com.filebrowser.plist
 ```
 
 ## Run as Service (launchd)
@@ -99,7 +110,7 @@ Install the binary and config to fixed paths:
 
 ```bash
 sudo mkdir -p /usr/local/etc/filebrowser /var/log/filebrowser
-sudo cp darwin-arm64-filebrowser /usr/local/bin/filebrowser
+sudo cp "$FB_BIN" /usr/local/bin/filebrowser
 sudo cp config.yaml /usr/local/etc/filebrowser/config.yaml
 sudo chown root:wheel /usr/local/bin/filebrowser /usr/local/etc/filebrowser/config.yaml
 ```

@@ -14,7 +14,7 @@ order: 1
 {{% alert context="warning" %}}
 **Upgrading from v1.x?**
 
-v2.0.x uses a **new database format** and requires a one-time migration. Use a **directory mount** (`./data:/home/filebrowser/data`) rather than a single database file mount. Replace `FILEBROWSER_DATABASE` with `FILEBROWSER_DATABASE_PATH` or `migrateFrom: "default"`. See the {{< doclink path="getting-started/v2/migration/" text="v2 migration guide" />}} before changing your image tag to `stable` or `2.0-stable`.
+v2.0.x uses a **new database format** and requires a one-time migration. Use a **directory mount** (`./data:/home/filebrowser/data`) rather than a single database file mount. On the **first v2 start**, set `server.database.migrateFrom` (or `migrateFrom: "default"` when migrating from legacy `FILEBROWSER_DATABASE`) so the old BoltDB is imported — `FILEBROWSER_DATABASE_PATH` alone only selects the SQLite file and does not migrate v1 data. See the {{< doclink path="getting-started/v2/migration/" text="v2 migration guide" />}} before changing your image tag to `stable` or `2.0-stable`.
 {{% /alert %}}
 
 The fastest way to get started with FileBrowser Quantum **v2.0.x (stable)**.
@@ -51,8 +51,10 @@ docker run -d \
 Access at `http://localhost:8080`. Find the one-time admin password:
 
 ```bash
-docker logs filebrowser 2>&1 | grep -i "initial admin password"
+docker logs -f filebrowser 2>&1 | grep -m1 -i "initial admin password"
 ```
+
+If nothing prints yet, wait for startup and run `docker logs filebrowser 2>&1 | grep -i "initial admin password"` again.
 
 Then complete **First login** below. For a persistent setup, use Docker Compose.
 
@@ -120,13 +122,15 @@ docker compose up -d
 
 ### Step 5: First login {#first-login}
 
-When `auth.adminPassword` / `auth.methods.password.adminPassword` and `FILEBROWSER_ADMIN_PASSWORD` are **unset**, FileBrowser generates a random password, logs it **once**, and requires a password change on first login.
+When `auth.adminPassword` and `FILEBROWSER_ADMIN_PASSWORD` are **unset**, FileBrowser generates a random password, logs it **once**, and requires a password change on first login.
 
 Find the password:
 
 ```bash
-docker compose logs filebrowser 2>&1 | grep -i "initial admin password"
+docker compose logs -f filebrowser 2>&1 | grep -m1 -i "initial admin password"
 ```
+
+If the line is not in the log yet, wait a few seconds and run `docker compose logs filebrowser 2>&1 | grep -i "initial admin password"` again.
 
 Open `http://localhost:8080` (or your mapped host port), sign in, and set a new password when prompted.
 
@@ -135,10 +139,16 @@ Open `http://localhost:8080` (or your mapped host port), sign in, and set a new 
 - If you set `auth.adminPassword` or `FILEBROWSER_ADMIN_PASSWORD` to any value **other than** empty or `admin`, that password is **reapplied on every startup** (log: `Resetting admin user to default username and password.`). Remove it after setup if you want password changes made in the UI to persist across restarts.
 - Setting the password to `admin` does **not** work: it is treated as unset, a random password is generated and logged, and first-login reset is still required.
 
-**Recovery** (lost password, with Compose):
+**Recovery** (lost password; stop the server first — only one process may use the database):
 
 ```bash
-docker compose exec filebrowser filebrowser -c /home/filebrowser/data/config.yaml user set admin --password 'your-new-password'
+docker compose down
+docker run --rm \
+  -v "$(pwd)/data:/home/filebrowser/data" \
+  --entrypoint="" \
+  ghcr.io/gtsteffaniak/filebrowser:stable \
+  ./filebrowser user set admin --password 'your-new-password' -c /home/filebrowser/data/config.yaml
+docker compose up -d
 ```
 
 See {{< doclink path="reference/cli/" text="CLI reference" />}} for `user set` options.

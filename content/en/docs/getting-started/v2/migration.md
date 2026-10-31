@@ -216,7 +216,7 @@ userDefaults:
       share: true
 ```
 
-**Docker (Phase 1–2)** — absolute paths under the data volume:
+**Docker (Phase 1–2)** — absolute paths under the data volume. **Keep the converted `userDefaults` block from the standalone example above** during Phase 1–2 (first startup seeds SQLite from it). Remove `userDefaults` in Phase 3 only if you switch to UI-managed defaults.
 
 ```yaml
 server:

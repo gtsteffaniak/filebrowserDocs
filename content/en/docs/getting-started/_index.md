@@ -37,8 +37,10 @@ services:
     restart: unless-stopped
 EOF
 docker compose up -d
-docker compose logs filebrowser 2>&1 | grep -i "initial admin password"
+docker compose logs -f filebrowser 2>&1 | grep -m1 -i "initial admin password"
 ```
+
+If `grep` prints nothing, wait a few seconds for startup and run `docker compose logs filebrowser 2>&1 | grep -i "initial admin password"` again (or keep `-f` until the line appears).
 
 Open `http://localhost:8080`, sign in with the generated password, complete the forced password change, then remove `FILEBROWSER_ADMIN_PASSWORD` / `auth.adminPassword` from your setup if you added them — see {{< doclink path="getting-started/docker/#first-login" text="First login (Docker)" />}}.
 
