@@ -339,23 +339,27 @@ The docs need **Hugo** and **Sass/Dart Sass**:
 
 - **SCSS Support**: The theme uses SCSS for styling, and Dart Sass is the only Sass transpiler Hugo supports as of [v0.170.0](https://github.com/gohugoio/hugo/releases/tag/v0.170.0).
 
+### Installing
+
+Follow the [Hugo installation guide](https://gohugo.io/installation/) for your platform, then install Dart Sass:
+
+**Linux:**
+- Snap: `sudo snap install dart-sass`
+- Homebrew: `brew install sass/sass/sass`
+- Arch Linux: `sudo pacman -S dart-sass`
+
+**macOS:**
+- homebrew: `brew install sass/sass/sass`
+
+**Windows:**
+- Chocolatey: `choco install sass`
+- Scoop: `	scoop install sass`
+
+See the [hugo documentation](https://gohugo.io/functions/css/sass/#development-environment) for more information.
+
 ### Checking Your Setup
 
 Run `hugo version` to check Hugo, and `hugo env` to list the active transpilers.
-
-### Installing
-
-Follow the [Hugo installation guide](https://gohugo.io/installation/) for your platform, then install sass:
-
-**macOS / Linux (Homebrew):** `brew install sass/sass/sass`
-
-**Linux:**
-- Using snap: `sudo snap install dart-sass`
-- Arch Linux: `sudo pacman -S dart-sass`
-
-**Windows (Chocolatey):** `choco install sass`
-
-Alternatively, you can download dart sass from their [releases page](https://github.com/sass/dart-sass/releases).
 
 ## Common Issues
 
