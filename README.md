@@ -243,7 +243,7 @@ make setup
 
 This installs:
 - npm packages for translation/doclink scripts
-- Hugo (extended version)
+- Hugo
 - Checks for `yq` (YAML validator)
 
 **Run Validation:**

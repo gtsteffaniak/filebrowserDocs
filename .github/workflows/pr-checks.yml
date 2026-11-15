@@ -26,10 +26,9 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v2
+        uses: peaceiris/actions-hugo@v3
         with:
           hugo-version: 'latest'
-          extended: true
       - name: Install Dart Sass
         run: sudo snap install dart-sass
 
@@ -111,10 +110,9 @@ jobs:
         with:
           submodules: recursive
       - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v2
+        uses: peaceiris/actions-hugo@v3
         with:
           hugo-version: 'latest'
-          extended: true
       - name: Install Dart Sass
         run: sudo snap install dart-sass
       - name: Setup Node.js
@@ -136,10 +134,9 @@ jobs:
         with:
           submodules: recursive
       - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v2
+        uses: peaceiris/actions-hugo@v3
         with:
           hugo-version: 'latest'
-          extended: true
       - name: Install Dart Sass
         run: sudo snap install dart-sass
       - name: Setup Node.js

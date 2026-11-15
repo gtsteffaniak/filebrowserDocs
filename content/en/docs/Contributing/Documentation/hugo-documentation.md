@@ -229,7 +229,6 @@ If you prefer to use Hugo directly:
 
 - `hugo server` - Serve locally with live reload
 - `hugo` - Build static site
-- `hugo --extended` - Build with extended features
 
 ## Documentation Structure
 
@@ -334,30 +333,29 @@ These fields are optional but can enhance your documentation:
 - **Usage**: Set to `true` while working on content, `false` when ready to publish
 - **Note**: Draft pages are not included in the built site
 
-## Extended Hugo Version
+## Hugo
 
-The documentation requires **Hugo Extended** version because:
+The docs need **Hugo** and **Sass/Dart Sass**:
 
-1. **SCSS/SASS Support** - The theme uses SCSS for styling
-2. **Advanced Features** - Extended version includes additional processing capabilities
-3. **Theme Compatibility** - The custom theme requires extended features
+- **SCSS Support**: The theme uses SCSS for styling, and Dart Sass is the only Sass transpiler Hugo supports as of [v0.170.0](https://github.com/gohugoio/hugo/releases/tag/v0.170.0).
 
-### Checking Your Hugo Version
+### Checking Your Setup
 
-Run `hugo version` and look for `extended` in the output:
-```
-hugo v0.121.0+extended darwin/arm64 BuildDate=2024-01-01T00:00:00Z
-```
+Run `hugo version` to check Hugo, and `hugo env` to list the active transpilers.
 
-### Installing Hugo Extended
+### Installing
 
-**macOS (Homebrew):** `brew install hugo`
+Follow the [Hugo installation guide](https://gohugo.io/installation/) for your platform, then install sass:
 
-**Windows (Chocolatey):** `choco install hugo-extended`
+**macOS / Linux (Homebrew):** `brew install sass/sass/sass`
 
-**Linux:** Download from GitHub releases and install the extended version
+**Linux:**
+- Using snap: `sudo snap install dart-sass`
+- Arch Linux: `sudo pacman -S dart-sass`
 
-**Docker:** `docker run --rm -it -v $(pwd):/src -p 1313:1313 klakegg/hugo:extended server`
+**Windows (Chocolatey):** `choco install sass`
+
+Alternatively, you can download dart sass from their [releases page](https://github.com/sass/dart-sass/releases).
 
 ## Common Issues
 
@@ -365,7 +363,7 @@ hugo v0.121.0+extended darwin/arm64 BuildDate=2024-01-01T00:00:00Z
 
 If you encounter build issues:
 
-1. **Check Hugo Version**: Ensure you have Hugo Extended
+1. **Check Hugo Version**: Ensure you have Hugo and Sass/Dart Sass
 2. **Theme Issues**: The theme might need updates
 3. **Dependencies**: Missing Hugo modules
 
@@ -373,7 +371,7 @@ If you encounter build issues:
 
 If you're unable to build the documentation:
 
-1. **Check Requirements**: Ensure Hugo Extended is installed
+1. **Check Requirements**: Ensure Hugo and Sass/Dart Sass are installed
 2. **Update Dependencies**: Run `hugo mod get -u`
 3. **Open an Issue**: Create an issue on the repository with:
    - Your Hugo version (`hugo version`)

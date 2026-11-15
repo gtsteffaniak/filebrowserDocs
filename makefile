@@ -341,8 +341,16 @@ setup:
 	@echo "📦 Installing npm dependencies..."
 	npm install
 	@echo ""
-	@echo "📦 Installing Hugo (extended version)..."
-	CGO_ENABLED=1 go install -tags extended github.com/gohugoio/hugo@latest
+	@echo "📦 Installing Hugo..."
+	go install github.com/gohugoio/hugo@latest
+	@echo ""
+	@echo "📦 Checking Dart Sass (required by Hugo to compile SCSS)..."
+	@if command -v dart-sass >/dev/null 2>&1 || command -v sass >/dev/null 2>&1; then \
+		echo "✅ Dart Sass is installed"; \
+	else \
+		echo "⚠️  Dart Sass not found. Hugo needs it to build the site."; \
+		echo "   Install it: https://gohugo.io/functions/css/sass/#installation-overview"; \
+	fi
 	@echo ""
 	@echo "📦 Installing yq (YAML validator)..."
 	@if command -v yq >/dev/null 2>&1; then \
