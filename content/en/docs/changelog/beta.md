@@ -14,19 +14,6 @@ You can also check the releases on [GitHub!](https://github.com/gtsteffaniak/fil
 **v2.0.0** requires a config update and one-time database migration from v1.x. See {{< doclink path="getting-started/v2/migration/" text="Migration guide" />}} and {{< doclink path="getting-started/v2/about/" text="About v2.0.0" />}}.
 {{% /alert %}}
 
----
-
-## [v2.1.6-beta](https://github.com/gtsteffaniak/filebrowser/releases/tag/v2.1.6-beta)
-
- **Security**:
- - [High] Archive extraction now bounds symlink target resolution under the extract destination and rejects absolute or `..` link text, including chained symlinks created during the same extract, closing a follow-up escape path related to [GHSA-jg32-ppcc-ph62](https://github.com/advisories/GHSA-jg32-ppcc-ph62) ([#3404](https://github.com/gtsteffaniak/filebrowser/pull/3404))
-
- **Bug Fixes**:
- - fix(utils): `IsTextFile` reads only an 8KB sample instead of the whole file, avoiding excessive memory use when classifying large files for the editor, file watcher, and subtitle checks ([#3405](https://github.com/gtsteffaniak/filebrowser/pull/3405))
- - fix(frontend): sidebar source usage bar now shows per-user scope quota (used vs cap) from `GET /api/settings/sources` instead of the parent source partition size when a scope quota is configured ([#3402](https://github.com/gtsteffaniak/filebrowser/issues/3402))
-
----
-
 ## [v2.1.3-beta](https://github.com/gtsteffaniak/filebrowser/releases/tag/v2.1.3-beta)
 
 **Reminder**: consider enabling analytics (it's like steam survey) in admin settings, I will release this dashboard once I have a consistent 100+ reports each week
