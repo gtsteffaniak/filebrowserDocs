@@ -26,15 +26,16 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v2
+        uses: peaceiris/actions-hugo@v3
         with:
           hugo-version: 'latest'
-          extended: true
+      - name: Install Dart Sass
+        run: sudo snap install dart-sass
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
 
       - name: Install dependencies
@@ -57,6 +58,9 @@ jobs:
         run: |
           echo "Hugo version:"
           hugo version
+          echo ""
+          echo "Dart Sass version:"
+          dart-sass --version
           echo ""
           echo "Node version:"
           node --version
@@ -106,14 +110,15 @@ jobs:
         with:
           submodules: recursive
       - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v2
+        uses: peaceiris/actions-hugo@v3
         with:
           hugo-version: 'latest'
-          extended: true
+      - name: Install Dart Sass
+        run: sudo snap install dart-sass
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
       - name: Install npm dependencies
         run: npm install
       - name: Run check
@@ -129,14 +134,15 @@ jobs:
         with:
           submodules: recursive
       - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v2
+        uses: peaceiris/actions-hugo@v3
         with:
           hugo-version: 'latest'
-          extended: true
+      - name: Install Dart Sass
+        run: sudo snap install dart-sass
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
       - name: Install npm dependencies
         run: npm install
       - name: Run check
@@ -154,7 +160,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
       - name: Install npm dependencies
         run: npm install
       - name: Run check
@@ -205,7 +211,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
       - name: Install npm dependencies
         run: npm install
       - name: Run check

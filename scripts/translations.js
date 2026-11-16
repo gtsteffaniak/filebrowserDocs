@@ -28,7 +28,7 @@ if (!checkOnly && !DEEPL_API_KEY) {
   process.exit(1);
 }
 
-const translator = checkOnly ? null : new deepl.Translator(DEEPL_API_KEY);
+const translator = checkOnly ? null : new deepl.DeepLClient(DEEPL_API_KEY);
 
 // Language configuration from hugo.toml
 const languages = {
