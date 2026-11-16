@@ -1,7 +1,7 @@
 # Base URL - can be overridden with environment variable HUGO_BASE_URL
 baseURL = '/'
 publishDir = 'dist'
-languageCode = 'en-us'
+locale = 'en-us'
 title = 'FileBrowser Quantum Documentation'
 defaultContentLanguage = 'en'
 enableMissingTranslationPlaceholders = true
@@ -11,33 +11,33 @@ defaultContentLanguageInSubdir = true
 [languages]
   [languages.en]
     contentDir = 'content/en'
-    languageName = 'English'
+    label = 'English'
     weight = 1
-    languageCode = 'en-us'
+    locale = 'en-us'
 
   [languages.de]
     contentDir = 'content/de'
-    languageName = 'Deutsch'
+    label = 'Deutsch'
     weight = 2
-    languageCode = 'de'
+    locale = 'de'
 
   [languages.es]
     contentDir = 'content/es'
-    languageName = 'Español'
+    label = 'Español'
     weight = 3
-    languageCode = 'es'
+    locale = 'es'
 
   [languages.fr]
     contentDir = 'content/fr'
-    languageName = 'Français'
+    label = 'Français'
     weight = 4
-    languageCode = 'fr'
+    locale = 'fr'
 
   [languages.zh-cn]
     contentDir = 'content/zh-cn'
-    languageName = '中文 (简体)'
+    label = '中文 (简体)'
     weight = 5
-    languageCode = 'zh-cn'
+    locale = 'zh-cn'
 
 [params]
     # Enable automatic ordering based purely on file system structure

@@ -3,7 +3,7 @@ title: "macOS (v2.0.0)"
 description: "Install FileBrowser v2.0.x (stable) on macOS"
 icon: "laptop_mac"
 date: "2025-10-08T14:59:30Z"
-lastmod: "2026-10-04T17:20:00Z"
+lastmod: "2026-10-31T00:00:00Z"
 order: 3
 ---
 
@@ -21,25 +21,33 @@ Run FileBrowser Quantum **v2.0.x (stable)** natively on macOS.
 
 ## Download
 
-1. Go to [releases page](https://github.com/gtsteffaniak/filebrowser/releases)
-2. Download the **beta** `darwin-amd64-filebrowser` (Intel) or `darwin-arm64-filebrowser` (Apple Silicon) release
-3. Save to a folder
+1. Go to the [releases page](https://github.com/gtsteffaniak/filebrowser/releases)
+2. Download the **stable** `darwin-amd64-filebrowser` (Intel) or `darwin-arm64-filebrowser` (Apple Silicon) asset
+3. Save to a folder (for example `~/FileBrowser/`) and set the filename:
+
+```bash
+cd ~/FileBrowser
+FB_BIN=darwin-arm64-filebrowser   # Intel: FB_BIN=darwin-amd64-filebrowser
+```
 
 ## Enable Permissions
 
 ### Step 1: Make Executable
 
 ```bash
-chmod +x darwin-arm64-filebrowser
+chmod +x "$FB_BIN"
 ```
 
 ### Step 2: Allow in Security Settings
 
-On first run, macOS will block the app:
+On first run, macOS may block the binary:
 
-1. Try to run: `./darwin-arm64-filebrowser`
-2. Go to **System Preferences** → **Security & Privacy**
-3. Click **Allow** for FileBrowser
+1. Try to run: `./"$FB_BIN" version`
+2. Open **System Settings** → **Privacy & Security** and allow FileBrowser, **or** remove quarantine:
+
+```bash
+xattr -d com.apple.quarantine "./$FB_BIN"
+```
 
 ## Optional: Install FFmpeg
 
@@ -50,17 +58,17 @@ brew install ffmpeg
 ## Create Configuration
 
 ```bash
-./darwin-arm64-filebrowser setup
+./"$FB_BIN" setup
 ```
 
 Or create `config.yaml`:
 
 ```yaml
 http:
-  port: 80
+  port: 8080
 server:
   sources:
-    - path: "/Users/yourname/Documents"
+    - path: /Users/yourname/Documents
       config:
         defaultEnabled: true
 auth:
@@ -72,14 +80,40 @@ v2.0.0 and later read the listen port from `http.port`. A `server.port` key is r
 ## Run FileBrowser
 
 ```bash
-./darwin-arm64-filebrowser -c config.yaml
+./"$FB_BIN" -c config.yaml
 ```
 
-Access at `http://localhost:80`.
+Access at `http://localhost:8080` (or your `http.port`). Read the generated admin password from this terminal's output.
 
-On v2.x (v2.0.0+), if `adminPassword` is unset or left as `admin`, a random admin password is generated, logged once, and a password reset is required on first login. Any other value of `auth.methods.password.adminPassword` or `auth.adminPassword` is used as-is.
+## First login
+
+When `auth.adminPassword` and `FILEBROWSER_ADMIN_PASSWORD` are unset, the terminal prints a one-time generated password; first login requires a password change.
+
+- Non-empty `auth.adminPassword` / `FILEBROWSER_ADMIN_PASSWORD` values other than `admin` are **reapplied on every restart** — remove after setup if the UI should manage passwords.
+- `admin` as the configured password is treated as unset.
+
+**Recovery** (stop the running server first):
+
+```bash
+# Foreground: press Ctrl+C, then:
+./"$FB_BIN" -c config.yaml user set admin --password 'your-new-password'
+
+# launchd service:
+sudo launchctl bootout system /Library/LaunchDaemons/com.filebrowser.plist
+sudo /usr/local/bin/filebrowser -c /usr/local/etc/filebrowser/config.yaml user set admin --password 'your-new-password'
+sudo launchctl bootstrap system /Library/LaunchDaemons/com.filebrowser.plist
+```
 
 ## Run as Service (launchd)
+
+Install the binary and config to fixed paths:
+
+```bash
+sudo mkdir -p /usr/local/etc/filebrowser /var/log/filebrowser
+sudo cp "$FB_BIN" /usr/local/bin/filebrowser
+sudo cp config.yaml /usr/local/etc/filebrowser/config.yaml
+sudo chown root:wheel /usr/local/bin/filebrowser /usr/local/etc/filebrowser/config.yaml
+```
 
 Create `/Library/LaunchDaemons/com.filebrowser.plist`:
 
@@ -96,6 +130,12 @@ Create `/Library/LaunchDaemons/com.filebrowser.plist`:
         <string>-c</string>
         <string>/usr/local/etc/filebrowser/config.yaml</string>
     </array>
+    <key>WorkingDirectory</key>
+    <string>/usr/local/etc/filebrowser</string>
+    <key>StandardOutPath</key>
+    <string>/var/log/filebrowser/stdout.log</string>
+    <key>StandardErrorPath</key>
+    <string>/var/log/filebrowser/stderr.log</string>
     <key>RunAtLoad</key>
     <true/>
     <key>KeepAlive</key>
@@ -104,15 +144,20 @@ Create `/Library/LaunchDaemons/com.filebrowser.plist`:
 </plist>
 ```
 
-Load service:
+Load the daemon (macOS 10.10+):
 
 ```bash
-sudo launchctl load /Library/LaunchDaemons/com.filebrowser.plist
+sudo launchctl bootstrap system /Library/LaunchDaemons/com.filebrowser.plist
 ```
+
+Find the generated admin password in `/var/log/filebrowser/stdout.log` if needed. LaunchDaemons run as **root**, so binding to port 80 is allowed; prefer `http.port: 8080` unless you need port 80.
+
+## Troubleshooting
+
+See {{< doclink path="getting-started/common-setup-mistakes/" text="Common setup mistakes" />}}.
 
 ## Next Steps
 
 - {{< doclink path="configuration/sources/" text="Configure sources" />}}
 - {{< doclink path="configuration/users/" text="Set up users" />}}
 - {{< doclink path="integrations/" text="Enable integrations" />}}
-
