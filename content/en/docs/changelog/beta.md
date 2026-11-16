@@ -58,7 +58,7 @@ Happy Halloween! Heres a mostly bugfix release for v2.1.4.
 > Halloween is an event based theme, each user will automatically switch to it. This can be disabled globally with [frontend.disableEventThemes](https://filebrowserquantum.com/en/docs/configuration/frontend/styling/#options)
 
  **Security**:
- - [Low] `GET /api/settings` and `GET /api/settings?property=auth` no longer return cleartext secrets (`auth.key`, `totpSecret`, `adminPassword`, OIDC `clientSecret`, LDAP bind password, recaptcha secret, OnlyOffice secret); secret fields are replaced with `**hidden**` in the response, and the YAML export now redacts the recaptcha and LDAP secrets whose comments lacked the `secret:` marker (GHSA-892f-9h5p-mfc8) reporter @paulmossman
+ - [Low] `GET /api/settings` and `GET /api/settings?property=auth` no longer return cleartext secrets (`auth.key`, `totpSecret`, `adminPassword`, OIDC `clientSecret`, LDAP bind password, recaptcha secret, OnlyOffice secret); secret fields are replaced with `**hidden**` in the response, and the YAML export now redacts the recaptcha and LDAP secrets whose comments lacked the `secret:` marker (GHSA-892f-9h5p-mfc8) reporter [@paulmossman](https://github.com/paulmossman)
 
  **New Features**:
  - feat(search): sidebar File actions and close button in advanced search ([#3303](https://github.com/gtsteffaniak/filebrowser/pull/3303)) ([#2479](https://github.com/gtsteffaniak/filebrowser/issues/2479)) ([#3303](https://github.com/gtsteffaniak/filebrowser/pull/3303))
