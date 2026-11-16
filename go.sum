@@ -1,0 +1,9 @@
+github.com/gohugoio/hugo-mod-bootstrap-scss/v5 v5.20300.20800 h1:j5myhhzYwIHTr5ctK96Elfgp5uRROvrlTzYwwe1nF8o=
+github.com/gohugoio/hugo-mod-bootstrap-scss/v5 v5.20300.20800/go.mod h1:P5GGyhdxi00C5zW7vkRo/IS532gZY/YS2TS395Xaxho=
+github.com/gohugoio/hugo-mod-jslibs-dist/popperjs/v2 v2.21100.20000 h1:GZxx4Hc+yb0/t3/rau1j8XlAxLE4CyXns2fqQbyqWfs=
+github.com/gohugoio/hugo-mod-jslibs-dist/popperjs/v2 v2.21100.20000/go.mod h1:mFberT6ZtcchrsDtfvJM7aAH2bDKLdOnruUHl0hlapI=
+github.com/quantumx-apps/filebrowserDocsTheme v1.4.1 h1:OgpT6NsGVHiuAI6mFpN8LtuPeCxBo+pWa2h7Lyx6n2U=
+github.com/quantumx-apps/filebrowserDocsTheme v1.4.1/go.mod h1:Sjn9KS8r0sCJJuOafmfiNrn6jFy97uUpn6/zQ802MxA=
+github.com/twbs/bootstrap v5.3.8+incompatible/go.mod h1:fZTSrkpSf0/HkL0IIJzvVspTt1r9zuf7XlZau8kpcY0=
+github.com/twbs/bootstrap v5.3.9+incompatible h1:POTO16RUeCCSft8198pwj2CRO2SnXLNG6GgHT7DgNyI=
+github.com/twbs/bootstrap v5.3.9+incompatible/go.mod h1:fZTSrkpSf0/HkL0IIJzvVspTt1r9zuf7XlZau8kpcY0=
