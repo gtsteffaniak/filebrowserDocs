@@ -10,7 +10,7 @@ order: 5
 FileBrowser Quantum comes with two release channels (**stable** and **beta**) across **v1.5.x**, **v2.0.x**, and **v2.1.x**. Choosing the right version is an important first step.
 
 {{% alert context="info" %}}
-**Current state:** **`stable`** and **`latest`** point to **v2.0.2-stable** (current v2.0.x stable). **v1.5.x** is maintained on the **`1.5-stable`** tag only — not on `stable`/`latest`. **v2.1.x** is on the **`beta`** channel (for example **v2.1.4-beta**). Upgrading from v1.x to v2.0.x requires a one-time migration — see {{< doclink path="getting-started/v2/migration/" text="v2 migration guide" />}} before changing tags.
+**Current state:** **`stable`** and **`latest`** point to **v2.0.2-stable** (current v2.0.x stable). **v1.5.x** is maintained on the **`1.5-stable`** tag only — not on `stable`/`latest`. **v2.1.x** is on the **`beta`** channel (for example **v2.1.5-beta**). Upgrading from v1.x to v2.0.x requires a one-time migration — see {{< doclink path="getting-started/v2/migration/" text="v2 migration guide" />}} before changing tags.
 {{% /alert %}}
 
 {{% alert context="success" %}}
@@ -31,7 +31,7 @@ The `stable` and `latest` tags currently track **v2.0.x** (patch releases such a
 
 ### Beta Release (v2.1.x)
 
-The `beta` tag currently tracks **v2.1.x** (for example **v2.1.4-beta**), ahead of **v2.0.x** stable. Ideal for those who:
+The `beta` tag currently tracks **v2.1.x** (for example **v2.1.5-beta**), ahead of **v2.0.x** stable. Ideal for those who:
 
 - Don't have a large userbase
 - Want the latest features immediately
@@ -113,7 +113,7 @@ When using Docker, you have access to multiple tag formats for precise version c
 ### Tag Formats
 
 - **Release type tags**: `stable`, `beta`, `latest` — `latest` matches **`stable`** (currently v2.0.x). `beta` tracks v2.1.x.
-- **Full version tags**: `2.0.2-stable`, `2.1.4-beta` — pin to an exact release
+- **Full version tags**: `2.0.2-stable`, `2.1.5-beta` — pin to an exact release
 - **Major.minor tags**: `2.0-stable`, `2.1-beta` — receive patch updates within that minor line
 - **Major tags**: `2-stable`, `2-beta` — receive updates within that major version (when v2.1.x becomes stable, `2-stable` will move to the new stable minor — plan migrations accordingly)
 
@@ -123,7 +123,7 @@ Legacy v1 examples still exist (`1.5-stable`, `1.5.8-stable`, and similar) but v
 
 - **For production (stay on v2.0.x)**: Use `2.0-stable` or a full tag such as `2.0.2-stable`. Treat `2-stable` as a moving tag that will advance to v2.1.x when that line becomes stable.
 - **For testing v2.1.x**: Use `beta` or `2.1-beta`
-- **For locking a build**: Use a full tag such as `2.0.2-stable` or `2.1.4-beta`
+- **For locking a build**: Use a full tag such as `2.0.2-stable` or `2.1.5-beta`
 
 {{% alert context="info" %}}
 All version tags are available for both regular and slim images. For example: `2.0-stable-slim`, `2-stable-slim`, `beta-slim`.

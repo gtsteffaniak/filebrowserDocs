@@ -243,8 +243,10 @@ make setup
 
 This installs:
 - npm packages for translation/doclink scripts
-- Hugo (extended version)
+- Hugo
 - Checks for `yq` (YAML validator)
+
+`make setup` doesn't install Dart Sass automatically (required by Hugo to compile SCSS), you will need to [install it manually](https://filebrowserquantum.com/en/docs/contributing/documentation/hugo-documentation/#hugo) for your platform.
 
 **Run Validation:**
 ```bash

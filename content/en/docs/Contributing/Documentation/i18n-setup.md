@@ -12,7 +12,7 @@ This guide walks you through setting up multilingual support for the FileBrowser
 
 ## Prerequisites
 
-- Hugo Extended installed
+- Hugo and Sass/Dart Sass installed
 - Access to the documentation repository
 - Basic understanding of Hugo structure
 

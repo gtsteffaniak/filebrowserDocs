@@ -36,10 +36,11 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v2
+        uses: peaceiris/actions-hugo@v3
         with:
           hugo-version: 'latest'
-          extended: true
+      - name: Install Dart Sass
+        run: sudo snap install dart-sass
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

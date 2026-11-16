@@ -16,6 +16,40 @@ You can also check the releases on [GitHub!](https://github.com/gtsteffaniak/fil
 
 ---
 
+## [v2.1.5-beta](https://github.com/gtsteffaniak/filebrowser/releases/tag/v2.1.5-beta)
+
+ **Security**:
+ - [High] Server-side archive create (`POST /api/resources/archive`) now resolves the full destination path for writes via symlink-scoped mutation resolution, closing arbitrary host file overwrite through an in-scope symlink leaf (GHSA-jg32-ppcc-ph62) reporter [@manus-use](https://github.com/manus-use)
+ - [Moderate] `GET /api/media/subtitles` no longer follows symlink external subtitle sidecars beside the video file, and public share requests resolve sidecar paths under the share prefix before read (GHSA-hfvf-2639-p2mq) reporter [@manus-use](https://github.com/manus-use)
+ - [Moderate] Directory motion-preview now resolves symlinked children within the caller's scope, closing the incomplete GHSA-g2q5 remediation path through `getDirectoryPreview` (GHSA-2546-vf4j-vh9v) reporter [@manus-use](https://github.com/manus-use)
+ - [Moderate] RealPathCache entries for affected index paths are invalidated after symlink-scoped mutations so stale resolved paths cannot bypass containment on subsequent create, write, delete, or move operations.
+ - [Moderate] File watcher, download, view, upload, copy, and WebDAV now enforce per-path access rules on symlink-resolved targets, so DENY rules and scope boundaries cannot be bypassed via a link inside an allowed folder (GHSA-823x-gh7f-grmf) reporters [@ch4rlesexe](https://github.com/ch4rlesexe) [@manus-use](https://github.com/manus-use) [@zohuyhieuzo03](https://github.com/zohuyhieuzo03) [@c3p31113](https://github.com/c3p31113)
+
+ **New Features**:
+ - feat(cache): add server.cacheDirMaxSizeMB to cap the preview cache size ([#3314](https://github.com/gtsteffaniak/filebrowser/pull/3314))
+ - Square image previews: avoid the full-resolution crop copy in imaging.Fill ([#3340](https://github.com/gtsteffaniak/filebrowser/pull/3340))
+
+ **Bug Fixes**:
+ - fix(http): Unix socket hardening — default `http.socketFileMode` is `0660`; the socket is created under a restrictive umask and then `chmod`/`chown` apply your configured mode; on filesystem sockets, forwarded headers require `http.unixSocketTrustedUIDs` and/or `http.unixSocketTrustedGIDs`, with `http.unixSocketTrustAllLocalPeers: true` as an explicit opt-in for pre-[#3309](https://github.com/gtsteffaniak/filebrowser/pull/3309) trust-all behavior (startup warning) ([#3309](https://github.com/gtsteffaniak/filebrowser/pull/3309))
+ - fix(users): save the prompt close button and new file templates when editing a user ([#3342](https://github.com/gtsteffaniak/filebrowser/pull/3342)) ([#3323](https://github.com/gtsteffaniak/filebrowser/pull/3323))
+ - fix(upload): serialize directory creation before uploading files ([#3321](https://github.com/gtsteffaniak/filebrowser/pull/3321))
+ - fix(preview): open RAW, HEIC and rendered documents in the viewer when previews are disabled ([#3313](https://github.com/gtsteffaniak/filebrowser/pull/3313))
+ - fix(users): keep requested profile values when creating a user
+ - fix advanced user toggle duplicate ([#3353](https://github.com/gtsteffaniak/filebrowser/pull/3353)) ([#3324](https://github.com/gtsteffaniak/filebrowser/pull/3324))
+ - fix(upload): don't pause while the server saves, and make the stall timeout a setting ([#3346](https://github.com/gtsteffaniak/filebrowser/pull/3346))
+ - fix(preview): respect EXIF orientation on embedded JPEG thumbnails ([#3358](https://github.com/gtsteffaniak/filebrowser/pull/3358))
+ - fix(picker): open the parent folder on a single click ([#3355](https://github.com/gtsteffaniak/filebrowser/pull/3355))
+ - fix(users): show password-change requirement in edit preferences ([#3354](https://github.com/gtsteffaniak/filebrowser/pull/3354))
+ - fix(sidebar): keep source selector stationary during horizontal tree scrolling ([#3368](https://github.com/gtsteffaniak/filebrowser/pull/3368))
+ - fix(http): restore Unix socket reverse-proxy behavior after [#3309](https://github.com/gtsteffaniak/filebrowser/pull/3309) hardening ([#3365](https://github.com/gtsteffaniak/filebrowser/pull/3365))
+ - fix(share): file checksum generation on public shares uses `GET /public/api/resources?checksum=…` with the share hash and session cookie; anonymous visitors receive 401 and no longer see the checksum section in the file info dialog ([#3360](https://github.com/gtsteffaniak/filebrowser/pull/3360))
+
+ **Upgrade notes** (Unix socket listeners):
+ - If you listen on a filesystem `http.socket` with `http.trustProxyHeaders: true`, set `http.unixSocketTrustedUIDs` and/or `http.unixSocketTrustedGIDs` to the UID/GID(s) from Linux peer credentials (`SO_PEERCRED`) that may set `X-Forwarded-*`. A GID allowlist trusts every peer with that GID (for example when the proxy and FileBrowser share a group), not only one process. If you relied on empty allowlists before, set `http.unixSocketTrustAllLocalPeers: true` (a warning is logged).
+ - Default `http.socketFileMode` is `0660`; use optional `http.socketGroup` when the proxy runs as another user in the same group.
+
+---
+
 ## [v2.1.4-beta](https://github.com/gtsteffaniak/filebrowser/releases/tag/v2.1.4-beta)
 
 Happy Halloween! Heres a mostly bugfix release for v2.1.4.
