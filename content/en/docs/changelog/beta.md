@@ -14,6 +14,80 @@ You can also check the releases on [GitHub!](https://github.com/gtsteffaniak/fil
 **v2.0.0** requires a config update and one-time database migration from v1.x. See {{< doclink path="getting-started/v2/migration/" text="Migration guide" />}} and {{< doclink path="getting-started/v2/about/" text="About v2.0.0" />}}.
 {{% /alert %}}
 
+---
+
+## [v2.1.5-beta](https://github.com/gtsteffaniak/filebrowser/releases/tag/v2.1.5-beta)
+
+ **Security**:
+ - [High] Server-side archive create (`POST /api/resources/archive`) now resolves the full destination path for writes via symlink-scoped mutation resolution, closing arbitrary host file overwrite through an in-scope symlink leaf (GHSA-jg32-ppcc-ph62) reporter [@manus-use](https://github.com/manus-use)
+ - [Moderate] `GET /api/media/subtitles` no longer follows symlink external subtitle sidecars beside the video file, and public share requests resolve sidecar paths under the share prefix before read (GHSA-hfvf-2639-p2mq) reporter [@manus-use](https://github.com/manus-use)
+ - [Moderate] Directory motion-preview now resolves symlinked children within the caller's scope, closing the incomplete GHSA-g2q5 remediation path through `getDirectoryPreview` (GHSA-2546-vf4j-vh9v) reporter [@manus-use](https://github.com/manus-use)
+ - [Moderate] RealPathCache entries for affected index paths are invalidated after symlink-scoped mutations so stale resolved paths cannot bypass containment on subsequent create, write, delete, or move operations.
+ - [Moderate] File watcher, download, view, upload, copy, and WebDAV now enforce per-path access rules on symlink-resolved targets, so DENY rules and scope boundaries cannot be bypassed via a link inside an allowed folder (GHSA-823x-gh7f-grmf) reporters [@ch4rlesexe](https://github.com/ch4rlesexe) [@manus-use](https://github.com/manus-use) [@zohuyhieuzo03](https://github.com/zohuyhieuzo03) [@c3p31113](https://github.com/c3p31113)
+
+ **New Features**:
+ - feat(cache): add server.cacheDirMaxSizeMB to cap the preview cache size ([#3314](https://github.com/gtsteffaniak/filebrowser/pull/3314))
+ - Square image previews: avoid the full-resolution crop copy in imaging.Fill ([#3340](https://github.com/gtsteffaniak/filebrowser/pull/3340))
+
+ **Bug Fixes**:
+ - fix(http): Unix socket hardening — default `http.socketFileMode` is `0660`; the socket is created under a restrictive umask and then `chmod`/`chown` apply your configured mode; on filesystem sockets, forwarded headers require `http.unixSocketTrustedUIDs` and/or `http.unixSocketTrustedGIDs`, with `http.unixSocketTrustAllLocalPeers: true` as an explicit opt-in for pre-[#3309](https://github.com/gtsteffaniak/filebrowser/pull/3309) trust-all behavior (startup warning) ([#3309](https://github.com/gtsteffaniak/filebrowser/pull/3309))
+ - fix(users): save the prompt close button and new file templates when editing a user ([#3342](https://github.com/gtsteffaniak/filebrowser/pull/3342)) ([#3323](https://github.com/gtsteffaniak/filebrowser/pull/3323))
+ - fix(upload): serialize directory creation before uploading files ([#3321](https://github.com/gtsteffaniak/filebrowser/pull/3321))
+ - fix(preview): open RAW, HEIC and rendered documents in the viewer when previews are disabled ([#3313](https://github.com/gtsteffaniak/filebrowser/pull/3313))
+ - fix(users): keep requested profile values when creating a user
+ - fix advanced user toggle duplicate ([#3353](https://github.com/gtsteffaniak/filebrowser/pull/3353)) ([#3324](https://github.com/gtsteffaniak/filebrowser/pull/3324))
+ - fix(upload): don't pause while the server saves, and make the stall timeout a setting ([#3346](https://github.com/gtsteffaniak/filebrowser/pull/3346))
+ - fix(preview): respect EXIF orientation on embedded JPEG thumbnails ([#3358](https://github.com/gtsteffaniak/filebrowser/pull/3358))
+ - fix(picker): open the parent folder on a single click ([#3355](https://github.com/gtsteffaniak/filebrowser/pull/3355))
+ - fix(users): show password-change requirement in edit preferences ([#3354](https://github.com/gtsteffaniak/filebrowser/pull/3354))
+ - fix(sidebar): keep source selector stationary during horizontal tree scrolling ([#3368](https://github.com/gtsteffaniak/filebrowser/pull/3368))
+ - fix(http): restore Unix socket reverse-proxy behavior after [#3309](https://github.com/gtsteffaniak/filebrowser/pull/3309) hardening ([#3365](https://github.com/gtsteffaniak/filebrowser/pull/3365))
+ - fix(share): file checksum generation on public shares uses `GET /public/api/resources?checksum=…` with the share hash and session cookie; anonymous visitors receive 401 and no longer see the checksum section in the file info dialog ([#3360](https://github.com/gtsteffaniak/filebrowser/pull/3360))
+
+ **Upgrade notes** (Unix socket listeners):
+ - If you listen on a filesystem `http.socket` with `http.trustProxyHeaders: true`, set `http.unixSocketTrustedUIDs` and/or `http.unixSocketTrustedGIDs` to the UID/GID(s) from Linux peer credentials (`SO_PEERCRED`) that may set `X-Forwarded-*`. A GID allowlist trusts every peer with that GID (for example when the proxy and FileBrowser share a group), not only one process. If you relied on empty allowlists before, set `http.unixSocketTrustAllLocalPeers: true` (a warning is logged).
+ - Default `http.socketFileMode` is `0660`; use optional `http.socketGroup` when the proxy runs as another user in the same group.
+
+---
+
+## [v2.1.4-beta](https://github.com/gtsteffaniak/filebrowser/releases/tag/v2.1.4-beta)
+
+Happy Halloween! Heres a mostly bugfix release for v2.1.4.
+
+> [!TIP]
+> Halloween is an event based theme, each user will automatically switch to it. This can be disabled globally with [frontend.disableEventThemes](https://filebrowserquantum.com/en/docs/configuration/frontend/styling/#options)
+
+ **Security**:
+ - [Low] `GET /api/settings` and `GET /api/settings?property=auth` no longer return cleartext secrets (`auth.key`, `totpSecret`, `adminPassword`, OIDC `clientSecret`, LDAP bind password, recaptcha secret, OnlyOffice secret); secret fields are replaced with `**hidden**` in the response, and the YAML export now redacts the recaptcha and LDAP secrets whose comments lacked the `secret:` marker (GHSA-892f-9h5p-mfc8) reporter @paulmossman
+
+ **New Features**:
+ - feat(search): sidebar File actions and close button in advanced search ([#3303](https://github.com/gtsteffaniak/filebrowser/pull/3303)) ([#2479](https://github.com/gtsteffaniak/filebrowser/issues/2479)) ([#3303](https://github.com/gtsteffaniak/filebrowser/pull/3303))
+
+ **Bug Fixes**:
+ - Deleting a directory now releases folder quotas rooted inside it instead of leaving them charged for files that no longer exist; applies to API and WebDAV deletes ([#3163](https://github.com/gtsteffaniak/filebrowser/issues/3163)) ([#3235](https://github.com/gtsteffaniak/filebrowser/pull/3235))
+ - Bulk and public share deletes now release accounted quota usage; nested folder quotas reset when an ancestor is removed ([#3163](https://github.com/gtsteffaniak/filebrowser/issues/3163)) ([#3305](https://github.com/gtsteffaniak/filebrowser/pull/3305))
+ - Directory listings skip entries that return permission denied or not-found on per-entry stat instead of failing the whole folder (e.g. unreadable NTFS junctions on CIFS); skipped entries are omitted from the index like `ls -l` ([#3184](https://github.com/gtsteffaniak/filebrowser/pull/3184))
+ - Preview generation for webp broken ([#3254](https://github.com/gtsteffaniak/filebrowser/issues/3254)) ([#3259](https://github.com/gtsteffaniak/filebrowser/pull/3259))
+ - Share banner never shows to public visitors, returns bannerUrl but not banner ([#3246](https://github.com/gtsteffaniak/filebrowser/issues/3246)) ([#3250](https://github.com/gtsteffaniak/filebrowser/pull/3250))
+ - fix html/markdown relative file preview support ([#3131](https://github.com/gtsteffaniak/filebrowser/pull/3131)) ([#3129](https://github.com/gtsteffaniak/filebrowser/issues/3129)) ([#2355](https://github.com/gtsteffaniak/filebrowser/issues/2355))
+ - fix(archive): extract tar hard links instead of dropping them ([#3234](https://github.com/gtsteffaniak/filebrowser/pull/3234))
+ - fix(auth): apply stored permission caps for customized API tokens with no global flags enabled ([#3255](https://github.com/gtsteffaniak/filebrowser/pull/3255))
+ - Archive extraction writes regular and hard-link entries at the entry path instead of following an existing symlink at that path (tar and zip) ([#3265](https://github.com/gtsteffaniak/filebrowser/pull/3265))
+ - fix(move-copy): require choosing a destination source in advanced search when none can be inferred, instead of silently copying to the source root ([#3276](https://github.com/gtsteffaniak/filebrowser/pull/3276))
+ - fix(stream): single-file shares can now stream their own media on Windows by using slash-based path handling ([#3270](https://github.com/gtsteffaniak/filebrowser/issues/3270)) ([#3271](https://github.com/gtsteffaniak/filebrowser/pull/3271))
+ - fix(users): `lockPassword` is now enforced on self-service password changes; non-admins get 403 while admin resets still work ([#3279](https://github.com/gtsteffaniak/filebrowser/issues/3279)) ([#3283](https://github.com/gtsteffaniak/filebrowser/pull/3283))
+ - fix(analytics): the FreeBSD release binary now reports `freebsd` in `system.os` instead of `other` ([#3244](https://github.com/gtsteffaniak/filebrowser/issues/3244)) ([#3284](https://github.com/gtsteffaniak/filebrowser/pull/3284))
+ - fix(frontend): share expiration now reads backend Unix-seconds timestamps correctly instead of showing dates decades off ([#3247](https://github.com/gtsteffaniak/filebrowser/pull/3247))
+ - fix(frontend): video on iPhone now uses the native fullscreen player instead of the in-page fallback ([#3113](https://github.com/gtsteffaniak/filebrowser/issues/3113)) ([#3288](https://github.com/gtsteffaniak/filebrowser/pull/3288))
+ - fix(frontend): the video loading spinner no longer stays on for the rest of playback when the fetch stalls but the buffer can continue ([#3287](https://github.com/gtsteffaniak/filebrowser/issues/3287)) ([#3289](https://github.com/gtsteffaniak/filebrowser/pull/3289))
+ - fix(frontend): the share banner is now shown to public visitors, using `bannerUrl` instead of the never-set `banner` field ([#3246](https://github.com/gtsteffaniak/filebrowser/issues/3246)) ([#3250](https://github.com/gtsteffaniak/filebrowser/pull/3250))
+ - fix(preview): camera RAW files (Panasonic `.rw2`/`.raw`/`.rwl`, Olympus `.orf`, `.cr2`/`.dng`) extract embedded previews from TIFF strips/SubIFDs and no longer return 415 when EXIF decoding fails ([#3219](https://github.com/gtsteffaniak/filebrowser/issues/3219)) ([#3243](https://github.com/gtsteffaniak/filebrowser/pull/3243))
+ - fix(indexing): restore lazy listing persistence with atomic folder-size deltas and ancestor propagation, and force a full scan for scanners that missed their slot while the process was down ([#3260](https://github.com/gtsteffaniak/filebrowser/pull/3260))
+ - fix(indexing): directory listings skip entries that cannot be accessed or have vanished instead of failing the whole listing; remaining errors still fail and fully-vanished nonempty directories return an error ([#3292](https://github.com/gtsteffaniak/filebrowser/pull/3292))
+ - fix(frontend): redirects from `/files` stay inside the files area so a source named "Files" no longer leaves an empty view after login ([#3167](https://github.com/gtsteffaniak/filebrowser/issues/3167)) ([#3304](https://github.com/gtsteffaniak/filebrowser/pull/3304))
+
+---
+
 ## [v2.1.3-beta](https://github.com/gtsteffaniak/filebrowser/releases/tag/v2.1.3-beta)
 
 **Reminder**: consider enabling analytics (it's like steam survey) in admin settings, I will release this dashboard once I have a consistent 100+ reports each week
