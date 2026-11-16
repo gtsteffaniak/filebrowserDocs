@@ -30,7 +30,11 @@ jobs:
         with:
           hugo-version: 'latest'
       - name: Install Dart Sass
-        run: sudo snap install dart-sass
+        run: |
+          curl -fsSL --retry 3 -o dart-sass.tar.gz https://github.com/sass/dart-sass/releases/download/1.108.2/dart-sass-1.108.2-linux-x64.tar.gz
+          tar -xzf dart-sass.tar.gz
+          sudo mv dart-sass /opt/dart-sass
+          echo "/opt/dart-sass" >> "$GITHUB_PATH"
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -60,7 +64,7 @@ jobs:
           hugo version
           echo ""
           echo "Dart Sass version:"
-          dart-sass --version
+          sass --version
           echo ""
           echo "Node version:"
           node --version
@@ -114,7 +118,11 @@ jobs:
         with:
           hugo-version: 'latest'
       - name: Install Dart Sass
-        run: sudo snap install dart-sass
+        run: |
+          curl -fsSL --retry 3 -o dart-sass.tar.gz https://github.com/sass/dart-sass/releases/download/1.108.2/dart-sass-1.108.2-linux-x64.tar.gz
+          tar -xzf dart-sass.tar.gz
+          sudo mv dart-sass /opt/dart-sass
+          echo "/opt/dart-sass" >> "$GITHUB_PATH"
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -138,7 +146,11 @@ jobs:
         with:
           hugo-version: 'latest'
       - name: Install Dart Sass
-        run: sudo snap install dart-sass
+        run: |
+          curl -fsSL --retry 3 -o dart-sass.tar.gz https://github.com/sass/dart-sass/releases/download/1.108.2/dart-sass-1.108.2-linux-x64.tar.gz
+          tar -xzf dart-sass.tar.gz
+          sudo mv dart-sass /opt/dart-sass
+          echo "/opt/dart-sass" >> "$GITHUB_PATH"
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
