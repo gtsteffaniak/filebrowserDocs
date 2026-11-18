@@ -52,7 +52,7 @@ jobs:
       - name: Build Hugo site
         run: |
           echo "Building Hugo site for custom domain"
-          hugo --minify --baseURL "https://filebrowserquantum.com/"
+          hugo --minify --baseURL "https://www.filebrowserquantum.com/"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
