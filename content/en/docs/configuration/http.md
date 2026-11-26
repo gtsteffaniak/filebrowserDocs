@@ -3,7 +3,7 @@ title: "HTTP Settings"
 description: "Configure HTTP listening, URLs, TLS, WebDAV, reverse-proxy headers, and auth rate limiting"
 icon: "http"
 date: "2026-05-22T15:40:53Z"
-lastmod: "2026-11-26T16:48:00Z"
+lastmod: "2026-11-26T17:11:16Z"
 order: 4
 ---
 
@@ -139,6 +139,12 @@ http:
 
 If both lists are empty and `unixSocketTrustAllLocalPeers` is `false`, forwarded client IPs are ignored and the activity log and rate limiting see no client address.
 
+Once a peer is trusted, the client is taken from `X-Forwarded-For` the same way as on TCP: with `trustedProxies` empty, the **rightmost** entry is used; with `trustedProxies` set, entries belonging to those proxies are skipped from the right. In multi-hop setups (CDN → reverse proxy → Unix socket), list the CDN and any other upstream proxy addresses in [`trustedProxies`](#trustedproxies-v210) — otherwise the rightmost entry is the CDN, and all clients behind it share one rate-limit and lockout key.
+
+{{% alert context="info" %}}
+**Version note:** these socket options are in stable **v2.1.0+**. On the beta channel they arrived in **v2.1.4-beta** (`unixSocketTrustAllLocalPeers` in v2.1.5-beta). Earlier versions honor `X-Forwarded-For` / `X-Real-IP` from **any** peer when `trustProxyHeaders` is `true`.
+{{% /alert %}}
+
 {{% alert context="warning" %}}
 **Only the primary group counts.** `SO_PEERCRED` reports the single effective group ID of the connecting process — **supplementary groups are not checked**. A reverse proxy that can open the socket only because it is a *member* of the socket's group (for example a `caddy` user added to an extra group, or a systemd unit using `SupplementaryGroups=`) will **not** match `unixSocketTrustedGIDs`. Check the proxy's effective group with `ps -o egid= -p <pid>`, or list its user ID in `unixSocketTrustedUIDs` instead.
 {{% /alert %}}
@@ -261,7 +267,7 @@ When enabled, FileBrowser uses forwarded headers for:
 
 | Area | Headers used |
 |------|----------------|
-| Client IP | `X-Forwarded-For`, then `X-Real-IP` — **v2.1.0+: only from a trusted peer** (see [trustedProxies](#trustedproxies-v210) for TCP, or the [Unix socket allowlists](#trusting-a-reverse-proxy-on-a-unix-socket-v210)) |
+| Client IP | `X-Forwarded-For`, then `X-Real-IP` — **v2.1.0+ (v2.1.4-beta+): only from a trusted peer** (see [trustedProxies](#trustedproxies-v210) for TCP, or the [Unix socket allowlists](#trusting-a-reverse-proxy-on-a-unix-socket-v210)) |
 | Request host | `X-Forwarded-Host` |
 | Request scheme | `X-Forwarded-Proto` (defaults to `https` for public URLs when host is forwarded but proto is absent) |
 
@@ -304,7 +310,8 @@ http:
 - **Empty (default):** client IP headers are ignored on TCP and the client IP resolves to the proxy address. FileBrowser logs a startup warning in this case.
 - **Configured:** `X-Forwarded-For` is read from right to left, skipping entries that belong to trusted proxies; the first untrusted address is the client. This keeps client IPs correct in multi-hop setups (CDN → reverse proxy → FileBrowser).
 - `X-Forwarded-Host` and `X-Forwarded-Proto` only need `trustProxyHeaders: true`; they are not checked against this list.
-- Unix socket listeners use [peer credential allowlists](#trusting-a-reverse-proxy-on-a-unix-socket-v210) instead.
+- **Unix socket listeners:** which local peer may send client IP headers is decided by the [peer credential allowlists](#trusting-a-reverse-proxy-on-a-unix-socket-v210), but this list is still used to walk `X-Forwarded-For` past upstream proxies (e.g. a CDN in front of your reverse proxy).
+- **Version note:** stable **v2.1.0+**; on the beta channel **v2.1.4-beta+**. Earlier versions honor client IP headers from any peer when `trustProxyHeaders` is `true`.
 
 </div>
 
