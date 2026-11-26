@@ -16,15 +16,13 @@
     "changelog:link-format:check": "node ./scripts/changelog-link-format.js --check"
   },
   "dependencies": {
-    "deepl-node": "^1.29.0",
+    "deepl-node": "^2.0.0",
     "fs-extra": "^11.4.1",
     "glob": "^14.0.6"
   },
-  "overrides": {
-    "adm-zip": "^0.6.1"
-  },
   "devDependencies": {},
   "engines": {
-    "node": ">=22.0.0"
+    "npm": ">=11.20.0",
+    "node": "^24.15.0 || >=26.0.0"
   }
 }
