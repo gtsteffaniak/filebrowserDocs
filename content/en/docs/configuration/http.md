@@ -3,7 +3,7 @@ title: "HTTP Settings"
 description: "Configure HTTP listening, URLs, TLS, WebDAV, reverse-proxy headers, and auth rate limiting"
 icon: "http"
 date: "2026-05-22T15:40:53Z"
-lastmod: "2026-08-07T19:41:04Z"
+lastmod: "2026-11-26T16:48:00Z"
 order: 4
 ---
 
@@ -23,10 +23,16 @@ http:
   externalUrl: ""
   internalUrl: ""
   socket: ""
+  socketFileMode: ""            # default: "0660" (v2.1.0+)
+  socketGroup: ""               # v2.1.0+
   tlsCert: ""
   tlsKey: ""
   disableWebDAV: false
   trustProxyHeaders: false
+  trustedProxies: []            # v2.1.0+
+  unixSocketTrustedUIDs: []     # v2.1.0+
+  unixSocketTrustedGIDs: []     # v2.1.0+
+  unixSocketTrustAllLocalPeers: false # v2.1.0+
   disableRateLimit: false
 ```
 
@@ -97,6 +103,45 @@ http:
 ```
 
 When set, `http.port` is not used. **Cannot be combined** with `tlsCert` / `tlsKey` — the server exits at startup if both are configured.
+
+Names starting with `@` create a Linux **abstract socket**. Abstract sockets have no file permissions, ignore `socketFileMode` / `socketGroup`, and never trust forwarded client headers.
+
+#### socketFileMode and socketGroup (v2.1.0+)
+
+Control who can connect to a filesystem socket:
+
+```yaml
+http:
+  socket: "/run/filebrowser/filebrowser.sock"
+  socketFileMode: "0660"   # octal, default "0660"
+  socketGroup: "caddy"     # group name or numeric GID (optional)
+```
+
+`socketGroup` changes the group of the socket file so that a reverse proxy running as a different user can connect to it.
+
+#### Trusting a reverse proxy on a Unix socket (v2.1.0+)
+
+With `trustProxyHeaders: true` on a filesystem socket, the **client IP** headers (`X-Forwarded-For`, `X-Real-IP`) are only honored from peers you allow by their Linux credentials (`SO_PEERCRED`):
+
+```yaml
+http:
+  socket: "/run/filebrowser/filebrowser.sock"
+  trustProxyHeaders: true
+  unixSocketTrustedUIDs: [995]   # e.g. the uid of your reverse proxy user
+  unixSocketTrustedGIDs: []
+```
+
+| Option | Behavior |
+|--------|----------|
+| `unixSocketTrustedUIDs` | Trust peers whose **user ID** is listed. |
+| `unixSocketTrustedGIDs` | Trust peers whose **primary (effective) group ID** is listed. Trusts every process running with that group, not just your proxy. |
+| `unixSocketTrustAllLocalPeers` | Legacy: trust any local peer when both lists are empty. Logs a warning at startup. |
+
+If both lists are empty and `unixSocketTrustAllLocalPeers` is `false`, forwarded client IPs are ignored and the activity log and rate limiting see no client address.
+
+{{% alert context="warning" %}}
+**Only the primary group counts.** `SO_PEERCRED` reports the single effective group ID of the connecting process — **supplementary groups are not checked**. A reverse proxy that can open the socket only because it is a *member* of the socket's group (for example a `caddy` user added to an extra group, or a systemd unit using `SupplementaryGroups=`) will **not** match `unixSocketTrustedGIDs`. Check the proxy's effective group with `ps -o egid= -p <pid>`, or list its user ID in `unixSocketTrustedUIDs` instead.
+{{% /alert %}}
 
 </div>
 
@@ -216,7 +261,7 @@ When enabled, FileBrowser uses forwarded headers for:
 
 | Area | Headers used |
 |------|----------------|
-| Client IP | `X-Forwarded-For` (first IP), then `X-Real-IP` |
+| Client IP | `X-Forwarded-For`, then `X-Real-IP` — **v2.1.0+: only from a trusted peer** (see [trustedProxies](#trustedproxies-v210) for TCP, or the [Unix socket allowlists](#trusting-a-reverse-proxy-on-a-unix-socket-v210)) |
 | Request host | `X-Forwarded-Host` |
 | Request scheme | `X-Forwarded-Proto` (defaults to `https` for public URLs when host is forwarded but proto is absent) |
 
@@ -237,8 +282,29 @@ If FileBrowser is reachable directly from the internet with header trust enabled
 See {{< doclink path="getting-started/reverse-proxy/#proxy-headers-filebrowser-understands" text="Reverse proxy: proxy headers" />}} for nginx, Traefik, and Caddy examples.
 
 {{% alert context="info" %}}
-**Authentication rate limiting**: Login and other auth routes are rate-limited by default. Enable header trust behind a proxy (`trustProxyHeaders: true` on v2.0.0+, or `trustedHeaders` on v1.4.x–v1.5.x) so per-IP limits apply to real client addresses — not the proxy.
+**Authentication rate limiting**: Login and other auth routes are rate-limited by default. Enable header trust behind a proxy (`trustProxyHeaders: true` on v2.0.0+, or `trustedHeaders` on v1.4.x–v1.5.x) so per-IP limits apply to real client addresses — not the proxy. On v2.1.0+ also list the proxy in `trustedProxies` (TCP) or the Unix socket allowlists.
 {{% /alert %}}
+
+</div>
+
+<div class="pattern-card">
+
+### trustedProxies (v2.1.0+)
+
+IP addresses or CIDR ranges of reverse proxies allowed to set the **client IP** headers (`X-Forwarded-For`, `X-Real-IP`) on a TCP listener. Requires `trustProxyHeaders: true`.
+
+```yaml
+http:
+  trustProxyHeaders: true
+  trustedProxies:
+    - "127.0.0.1"
+    - "172.18.0.0/16"   # e.g. a Docker network with your proxy
+```
+
+- **Empty (default):** client IP headers are ignored on TCP and the client IP resolves to the proxy address. FileBrowser logs a startup warning in this case.
+- **Configured:** `X-Forwarded-For` is read from right to left, skipping entries that belong to trusted proxies; the first untrusted address is the client. This keeps client IPs correct in multi-hop setups (CDN → reverse proxy → FileBrowser).
+- `X-Forwarded-Host` and `X-Forwarded-Proto` only need `trustProxyHeaders: true`; they are not checked against this list.
+- Unix socket listeners use [peer credential allowlists](#trusting-a-reverse-proxy-on-a-unix-socket-v210) instead.
 
 </div>
 
