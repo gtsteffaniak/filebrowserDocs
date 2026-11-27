@@ -25,6 +25,12 @@ frontend:
 | `disableUsedPercentage` | `false` | Hide storage usage indicators |
 | `disableNavButtons` | `false` | Hide back/forward navigation buttons |
 
+{{% alert context="warning" %}}
+**Access to sidebar is limited when `disableNavButtons` is `true`**
+
+The `disableNavButtons` governs visibility of the left hamburger menu in the top navigation – when set to `true`, the sidebar cannot be revealed in either of the following scenarios: (1) on a narrow screens (mobile responsive view) OR (2) if `userDefaults.sidebar.sticky` is set to `false`.
+{{% /alert %}}
+
 ## Disable Default Links
 
 Hide built-in sidebar links:
